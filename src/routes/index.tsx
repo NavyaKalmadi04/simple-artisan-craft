@@ -587,7 +587,7 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-muted-foreground md:flex-row md:items-center">
-        <p>© {new Date().getFullYear()} Maren Studio. Built simply, shipped quickly.</p>
+        <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
         <div className="flex flex-wrap gap-6">
           <a href={WHATSAPP_URL} target="_blank" rel="noreferrer noopener" className="hover:text-foreground">
             WhatsApp
