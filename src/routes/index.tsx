@@ -13,11 +13,14 @@ import {
   Heart,
   Zap,
   Users,
-  Menu,
-  X,
   GraduationCap,
   Send,
   Bot,
+  Home,
+  Briefcase,
+  FolderOpen,
+  HelpCircle,
+  X,
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 
@@ -34,18 +37,18 @@ const NAV_LINKS = [
   { href: "#contact", label: "Contact" },
 ];
 
-// ─────────────────────────────────────────────────────────────
-// Contact details — edit here to change everywhere on the site.
-// ─────────────────────────────────────────────────────────────
+const MOBILE_NAV = [
+  { href: "#", label: "Home", icon: Home },
+  { href: "#services", label: "Services", icon: Briefcase },
+  { href: "#projects", label: "Work", icon: FolderOpen },
+  { href: "#faq", label: "FAQ", icon: HelpCircle },
+  { href: "#contact", label: "Contact", icon: MessageCircle },
+];
+
 const PHONE_DISPLAY = "+91 84286 38871";
 const PHONE_TEL = "+918428638871";
-const WHATSAPP_NUMBER = "918428638871"; // country code + number, no +
+const WHATSAPP_NUMBER = "918428638871";
 
-// ─────────────────────────────────────────────────────────────
-// WhatsApp message templates — edit any text below to change the
-// automated message that gets sent when a visitor taps a button.
-// All messages are delivered to PHONE_DISPLAY above.
-// ─────────────────────────────────────────────────────────────
 type ServiceKey =
   | "general"
   | "productDesign"
@@ -75,7 +78,12 @@ function waLink(message: string) {
 
 const WHATSAPP_URL = waLink(WHATSAPP_TEMPLATES.general);
 
-
+const ROTATING_LINES = [
+  "Booking two new projects this month",
+  "Workshops booking for colleges Aug–Oct",
+  "Open slots for AI full-stack builds",
+  "Now shipping in 2-week sprints",
+];
 
 
 export const Route = createFileRoute("/")({
@@ -100,7 +108,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background text-foreground pb-20 md:pb-0">
       <Nav />
       <Hero />
       <Marquee />
@@ -112,78 +120,144 @@ function Index() {
       <Contact />
       <Footer />
       <ChatBot />
+      <MobileTabBar />
     </main>
   );
 }
 
 
 function Nav() {
-  const [open, setOpen] = useState(false);
-  const close = () => setOpen(false);
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-6 md:py-5">
-        <a href="#" onClick={close} className="flex min-w-0 items-center gap-2">
+      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-4 md:px-6 md:py-5">
+        {/* Desktop logo (left). Mobile keeps left empty so brand can center. */}
+        <a href="#" className="hidden md:flex min-w-0 items-center gap-2">
           <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             <span className="font-display text-lg leading-none">p</span>
           </span>
-          <span className="truncate font-display text-base sm:text-lg md:text-xl">
-            <span className="hidden sm:inline">{COMPANY_NAME}</span>
-            <span className="sm:hidden">{COMPANY_SHORT}</span>
-          </span>
+          <span className="truncate font-display text-xl">{COMPANY_NAME}</span>
         </a>
+        <span className="md:hidden" />
 
-        <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+        {/* Centered brand on mobile */}
+        <a href="#" className="flex items-center gap-2 justify-self-center md:hidden">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+            <span className="font-display text-lg leading-none">p</span>
+          </span>
+          <span className="font-display text-base">{COMPANY_SHORT} Solutions</span>
+        </a>
+        <span className="hidden md:block" />
+
+        {/* Desktop Mac-dock style nav */}
+        <nav className="hidden md:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground justify-self-center backdrop-blur">
           {NAV_LINKS.map((l) => (
-            <a key={l.href} href={l.href} className="transition-colors hover:text-foreground">
+            <a
+              key={l.href}
+              href={l.href}
+              className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-125 hover:-translate-y-1 hover:bg-secondary hover:text-foreground hover:shadow-md"
+            >
               {l.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* Right CTA */}
+        <div className="justify-self-end">
           <a
             href="#contact"
             className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 md:inline-flex"
           >
             Book a session <ArrowUpRight className="h-3.5 w-3.5" />
           </a>
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card md:hidden"
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
       </div>
-
-      {open && (
-        <div className="border-t border-border bg-background md:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={close}
-                className="rounded-xl px-3 py-3 text-base text-foreground/90 transition-colors hover:bg-secondary"
-              >
-                {l.label}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={close}
-              className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-foreground px-4 py-3 text-sm text-background"
-            >
-              Book a session <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
-          </nav>
-        </div>
-      )}
     </header>
+  );
+}
+
+function MobileTabBar() {
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur md:hidden">
+      <ul className="mx-auto grid max-w-md grid-cols-5">
+        {MOBILE_NAV.map((l) => (
+          <li key={l.label}>
+            <a
+              href={l.href}
+              className="flex flex-col items-center justify-center gap-1 py-2.5 text-[10px] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <l.icon className="h-5 w-5" strokeWidth={1.6} />
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+function RotatingBadge() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setI((v) => (v + 1) % ROTATING_LINES.length), 3200);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+      <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse" />
+      <span className="relative inline-block h-4 overflow-hidden">
+        <span
+          key={i}
+          className="block animate-[fadeUp_400ms_ease-out]"
+        >
+          {ROTATING_LINES[i]}
+        </span>
+      </span>
+      <style>{`@keyframes fadeUp { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: translateY(0) } }`}</style>
+    </span>
+  );
+}
+
+function BookCTA() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative inline-block">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
+      >
+        <MessageCircle className="h-4 w-4" /> Book your session
+      </button>
+      {open && (
+        <>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 z-10 cursor-default"
+          />
+          <div className="absolute left-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
+            >
+              <MessageCircle className="h-4 w-4" /> WhatsApp
+            </a>
+            <div className="h-px bg-border" />
+            <a
+              href={`tel:${PHONE_TEL}`}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
+            >
+              <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
+            </a>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -193,10 +267,7 @@ function Hero() {
       <div className="absolute left-1/2 top-32 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blush/40 blur-3xl" />
       <div className="absolute right-10 top-48 -z-10 h-56 w-56 rounded-full bg-sage/30 blur-3xl" />
 
-      <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-        <span className="h-1.5 w-1.5 rounded-full bg-sage" />
-        Booking two new projects this month
-      </span>
+      <RotatingBadge />
 
       <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
         Simple products,
@@ -210,21 +281,8 @@ function Hero() {
         like — for SaaS, websites and AI workflows across every kind of business.
       </p>
 
-      <div className="mt-10 flex flex-wrap items-center gap-3">
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
-        >
-          <MessageCircle className="h-4 w-4" /> Book your session
-        </a>
-        <a
-          href={`tel:${PHONE_TEL}`}
-          className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm transition-colors hover:bg-secondary"
-        >
-          <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
-        </a>
+      <div className="mt-10">
+        <BookCTA />
       </div>
 
       <dl className="mt-20 grid max-w-2xl grid-cols-3 gap-8 border-t border-border pt-8">
@@ -420,45 +478,28 @@ function Services() {
 
 
 function Team() {
-  const team = [
-    {
-      name: "Aarav Mehta",
-      role: "Product & Design",
-      bio: "Writes specs like a PM, designs like an editor. Twelve years shipping calm software.",
-      tint: "bg-blush/50",
-    },
-    {
-      name: "Riya Kapoor",
-      role: "AI Full-stack",
-      bio: "Builds end-to-end with AI woven in. Loves small APIs and fast feedback loops.",
-      tint: "bg-sage/50",
-    },
-    {
-      name: "Noah Sharma",
-      role: "Engineering",
-      bio: "Front-of-house engineering — accessible, performant interfaces that age well.",
-      tint: "bg-accent/60",
-    },
-  ];
+  const traits = ["Young", "Aspiring", "Driven", "Curious", "Hands-on", "Ship-first"];
   return (
     <section id="team" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
       <span className="text-xs uppercase tracking-widest text-muted-foreground">Team</span>
       <h2 className="mt-4 max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
-        A tiny team, <em className="text-muted-foreground">deeply involved</em> in your product.
+        A tiny team — <em className="text-muted-foreground">young, aspiring, deeply driven.</em>
       </h2>
-      <p className="mt-6 max-w-xl text-muted-foreground">
-        No account managers, no handoffs. The people who design and build are the people you talk to
-        — every week, every decision.
+      <p className="mt-6 max-w-2xl text-muted-foreground">
+        We're a small group of designers and AI full-stack engineers who care about simple software.
+        No account managers, no handoffs — the people who design and build are the people you talk
+        to, every week and every decision. We're early in our journey, hungry to do excellent work,
+        and we treat every project like our own.
       </p>
 
-      <div className="mt-14 grid gap-6 md:grid-cols-3">
-        {team.map((m) => (
-          <article key={m.name} className="rounded-3xl border border-border bg-card p-6">
-            <div className={`aspect-square w-full rounded-2xl ${m.tint}`} />
-            <h3 className="mt-5 font-display text-xl">{m.name}</h3>
-            <p className="text-sm text-muted-foreground">{m.role}</p>
-            <p className="mt-3 text-sm text-muted-foreground">{m.bio}</p>
-          </article>
+      <div className="mt-10 flex flex-wrap gap-2">
+        {traits.map((t) => (
+          <span
+            key={t}
+            className="rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground"
+          >
+            {t}
+          </span>
         ))}
       </div>
     </section>
@@ -504,6 +545,7 @@ function Projects() {
       tint: "bg-sage/30",
     },
   ];
+  const [showAll, setShowAll] = useState(false);
   return (
     <section id="projects" className="bg-secondary/50 py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -524,8 +566,11 @@ function Projects() {
           </a>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {items.map((w) => (
-            <article key={w.title} className="group block">
+          {items.map((w, i) => (
+            <article
+              key={w.title}
+              className={`group block ${!showAll && i >= 1 ? "hidden md:block" : ""}`}
+            >
               <div
                 className={`aspect-[4/5] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
               >
@@ -542,6 +587,18 @@ function Projects() {
             </article>
           ))}
         </div>
+
+        {!showAll && (
+          <div className="mt-8 flex justify-center md:hidden">
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
+            >
+              See more projects <ArrowUpRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -574,6 +631,7 @@ function FAQ() {
       a: "Yes — most clients stay on a light monthly engagement for iteration, AI features and growth experiments.",
     },
   ];
+  const [showAll, setShowAll] = useState(false);
   return (
     <section id="faq" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
       <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
@@ -586,10 +644,25 @@ function FAQ() {
             Still curious? Send a note on WhatsApp — we usually reply the same day.
           </p>
         </div>
-        <div className="divide-y divide-border border-y border-border">
-          {qa.map((item, i) => (
-            <FAQItem key={item.q} {...item} defaultOpen={i === 0} />
-          ))}
+        <div>
+          <div className="divide-y divide-border border-y border-border">
+            {qa.map((item, i) => (
+              <div key={item.q} className={!showAll && i >= 1 ? "hidden md:block" : ""}>
+                <FAQItem {...item} defaultOpen={i === 0} />
+              </div>
+            ))}
+          </div>
+          {!showAll && (
+            <div className="mt-6 flex justify-center md:hidden">
+              <button
+                type="button"
+                onClick={() => setShowAll(true)}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
+              >
+                See more questions <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -640,30 +713,55 @@ function Contact() {
           product, your customers and the smallest next step.
         </p>
 
-        <div className="mt-10 flex flex-wrap gap-3">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
-          >
-            <MessageCircle className="h-4 w-4" /> Book on WhatsApp
-          </a>
-          <a
-            href={`tel:${PHONE_TEL}`}
-            className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 text-sm transition-colors hover:bg-primary-foreground/10"
-          >
-            <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
-          </a>
-          <a
-            href="mailto:hello@maren.studio"
-            className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 text-sm transition-colors hover:bg-primary-foreground/10"
-          >
-            hello@maren.studio <ArrowUpRight className="h-4 w-4" />
-          </a>
+        <div className="mt-10">
+          <ContactBookCTA />
         </div>
       </div>
     </section>
+  );
+}
+
+function ContactBookCTA() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative inline-block">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
+      >
+        <MessageCircle className="h-4 w-4" /> Book your session
+      </button>
+      {open && (
+        <>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 z-10 cursor-default"
+          />
+          <div className="absolute left-0 top-full z-20 mt-2 w-60 overflow-hidden rounded-2xl border border-border bg-card text-foreground shadow-xl">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
+            >
+              <MessageCircle className="h-4 w-4" /> WhatsApp
+            </a>
+            <div className="h-px bg-border" />
+            <a
+              href={`tel:${PHONE_TEL}`}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
+            >
+              <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
+            </a>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -706,49 +804,61 @@ function botAnswer(input: string): ChatMsg {
     return {
       from: "bot",
       text: "Yes! We run hands-on workshops for colleges, hackathons and corporate events — on product thinking, design and AI full-stack. Typical formats: 2-hour talk, half-day, or full-day hands-on.",
-      actions: [{ label: "Book a workshop", href: waLink(WHATSAPP_TEMPLATES.workshops) }],
+      actions: [
+        { label: "Book a workshop", href: waLink(WHATSAPP_TEMPLATES.workshops) },
+        { label: "See services", href: "#services" },
+      ],
     };
   }
   if (/(price|cost|pricing|charge|budget|how much)/.test(q)) {
     return {
       from: "bot",
       text: "Small websites start around the cost of a junior hire for a month. SaaS and AI apps are scoped as fixed monthly engagements. We send a clear quote after the first 30-min call.",
-      actions: [book],
+      actions: [book, { label: "See services", href: "#services" }],
     };
   }
   if (/(time|fast|speed|how long|duration|deadline|ship)/.test(q)) {
     return {
       from: "bot",
       text: "Most first launches go live in 2–4 weeks. We work in short weekly loops, so you see something real almost immediately.",
-      actions: [book],
+      actions: [book, { label: "See projects", href: "#projects" }],
     };
   }
   if (/(service|offer|do you|what.*build)/.test(q)) {
     return {
       from: "bot",
       text: "We offer 5 services: Product Design, Website Building, AI Full-stack Apps, Product Strategy, and Workshops for colleges & events.",
-      actions: [{ label: "See services", href: "#services" }],
+      actions: [{ label: "See services", href: "#services" }, book],
     };
   }
   if (/(ai|gpt|llm|chatbot|automation)/.test(q)) {
     return {
       from: "bot",
       text: "We build AI full-stack apps end-to-end — chatbots, internal copilots, automation workflows. AI is added only where it's genuinely useful, never as a gimmick.",
-      actions: [{ label: "Enquire about AI", href: waLink(WHATSAPP_TEMPLATES.aiFullstack) }],
+      actions: [
+        { label: "Enquire about AI", href: waLink(WHATSAPP_TEMPLATES.aiFullstack) },
+        { label: "See services", href: "#services" },
+      ],
     };
   }
   if (/(website|landing|marketing site|web)/.test(q)) {
     return {
       from: "bot",
       text: "Yes — we build fast, beautiful marketing sites for any business type. You can edit content yourself after launch.",
-      actions: [{ label: "Enquire about Website", href: waLink(WHATSAPP_TEMPLATES.websiteBuilding) }],
+      actions: [
+        { label: "Enquire about Website", href: waLink(WHATSAPP_TEMPLATES.websiteBuilding) },
+        { label: "See projects", href: "#projects" },
+      ],
     };
   }
   if (/(design|ux|ui)/.test(q)) {
     return {
       from: "bot",
       text: "Product Design is our core craft — calm, simple interfaces that feel inevitable. We design AND build, so handoffs never go cold.",
-      actions: [{ label: "Enquire about Design", href: waLink(WHATSAPP_TEMPLATES.productDesign) }],
+      actions: [
+        { label: "Enquire about Design", href: waLink(WHATSAPP_TEMPLATES.productDesign) },
+        { label: "See services", href: "#services" },
+      ],
     };
   }
   if (/(book|session|call|meet|contact|talk|reach|whatsapp|phone)/.test(q)) {
@@ -761,27 +871,32 @@ function botAnswer(input: string): ChatMsg {
   if (/(team|who|people|founder)/.test(q)) {
     return {
       from: "bot",
-      text: "We're a tiny team of designers and AI full-stack engineers. The people you talk to are the people who design and build your product.",
-      actions: [{ label: "Meet the team", href: "#team" }],
+      text: "We're a tiny team of young, driven designers and AI full-stack engineers. The people you talk to are the people who design and build your product.",
+      actions: [{ label: "Meet the team", href: "#team" }, book],
     };
   }
   if (/(project|portfolio|work|case|example)/.test(q)) {
     return {
       from: "bot",
       text: "We've shipped 60+ products across SaaS, marketing sites, AI workflows and internal tools. Full case studies on request.",
-      actions: [{ label: "See projects", href: "#projects" }],
+      actions: [{ label: "See projects", href: "#projects" }, book],
     };
   }
   if (/(hi|hello|hey|namaste)/.test(q)) {
     return {
       from: "bot",
       text: "Hi there! I'm Pranavya's assistant. Ask me about services, pricing, workshops, or how to book a session.",
+      actions: [
+        { label: "See services", href: "#services" },
+        { label: "See projects", href: "#projects" },
+        book,
+      ],
     };
   }
   return {
     from: "bot",
     text: "Good question! I'd love to get our team on it — the fastest way is a quick WhatsApp message.",
-    actions: [book],
+    actions: [book, { label: "See services", href: "#services" }],
   };
 }
 
@@ -818,26 +933,34 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105"
+        className="fixed bottom-24 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 md:bottom-5"
       >
         {open ? <X className="h-5 w-5" /> : <Bot className="h-6 w-6" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-5">
+        <div className="fixed bottom-44 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-5 md:bottom-24">
           <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
               <Bot className="h-4 w-4" />
             </span>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="font-display text-base leading-tight">Ask Pranavya</p>
               <p className="text-xs text-muted-foreground">Usually replies instantly</p>
             </div>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close chat"
+              className="grid h-8 w-8 place-items-center rounded-full hover:bg-secondary"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
 
           <div ref={scrollRef} className="flex max-h-[55vh] min-h-[280px] flex-col gap-3 overflow-y-auto px-4 py-4">
             {messages.map((m, i) => (
-              <div key={i} className={m.from === "user" ? "self-end" : "self-start"}>
+              <div key={i} className={m.from === "user" ? "self-end" : "self-start max-w-full"}>
                 <div
                   className={
                     m.from === "user"
@@ -855,6 +978,7 @@ function ChatBot() {
                         href={a.href}
                         target={a.href.startsWith("http") ? "_blank" : undefined}
                         rel="noreferrer noopener"
+                        onClick={() => setOpen(false)}
                         className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs transition-colors hover:bg-secondary"
                       >
                         {a.label} <ArrowUpRight className="h-3 w-3" />
@@ -907,4 +1031,3 @@ function ChatBot() {
     </>
   );
 }
-
