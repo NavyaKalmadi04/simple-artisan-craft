@@ -144,6 +144,10 @@ function Nav() {
     </header>
   );
 }
+
+function Hero() {
+  return (
+    <section className="relative mx-auto max-w-6xl px-5 pt-12 pb-20 md:px-6 md:pt-24 md:pb-36">
       <div className="absolute left-1/2 top-32 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blush/40 blur-3xl" />
       <div className="absolute right-10 top-48 -z-10 h-56 w-56 rounded-full bg-sage/30 blur-3xl" />
 
