@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   Sparkles,
@@ -15,7 +15,11 @@ import {
   Users,
   Menu,
   X,
+  GraduationCap,
+  Send,
+  Bot,
 } from "lucide-react";
+
 
 const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
 const COMPANY_SHORT = "Pranavya";
