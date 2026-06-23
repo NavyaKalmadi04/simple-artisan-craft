@@ -19,6 +19,7 @@ import {
   Send,
   Bot,
 } from "lucide-react";
+import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 
 
 const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
