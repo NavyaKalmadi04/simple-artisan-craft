@@ -1,20 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowUpRight, Sparkles, Layers, Compass, Wand2 } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowUpRight,
+  Sparkles,
+  Layers,
+  Compass,
+  Wand2,
+  Phone,
+  MessageCircle,
+  Plus,
+  Minus,
+  Heart,
+  Zap,
+  Users,
+} from "lucide-react";
+
+// Update these to your real contact details
+const PHONE_DISPLAY = "+91 90000 00000";
+const PHONE_TEL = "+919000000000";
+const WHATSAPP_NUMBER = "919000000000"; // country code + number, no +
+const WHATSAPP_MSG = encodeURIComponent(
+  "Hi! I'd like to book a session to discuss a product idea.",
+);
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Maren Studio — Quiet software for ambitious teams" },
+      { title: "Maren Studio — Simple products customers love" },
       {
         name: "description",
         content:
-          "An independent studio designing and shipping SaaS, websites and product systems for businesses of every shape.",
+          "A small product studio that understands real customers, designs optimal solutions and ships user-friendly software at lighting speed.",
       },
-      { property: "og:title", content: "Maren Studio — Quiet software for ambitious teams" },
+      { property: "og:title", content: "Maren Studio — Simple products customers love" },
       {
         property: "og:description",
         content:
-          "Product design, full-stack engineering and AI craft. We help founders turn complex problems into calm, user-friendly products.",
+          "We understand real customers, design optimal solutions and ship products people actually like — fast.",
       },
     ],
   }),
@@ -27,9 +50,11 @@ function Index() {
       <Nav />
       <Hero />
       <Marquee />
+      <About />
       <Services />
-      <Approach />
-      <Work />
+      <Team />
+      <Projects />
+      <FAQ />
       <Contact />
       <Footer />
     </main>
@@ -45,17 +70,18 @@ function Nav() {
         </span>
         <span className="font-display text-xl">Maren</span>
       </a>
-      <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
+      <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+        <a href="#about" className="transition-colors hover:text-foreground">About</a>
         <a href="#services" className="transition-colors hover:text-foreground">Services</a>
-        <a href="#approach" className="transition-colors hover:text-foreground">Approach</a>
-        <a href="#work" className="transition-colors hover:text-foreground">Work</a>
-        <a href="#contact" className="transition-colors hover:text-foreground">Contact</a>
+        <a href="#team" className="transition-colors hover:text-foreground">Team</a>
+        <a href="#projects" className="transition-colors hover:text-foreground">Projects</a>
+        <a href="#faq" className="transition-colors hover:text-foreground">FAQ</a>
       </nav>
       <a
         href="#contact"
         className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
       >
-        Start a project <ArrowUpRight className="h-3.5 w-3.5" />
+        Book a session <ArrowUpRight className="h-3.5 w-3.5" />
       </a>
     </header>
   );
@@ -69,40 +95,42 @@ function Hero() {
 
       <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
         <span className="h-1.5 w-1.5 rounded-full bg-sage" />
-        Taking on two projects for Q3
+        Booking two new projects this month
       </span>
 
       <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[1.05] tracking-tight md:text-7xl">
-        Quiet software,
+        Simple products,
         <br />
-        <em className="font-display italic text-muted-foreground">crafted with care</em> for
-        ambitious teams.
+        <em className="font-display italic text-muted-foreground">built around real customers</em>
+        — shipped at lighting speed.
       </h1>
 
       <p className="mt-8 max-w-xl text-lg text-muted-foreground">
-        We design and build SaaS products, marketing sites and AI workflows for businesses of every
-        shape — turning complex problems into calm, user-friendly products people actually love.
+        We understand real customers, design the optimal solution and build products users actually
+        like — for SaaS, websites and AI workflows across every kind of business.
       </p>
 
       <div className="mt-10 flex flex-wrap items-center gap-3">
         <a
-          href="#contact"
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noreferrer noopener"
           className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
         >
-          Book an intro call <ArrowUpRight className="h-4 w-4" />
+          <MessageCircle className="h-4 w-4" /> Book your session
         </a>
         <a
-          href="#work"
+          href={`tel:${PHONE_TEL}`}
           className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm transition-colors hover:bg-secondary"
         >
-          See recent work
+          <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
         </a>
       </div>
 
       <dl className="mt-20 grid max-w-2xl grid-cols-3 gap-8 border-t border-border pt-8">
         {[
           { k: "60+", v: "Products shipped" },
-          { k: "12 yrs", v: "Building software" },
+          { k: "2 wks", v: "Avg. to first launch" },
           { k: "9/10", v: "Clients return" },
         ].map((s) => (
           <div key={s.v}>
@@ -116,7 +144,16 @@ function Hero() {
 }
 
 function Marquee() {
-  const items = ["Bakeries", "Law firms", "Indie SaaS", "Studios", "Clinics", "Agencies", "Marketplaces", "Nonprofits"];
+  const items = [
+    "Bakeries",
+    "Law firms",
+    "Indie SaaS",
+    "Studios",
+    "Clinics",
+    "Agencies",
+    "Marketplaces",
+    "Nonprofits",
+  ];
   return (
     <section className="border-y border-border bg-cream/60 py-6">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-2 px-6 text-sm text-muted-foreground">
@@ -124,6 +161,61 @@ function Marquee() {
         {items.map((i) => (
           <span key={i} className="font-display italic">{i}</span>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function About() {
+  const pillars = [
+    {
+      icon: Users,
+      t: "Understand real customers",
+      b: "We start with people, not features — talking to your users until the problem is clear.",
+    },
+    {
+      icon: Compass,
+      t: "Design the optimal solution",
+      b: "PM-grade thinking that picks the smallest, sharpest thing that earns trust on day one.",
+    },
+    {
+      icon: Heart,
+      t: "Build products users like",
+      b: "Calm, simple interfaces with the small details that make a product feel inevitable.",
+    },
+    {
+      icon: Zap,
+      t: "Ship at lighting speed",
+      b: "Design and engineering in one room — short loops, visible progress, weekly shipping.",
+    },
+  ];
+  return (
+    <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <div className="grid gap-12 md:grid-cols-2 md:gap-20">
+        <div>
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">About</span>
+          <h2 className="mt-4 font-display text-4xl tracking-tight md:text-5xl">
+            A small studio that builds
+            <em className="text-muted-foreground"> simple software</em> for every kind of business.
+          </h2>
+          <p className="mt-6 text-muted-foreground">
+            Maren is a product studio led by designers and AI full-stack engineers. We help founders
+            and teams turn complex problems into clear, user-friendly products — websites, SaaS,
+            internal tools and AI workflows — without the usual agency drag.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {pillars.map((p) => (
+            <div
+              key={p.t}
+              className="rounded-3xl border border-border bg-card p-6"
+            >
+              <p.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
+              <h3 className="mt-5 font-display text-lg">{p.t}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{p.b}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -139,12 +231,12 @@ function Services() {
     {
       icon: Layers,
       title: "Website building",
-      body: "Marketing sites that load fast, read well and convert — designed for editors, not just designers.",
+      body: "Marketing sites that load fast, read well and convert — for any business type, edited by you.",
     },
     {
       icon: Sparkles,
-      title: "AI full-stack",
-      body: "End-to-end apps with thoughtful AI in the right places — never gimmicks, always useful workflows.",
+      title: "AI full-stack apps",
+      body: "End-to-end apps with AI in the right places — never gimmicks, always useful workflows.",
     },
     {
       icon: Compass,
@@ -153,53 +245,31 @@ function Services() {
     },
   ];
   return (
-    <section id="services" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <h2 className="max-w-xl font-display text-4xl tracking-tight md:text-5xl">
-          One small studio. <em className="text-muted-foreground">Four ways</em> to help.
-        </h2>
-        <p className="max-w-sm text-muted-foreground">
-          We pair design taste with full-stack engineering so ideas can move from sketch to shipped without
-          handoffs going cold.
-        </p>
-      </div>
-
-      <div className="mt-14 grid gap-4 md:grid-cols-2">
-        {services.map((s) => (
-          <article
-            key={s.title}
-            className="group rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-secondary"
-          >
-            <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
-            <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
-            <p className="mt-3 text-muted-foreground">{s.body}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Approach() {
-  const steps = [
-    { n: "01", t: "Listen", b: "A loose call. We learn the business, the people and the friction." },
-    { n: "02", t: "Frame", b: "We narrow the problem and propose the smallest product that earns trust." },
-    { n: "03", t: "Make", b: "Design and engineering happen together, in short, visible loops." },
-    { n: "04", t: "Tend", b: "After launch we stay close — measuring, refining, telling the story." },
-  ];
-  return (
-    <section id="approach" className="bg-secondary/50 py-24 md:py-32">
+    <section id="services" className="bg-secondary/50 py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
-        <h2 className="max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
-          A calm way of working, <em className="text-muted-foreground">on purpose.</em>
-        </h2>
-        <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-border bg-border md:grid-cols-4">
-          {steps.map((s) => (
-            <div key={s.n} className="bg-background p-8">
-              <span className="font-display text-sm text-muted-foreground">{s.n}</span>
-              <h3 className="mt-8 font-display text-2xl">{s.t}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{s.b}</p>
-            </div>
+        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">Services</span>
+            <h2 className="mt-4 max-w-xl font-display text-4xl tracking-tight md:text-5xl">
+              Four ways we help <em className="text-muted-foreground">your business ship.</em>
+            </h2>
+          </div>
+          <p className="max-w-sm text-muted-foreground">
+            Design taste paired with full-stack engineering, so ideas move from sketch to shipped
+            without handoffs going cold.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-4 md:grid-cols-2">
+          {services.map((s) => (
+            <article
+              key={s.title}
+              className="group rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-background"
+            >
+              <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
+              <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
+              <p className="mt-3 text-muted-foreground">{s.body}</p>
+            </article>
           ))}
         </div>
       </div>
@@ -207,35 +277,209 @@ function Approach() {
   );
 }
 
-function Work() {
-  const items = [
-    { tag: "SaaS · Scheduling", title: "Folio — a calendar for studios", tint: "bg-blush/40" },
-    { tag: "Marketing site", title: "Petal & Pine — a florist online", tint: "bg-sage/40" },
-    { tag: "AI workflow", title: "Drafts — quiet writing for PMs", tint: "bg-accent/50" },
+function Team() {
+  const team = [
+    {
+      name: "Aarav Mehta",
+      role: "Product & Design",
+      bio: "Writes specs like a PM, designs like an editor. Twelve years shipping calm software.",
+      tint: "bg-blush/50",
+    },
+    {
+      name: "Riya Kapoor",
+      role: "AI Full-stack",
+      bio: "Builds end-to-end with AI woven in. Loves small APIs and fast feedback loops.",
+      tint: "bg-sage/50",
+    },
+    {
+      name: "Noah Sharma",
+      role: "Engineering",
+      bio: "Front-of-house engineering — accessible, performant interfaces that age well.",
+      tint: "bg-accent/60",
+    },
   ];
   return (
-    <section id="work" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <div className="flex items-end justify-between">
-        <h2 className="font-display text-4xl tracking-tight md:text-5xl">Selected work</h2>
-        <a href="#contact" className="hidden text-sm text-muted-foreground hover:text-foreground md:inline">
-          Full case studies on request →
-        </a>
-      </div>
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {items.map((w) => (
-          <a key={w.title} href="#" className="group block">
-            <div className={`aspect-[4/5] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}>
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/10 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-                <span className="rounded-full bg-background/80 px-3 py-1 text-xs backdrop-blur">{w.tag}</span>
-                <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </div>
-            </div>
-            <h3 className="mt-4 font-display text-xl">{w.title}</h3>
-          </a>
+    <section id="team" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <span className="text-xs uppercase tracking-widest text-muted-foreground">Team</span>
+      <h2 className="mt-4 max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
+        A tiny team, <em className="text-muted-foreground">deeply involved</em> in your product.
+      </h2>
+      <p className="mt-6 max-w-xl text-muted-foreground">
+        No account managers, no handoffs. The people who design and build are the people you talk to
+        — every week, every decision.
+      </p>
+
+      <div className="mt-14 grid gap-6 md:grid-cols-3">
+        {team.map((m) => (
+          <article key={m.name} className="rounded-3xl border border-border bg-card p-6">
+            <div className={`aspect-square w-full rounded-2xl ${m.tint}`} />
+            <h3 className="mt-5 font-display text-xl">{m.name}</h3>
+            <p className="text-sm text-muted-foreground">{m.role}</p>
+            <p className="mt-3 text-sm text-muted-foreground">{m.bio}</p>
+          </article>
         ))}
       </div>
     </section>
+  );
+}
+
+function Projects() {
+  const items = [
+    {
+      tag: "SaaS · Scheduling",
+      title: "Folio — a calendar for studios",
+      meta: "Shipped in 3 weeks · 4.9★ from early users",
+      tint: "bg-blush/40",
+    },
+    {
+      tag: "Marketing site",
+      title: "Petal & Pine — a florist online",
+      meta: "+38% online orders in 30 days",
+      tint: "bg-sage/40",
+    },
+    {
+      tag: "AI workflow",
+      title: "Drafts — quiet writing for PMs",
+      meta: "Saves ~6 hours / PM / week",
+      tint: "bg-accent/50",
+    },
+    {
+      tag: "Internal tool",
+      title: "Tally — ops dashboard for a clinic",
+      meta: "Replaced 4 spreadsheets",
+      tint: "bg-cream",
+    },
+    {
+      tag: "SaaS · Marketplace",
+      title: "Common — a hire board for makers",
+      meta: "0 → 1,200 users in 8 weeks",
+      tint: "bg-blush/30",
+    },
+    {
+      tag: "Website",
+      title: "Hearth Law — a friendly law firm",
+      meta: "Triple the qualified leads",
+      tint: "bg-sage/30",
+    },
+  ];
+  return (
+    <section id="projects" className="bg-secondary/50 py-24 md:py-32">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="flex items-end justify-between">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">
+              Projects shipped
+            </span>
+            <h2 className="mt-4 font-display text-4xl tracking-tight md:text-5xl">
+              A few things <em className="text-muted-foreground">we've shipped.</em>
+            </h2>
+          </div>
+          <a
+            href="#contact"
+            className="hidden text-sm text-muted-foreground hover:text-foreground md:inline"
+          >
+            Full case studies on request →
+          </a>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {items.map((w) => (
+            <article key={w.title} className="group block">
+              <div
+                className={`aspect-[4/5] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/10 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+                  <span className="rounded-full bg-background/80 px-3 py-1 text-xs backdrop-blur">
+                    {w.tag}
+                  </span>
+                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+              </div>
+              <h3 className="mt-4 font-display text-xl">{w.title}</h3>
+              <p className="text-sm text-muted-foreground">{w.meta}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ() {
+  const qa = [
+    {
+      q: "What kind of businesses do you work with?",
+      a: "Founders, small teams and established businesses across every shape — SaaS, clinics, law firms, bakeries, studios, marketplaces. If your product needs to feel simple and human, we're a fit.",
+    },
+    {
+      q: "How fast can you ship?",
+      a: "Most first launches go live in 2–4 weeks. We work in short weekly loops so you see something real almost immediately — no months-long discovery decks.",
+    },
+    {
+      q: "Do you only design, or do you build too?",
+      a: "Both. We design AND build — websites, SaaS products and AI full-stack apps end-to-end. The same people own the work from sketch to shipped.",
+    },
+    {
+      q: "How do projects start?",
+      a: "Book a session on WhatsApp or call us. We'll have a relaxed 30-minute conversation, then send a short proposal within 48 hours.",
+    },
+    {
+      q: "What does it cost?",
+      a: "Small website projects start around the cost of a junior hire for a month; SaaS builds are scoped to a fixed monthly engagement. We'll quote clearly after the first call.",
+    },
+    {
+      q: "Do you keep working with us after launch?",
+      a: "Yes — most clients stay on a light monthly engagement for iteration, AI features and growth experiments.",
+    },
+  ];
+  return (
+    <section id="faq" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
+        <div>
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">FAQ</span>
+          <h2 className="mt-4 font-display text-4xl tracking-tight md:text-5xl">
+            Questions, <em className="text-muted-foreground">answered.</em>
+          </h2>
+          <p className="mt-6 text-muted-foreground">
+            Still curious? Send a note on WhatsApp — we usually reply the same day.
+          </p>
+        </div>
+        <div className="divide-y divide-border border-y border-border">
+          {qa.map((item, i) => (
+            <FAQItem key={item.q} {...item} defaultOpen={i === 0} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQItem({
+  q,
+  a,
+  defaultOpen,
+}: {
+  q: string;
+  a: string;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <div>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between gap-6 py-5 text-left"
+        aria-expanded={open}
+      >
+        <span className="font-display text-lg md:text-xl">{q}</span>
+        {open ? (
+          <Minus className="h-4 w-4 shrink-0 text-muted-foreground" />
+        ) : (
+          <Plus className="h-4 w-4 shrink-0 text-muted-foreground" />
+        )}
+      </button>
+      {open && <p className="pb-6 pr-10 text-muted-foreground">{a}</p>}
+    </div>
   );
 }
 
@@ -245,20 +489,37 @@ function Contact() {
       <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-16 text-primary-foreground md:px-16 md:py-24">
         <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blush/30 blur-3xl" />
         <div className="absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
-        <p className="font-display text-sm italic opacity-70">A note from us</p>
+        <p className="font-display text-sm italic opacity-70">Book your session</p>
         <h2 className="mt-4 max-w-2xl font-display text-4xl leading-tight md:text-6xl">
           Tell us about the thing you wish existed.
         </h2>
         <p className="mt-6 max-w-lg opacity-80">
-          We reply to every message, usually within a day. No discovery decks, no pressure — just a real
-          conversation about your product.
+          A relaxed 30-minute call — no decks, no pressure. Just a real conversation about your
+          product, your customers and the smallest next step.
         </p>
-        <a
-          href="mailto:hello@maren.studio"
-          className="mt-10 inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
-        >
-          hello@maren.studio <ArrowUpRight className="h-4 w-4" />
-        </a>
+
+        <div className="mt-10 flex flex-wrap gap-3">
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
+          >
+            <MessageCircle className="h-4 w-4" /> Book on WhatsApp
+          </a>
+          <a
+            href={`tel:${PHONE_TEL}`}
+            className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 text-sm transition-colors hover:bg-primary-foreground/10"
+          >
+            <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
+          </a>
+          <a
+            href="mailto:hello@maren.studio"
+            className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-6 py-3 text-sm transition-colors hover:bg-primary-foreground/10"
+          >
+            hello@maren.studio <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -268,11 +529,17 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-muted-foreground md:flex-row md:items-center">
-        <p>© {new Date().getFullYear()} Maren Studio. Made slowly, in small batches.</p>
-        <div className="flex gap-6">
-          <a href="#" className="hover:text-foreground">Twitter</a>
-          <a href="#" className="hover:text-foreground">Are.na</a>
-          <a href="#" className="hover:text-foreground">Read.cv</a>
+        <p>© {new Date().getFullYear()} Maren Studio. Built simply, shipped quickly.</p>
+        <div className="flex flex-wrap gap-6">
+          <a href={WHATSAPP_URL} target="_blank" rel="noreferrer noopener" className="hover:text-foreground">
+            WhatsApp
+          </a>
+          <a href={`tel:${PHONE_TEL}`} className="hover:text-foreground">
+            {PHONE_DISPLAY}
+          </a>
+          <a href="mailto:hello@maren.studio" className="hover:text-foreground">
+            hello@maren.studio
+          </a>
         </div>
       </div>
     </footer>
