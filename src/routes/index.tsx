@@ -80,9 +80,11 @@ function Index() {
       <FAQ />
       <Contact />
       <Footer />
+      <ChatBot />
     </main>
   );
 }
+
 
 function Nav() {
   const [open, setOpen] = useState(false);
