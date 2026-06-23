@@ -296,21 +296,31 @@ function Services() {
       icon: Wand2,
       title: "Product design",
       body: "Interfaces with care for tone, rhythm and the small details that make a product feel inevitable.",
+      enquiry: "Hi Pranavya! I'd like to enquire about Product Design services.",
     },
     {
       icon: Layers,
       title: "Website building",
       body: "Marketing sites that load fast, read well and convert — for any business type, edited by you.",
+      enquiry: "Hi Pranavya! I'd like to enquire about Website Building services.",
     },
     {
       icon: Sparkles,
       title: "AI full-stack apps",
       body: "End-to-end apps with AI in the right places — never gimmicks, always useful workflows.",
+      enquiry: "Hi Pranavya! I'd like to enquire about AI Full-stack App services.",
     },
     {
       icon: Compass,
       title: "Product strategy",
       body: "PM-grade thinking: roadmap, scope, metrics. We help you pick the smallest right next thing.",
+      enquiry: "Hi Pranavya! I'd like to enquire about Product Strategy services.",
+    },
+    {
+      icon: GraduationCap,
+      title: "Workshops for colleges & events",
+      body: "Hands-on sessions on product thinking, design and AI full-stack — for colleges, hackathons and corporate events.",
+      enquiry: "Hi Pranavya! I'd like to book a Workshop for our college / event.",
     },
   ];
   return (
@@ -320,7 +330,7 @@ function Services() {
           <div>
             <span className="text-xs uppercase tracking-widest text-muted-foreground">Services</span>
             <h2 className="mt-4 max-w-xl font-display text-4xl tracking-tight md:text-5xl">
-              Four ways we help <em className="text-muted-foreground">your business ship.</em>
+              Five ways we help <em className="text-muted-foreground">your business ship & grow.</em>
             </h2>
           </div>
           <p className="max-w-sm text-muted-foreground">
@@ -333,11 +343,19 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-background"
+              className="group flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-background"
             >
               <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
               <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
-              <p className="mt-3 text-muted-foreground">{s.body}</p>
+              <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
+              <a
+                href={waLink(s.enquiry)}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
+              >
+                <MessageCircle className="h-4 w-4" /> Enquire on WhatsApp
+              </a>
             </article>
           ))}
         </div>
@@ -345,6 +363,7 @@ function Services() {
     </section>
   );
 }
+
 
 function Team() {
   const team = [
