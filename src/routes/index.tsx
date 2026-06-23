@@ -33,18 +33,48 @@ const NAV_LINKS = [
   { href: "#contact", label: "Contact" },
 ];
 
-// Update these to your real contact details
+// ─────────────────────────────────────────────────────────────
+// Contact details — edit here to change everywhere on the site.
+// ─────────────────────────────────────────────────────────────
 const PHONE_DISPLAY = "+91 84286 38871";
 const PHONE_TEL = "+918428638871";
 const WHATSAPP_NUMBER = "918428638871"; // country code + number, no +
-const WHATSAPP_MSG = encodeURIComponent(
-  "Hi Pranavya! I'd like to book a session to discuss a product idea.",
-);
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
+
+// ─────────────────────────────────────────────────────────────
+// WhatsApp message templates — edit any text below to change the
+// automated message that gets sent when a visitor taps a button.
+// All messages are delivered to PHONE_DISPLAY above.
+// ─────────────────────────────────────────────────────────────
+type ServiceKey =
+  | "general"
+  | "productDesign"
+  | "websiteBuilding"
+  | "aiFullstack"
+  | "productStrategy"
+  | "workshops";
+
+const WHATSAPP_TEMPLATES: Record<ServiceKey, string> = {
+  general:
+    "Hi Pranavya! 👋 I'd like to book a session to discuss a product idea. Could you share the next available slot?",
+  productDesign:
+    "Hi Pranavya! 👋 I'm interested in your *Product Design* service. I'd love to discuss my product, target users and timeline. When can we connect?",
+  websiteBuilding:
+    "Hi Pranavya! 👋 I'd like to enquire about your *Website Building* service. I want a fast, simple website for my business and would love a quote.",
+  aiFullstack:
+    "Hi Pranavya! 👋 I'd like to enquire about your *AI Full-stack Apps* service. I have an idea that needs AI + a full product around it — can we discuss?",
+  productStrategy:
+    "Hi Pranavya! 👋 I'd like to enquire about your *Product Strategy* service. I need help with roadmap, scope and the right next step for my product.",
+  workshops:
+    "Hi Pranavya! 👋 I'd like to book a *Workshop* for our college / event on product, design and AI full-stack. Please share formats, duration and pricing.",
+};
 
 function waLink(message: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
+
+const WHATSAPP_URL = waLink(WHATSAPP_TEMPLATES.general);
+
+
 
 
 export const Route = createFileRoute("/")({
@@ -291,38 +321,44 @@ function About() {
 }
 
 function Services() {
-  const services = [
+  const services: {
+    icon: typeof Wand2;
+    title: string;
+    body: string;
+    template: ServiceKey;
+  }[] = [
     {
       icon: Wand2,
       title: "Product design",
       body: "Interfaces with care for tone, rhythm and the small details that make a product feel inevitable.",
-      enquiry: "Hi Pranavya! I'd like to enquire about Product Design services.",
+      template: "productDesign",
     },
     {
       icon: Layers,
       title: "Website building",
       body: "Marketing sites that load fast, read well and convert — for any business type, edited by you.",
-      enquiry: "Hi Pranavya! I'd like to enquire about Website Building services.",
+      template: "websiteBuilding",
     },
     {
       icon: Sparkles,
       title: "AI full-stack apps",
       body: "End-to-end apps with AI in the right places — never gimmicks, always useful workflows.",
-      enquiry: "Hi Pranavya! I'd like to enquire about AI Full-stack App services.",
+      template: "aiFullstack",
     },
     {
       icon: Compass,
       title: "Product strategy",
       body: "PM-grade thinking: roadmap, scope, metrics. We help you pick the smallest right next thing.",
-      enquiry: "Hi Pranavya! I'd like to enquire about Product Strategy services.",
+      template: "productStrategy",
     },
     {
       icon: GraduationCap,
       title: "Workshops for colleges & events",
       body: "Hands-on sessions on product thinking, design and AI full-stack — for colleges, hackathons and corporate events.",
-      enquiry: "Hi Pranavya! I'd like to book a Workshop for our college / event.",
+      template: "workshops",
     },
   ];
+
   return (
     <section id="services" className="bg-secondary/50 py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -349,7 +385,7 @@ function Services() {
               <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
               <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
               <a
-                href={waLink(s.enquiry)}
+                href={waLink(WHATSAPP_TEMPLATES[s.template])}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
@@ -652,7 +688,7 @@ function botAnswer(input: string): ChatMsg {
     return {
       from: "bot",
       text: "Yes! We run hands-on workshops for colleges, hackathons and corporate events — on product thinking, design and AI full-stack. Typical formats: 2-hour talk, half-day, or full-day hands-on.",
-      actions: [{ label: "Book a workshop", href: waLink("Hi Pranavya! I'd like to book a Workshop for our college / event.") }],
+      actions: [{ label: "Book a workshop", href: waLink(WHATSAPP_TEMPLATES.workshops) }],
     };
   }
   if (/(price|cost|pricing|charge|budget|how much)/.test(q)) {
@@ -680,21 +716,21 @@ function botAnswer(input: string): ChatMsg {
     return {
       from: "bot",
       text: "We build AI full-stack apps end-to-end — chatbots, internal copilots, automation workflows. AI is added only where it's genuinely useful, never as a gimmick.",
-      actions: [{ label: "Enquire about AI", href: waLink("Hi Pranavya! I'd like to enquire about AI Full-stack App services.") }],
+      actions: [{ label: "Enquire about AI", href: waLink(WHATSAPP_TEMPLATES.aiFullstack) }],
     };
   }
   if (/(website|landing|marketing site|web)/.test(q)) {
     return {
       from: "bot",
       text: "Yes — we build fast, beautiful marketing sites for any business type. You can edit content yourself after launch.",
-      actions: [{ label: "Enquire about Website", href: waLink("Hi Pranavya! I'd like to enquire about Website Building services.") }],
+      actions: [{ label: "Enquire about Website", href: waLink(WHATSAPP_TEMPLATES.websiteBuilding) }],
     };
   }
   if (/(design|ux|ui)/.test(q)) {
     return {
       from: "bot",
       text: "Product Design is our core craft — calm, simple interfaces that feel inevitable. We design AND build, so handoffs never go cold.",
-      actions: [{ label: "Enquire about Design", href: waLink("Hi Pranavya! I'd like to enquire about Product Design services.") }],
+      actions: [{ label: "Enquire about Design", href: waLink(WHATSAPP_TEMPLATES.productDesign) }],
     };
   }
   if (/(book|session|call|meet|contact|talk|reach|whatsapp|phone)/.test(q)) {
