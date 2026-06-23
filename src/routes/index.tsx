@@ -156,7 +156,7 @@ function Hero() {
         Booking two new projects this month
       </span>
 
-      <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[1.05] tracking-tight md:text-7xl">
+      <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
         Simple products,
         <br />
         <em className="font-display italic text-muted-foreground">built around real customers</em>
