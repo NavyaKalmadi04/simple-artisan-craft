@@ -688,7 +688,7 @@ function botAnswer(input: string): ChatMsg {
     return {
       from: "bot",
       text: "Yes! We run hands-on workshops for colleges, hackathons and corporate events — on product thinking, design and AI full-stack. Typical formats: 2-hour talk, half-day, or full-day hands-on.",
-      actions: [{ label: "Book a workshop", href: waLink("Hi Pranavya! I'd like to book a Workshop for our college / event.") }],
+      actions: [{ label: "Book a workshop", href: waLink(WHATSAPP_TEMPLATES.workshops) }],
     };
   }
   if (/(price|cost|pricing|charge|budget|how much)/.test(q)) {
@@ -716,21 +716,21 @@ function botAnswer(input: string): ChatMsg {
     return {
       from: "bot",
       text: "We build AI full-stack apps end-to-end — chatbots, internal copilots, automation workflows. AI is added only where it's genuinely useful, never as a gimmick.",
-      actions: [{ label: "Enquire about AI", href: waLink("Hi Pranavya! I'd like to enquire about AI Full-stack App services.") }],
+      actions: [{ label: "Enquire about AI", href: waLink(WHATSAPP_TEMPLATES.aiFullstack) }],
     };
   }
   if (/(website|landing|marketing site|web)/.test(q)) {
     return {
       from: "bot",
       text: "Yes — we build fast, beautiful marketing sites for any business type. You can edit content yourself after launch.",
-      actions: [{ label: "Enquire about Website", href: waLink("Hi Pranavya! I'd like to enquire about Website Building services.") }],
+      actions: [{ label: "Enquire about Website", href: waLink(WHATSAPP_TEMPLATES.websiteBuilding) }],
     };
   }
   if (/(design|ux|ui)/.test(q)) {
     return {
       from: "bot",
       text: "Product Design is our core craft — calm, simple interfaces that feel inevitable. We design AND build, so handoffs never go cold.",
-      actions: [{ label: "Enquire about Design", href: waLink("Hi Pranavya! I'd like to enquire about Product Design services.") }],
+      actions: [{ label: "Enquire about Design", href: waLink(WHATSAPP_TEMPLATES.productDesign) }],
     };
   }
   if (/(book|session|call|meet|contact|talk|reach|whatsapp|phone)/.test(q)) {
