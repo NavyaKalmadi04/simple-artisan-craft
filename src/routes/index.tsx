@@ -19,6 +19,7 @@ import {
   Send,
   Bot,
 } from "lucide-react";
+import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 
 
 const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
@@ -359,6 +360,18 @@ function Services() {
     },
   ];
 
+  const [activeService, setActiveService] = useState<BookingService | null>(null);
+  const [bookingOpen, setBookingOpen] = useState(false);
+
+  const openBooking = (s: (typeof services)[number]) => {
+    setActiveService({
+      key: s.template,
+      label: s.title,
+      whatsappTemplate: WHATSAPP_TEMPLATES[s.template],
+    });
+    setBookingOpen(true);
+  };
+
   return (
     <section id="services" className="bg-secondary/50 py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -384,18 +397,23 @@ function Services() {
               <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
               <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
               <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
-              <a
-                href={waLink(WHATSAPP_TEMPLATES[s.template])}
-                target="_blank"
-                rel="noreferrer noopener"
+              <button
+                type="button"
+                onClick={() => openBooking(s)}
                 className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
               >
-                <MessageCircle className="h-4 w-4" /> Enquire on WhatsApp
-              </a>
+                <MessageCircle className="h-4 w-4" /> Book this service
+              </button>
             </article>
           ))}
         </div>
       </div>
+
+      <BookingDialog
+        service={activeService}
+        open={bookingOpen}
+        onOpenChange={setBookingOpen}
+      />
     </section>
   );
 }

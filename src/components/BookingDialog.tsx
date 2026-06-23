@@ -1,0 +1,338 @@
+import { useEffect, useState } from "react";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Loader2, MessageCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+
+export type BookingService = {
+  key: string;
+  label: string;
+  whatsappTemplate: string;
+};
+
+const WHATSAPP_NUMBER = "918428638871";
+
+const bookingSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(120),
+  email: z.string().trim().email("Enter a valid email").max(255),
+  phone: z
+    .string()
+    .trim()
+    .min(4, "Phone is required")
+    .max(32)
+    .regex(/^[0-9+\-\s()]+$/, "Only digits, spaces, +, -, ( )"),
+  company: z.string().trim().max(120).optional().or(z.literal("")),
+  projectType: z.string().trim().max(120).optional().or(z.literal("")),
+  budget: z.string().trim().max(60).optional().or(z.literal("")),
+  timeline: z.string().trim().max(60).optional().or(z.literal("")),
+  message: z.string().trim().max(2000).optional().or(z.literal("")),
+});
+
+type BookingForm = z.infer<typeof bookingSchema>;
+
+const BUDGETS = [
+  "Under ₹50k",
+  "₹50k – ₹2L",
+  "₹2L – ₹5L",
+  "₹5L – ₹10L",
+  "₹10L+",
+  "Not sure yet",
+];
+
+const TIMELINES = [
+  "ASAP",
+  "Within 2 weeks",
+  "Within 1 month",
+  "1–3 months",
+  "Flexible",
+];
+
+function buildWhatsAppMessage(service: BookingService, form: BookingForm) {
+  const lines = [
+    service.whatsappTemplate,
+    "",
+    "— Booking details —",
+    `Service: ${service.label}`,
+    `Name: ${form.name}`,
+    `Email: ${form.email}`,
+    `Phone: ${form.phone}`,
+  ];
+  if (form.company) lines.push(`Company: ${form.company}`);
+  if (form.projectType) lines.push(`Project type: ${form.projectType}`);
+  if (form.budget) lines.push(`Budget: ${form.budget}`);
+  if (form.timeline) lines.push(`Timeline: ${form.timeline}`);
+  if (form.message) {
+    lines.push("", "Notes:", form.message);
+  }
+  return lines.join("\n");
+}
+
+export function BookingDialog({
+  service,
+  open,
+  onOpenChange,
+}: {
+  service: BookingService | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const [form, setForm] = useState<BookingForm>({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    projectType: "",
+    budget: "",
+    timeline: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState<Partial<Record<keyof BookingForm, string>>>({});
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      setErrors({});
+      setSubmitting(false);
+    }
+  }, [open]);
+
+  if (!service) return null;
+
+  const setField = <K extends keyof BookingForm>(key: K, value: BookingForm[K]) => {
+    setForm((f) => ({ ...f, [key]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+
+    const parsed = bookingSchema.safeParse(form);
+    if (!parsed.success) {
+      const fieldErrors: Partial<Record<keyof BookingForm, string>> = {};
+      for (const issue of parsed.error.issues) {
+        const k = issue.path[0] as keyof BookingForm;
+        if (!fieldErrors[k]) fieldErrors[k] = issue.message;
+      }
+      setErrors(fieldErrors);
+      toast.error("Please fix the highlighted fields.");
+      return;
+    }
+
+    setSubmitting(true);
+    const data = parsed.data;
+    const whatsappMessage = buildWhatsAppMessage(service, data);
+
+    const { error } = await supabase.from("bookings").insert({
+      service: service.key,
+      service_label: service.label,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      company: data.company || null,
+      project_type: data.projectType || null,
+      budget: data.budget || null,
+      timeline: data.timeline || null,
+      message: data.message || null,
+      whatsapp_message: whatsappMessage,
+      forwarded_to_whatsapp: true,
+      source_page: typeof window !== "undefined" ? window.location.pathname : null,
+      referrer: typeof document !== "undefined" ? document.referrer || null : null,
+      user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      console.error("[booking] insert failed", error);
+      toast.error("Couldn't save your booking. Please try again or WhatsApp us directly.");
+      return;
+    }
+
+    toast.success("Booking received — opening WhatsApp…");
+
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
+    if (typeof window !== "undefined") {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      company: "",
+      projectType: "",
+      budget: "",
+      timeline: "",
+      message: "",
+    });
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="font-display text-2xl">Book: {service.label}</DialogTitle>
+          <DialogDescription>
+            Share a few details — we save your enquiry and open WhatsApp with the full message
+            pre-filled, ready to send to our team.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="mt-2 grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="b-name">Your name *</Label>
+            <Input
+              id="b-name"
+              value={form.name}
+              onChange={(e) => setField("name", e.target.value)}
+              maxLength={120}
+              autoComplete="name"
+              required
+            />
+            {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="b-email">Email *</Label>
+              <Input
+                id="b-email"
+                type="email"
+                value={form.email}
+                onChange={(e) => setField("email", e.target.value)}
+                maxLength={255}
+                autoComplete="email"
+                required
+              />
+              {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="b-phone">Phone / WhatsApp *</Label>
+              <Input
+                id="b-phone"
+                type="tel"
+                value={form.phone}
+                onChange={(e) => setField("phone", e.target.value)}
+                maxLength={32}
+                autoComplete="tel"
+                placeholder="+91…"
+                required
+              />
+              {errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="b-company">Company / College</Label>
+              <Input
+                id="b-company"
+                value={form.company}
+                onChange={(e) => setField("company", e.target.value)}
+                maxLength={120}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="b-project">Project type</Label>
+              <Input
+                id="b-project"
+                value={form.projectType}
+                onChange={(e) => setField("projectType", e.target.value)}
+                maxLength={120}
+                placeholder="e.g. SaaS, landing page, workshop"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-2">
+              <Label htmlFor="b-budget">Budget</Label>
+              <Select value={form.budget} onValueChange={(v) => setField("budget", v)}>
+                <SelectTrigger id="b-budget">
+                  <SelectValue placeholder="Select budget" />
+                </SelectTrigger>
+                <SelectContent>
+                  {BUDGETS.map((b) => (
+                    <SelectItem key={b} value={b}>
+                      {b}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="b-timeline">Timeline</Label>
+              <Select value={form.timeline} onValueChange={(v) => setField("timeline", v)}>
+                <SelectTrigger id="b-timeline">
+                  <SelectValue placeholder="Select timeline" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TIMELINES.map((t) => (
+                    <SelectItem key={t} value={t}>
+                      {t}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="b-message">Tell us about your project</Label>
+            <Textarea
+              id="b-message"
+              value={form.message}
+              onChange={(e) => setField("message", e.target.value)}
+              maxLength={2000}
+              rows={4}
+              placeholder="Goals, audience, references, anything that helps us prepare."
+            />
+            {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
+          </div>
+
+          <DialogFooter className="mt-2 gap-2 sm:gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={submitting}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={submitting}>
+              {submitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving…
+                </>
+              ) : (
+                <>
+                  <MessageCircle className="mr-2 h-4 w-4" /> Save & open WhatsApp
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
