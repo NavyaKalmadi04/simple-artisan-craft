@@ -385,7 +385,7 @@ function Services() {
               <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
               <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
               <a
-                href={waLink(s.enquiry)}
+                href={waLink(WHATSAPP_TEMPLATES[s.template])}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
