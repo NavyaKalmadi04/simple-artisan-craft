@@ -33,18 +33,48 @@ const NAV_LINKS = [
   { href: "#contact", label: "Contact" },
 ];
 
-// Update these to your real contact details
+// ─────────────────────────────────────────────────────────────
+// Contact details — edit here to change everywhere on the site.
+// ─────────────────────────────────────────────────────────────
 const PHONE_DISPLAY = "+91 84286 38871";
 const PHONE_TEL = "+918428638871";
 const WHATSAPP_NUMBER = "918428638871"; // country code + number, no +
-const WHATSAPP_MSG = encodeURIComponent(
-  "Hi Pranavya! I'd like to book a session to discuss a product idea.",
-);
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
+
+// ─────────────────────────────────────────────────────────────
+// WhatsApp message templates — edit any text below to change the
+// automated message that gets sent when a visitor taps a button.
+// All messages are delivered to PHONE_DISPLAY above.
+// ─────────────────────────────────────────────────────────────
+type ServiceKey =
+  | "general"
+  | "productDesign"
+  | "websiteBuilding"
+  | "aiFullstack"
+  | "productStrategy"
+  | "workshops";
+
+const WHATSAPP_TEMPLATES: Record<ServiceKey, string> = {
+  general:
+    "Hi Pranavya! 👋 I'd like to book a session to discuss a product idea. Could you share the next available slot?",
+  productDesign:
+    "Hi Pranavya! 👋 I'm interested in your *Product Design* service. I'd love to discuss my product, target users and timeline. When can we connect?",
+  websiteBuilding:
+    "Hi Pranavya! 👋 I'd like to enquire about your *Website Building* service. I want a fast, simple website for my business and would love a quote.",
+  aiFullstack:
+    "Hi Pranavya! 👋 I'd like to enquire about your *AI Full-stack Apps* service. I have an idea that needs AI + a full product around it — can we discuss?",
+  productStrategy:
+    "Hi Pranavya! 👋 I'd like to enquire about your *Product Strategy* service. I need help with roadmap, scope and the right next step for my product.",
+  workshops:
+    "Hi Pranavya! 👋 I'd like to book a *Workshop* for our college / event on product, design and AI full-stack. Please share formats, duration and pricing.",
+};
 
 function waLink(message: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
+
+const WHATSAPP_URL = waLink(WHATSAPP_TEMPLATES.general);
+
+
 
 
 export const Route = createFileRoute("/")({
