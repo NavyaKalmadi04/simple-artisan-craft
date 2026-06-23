@@ -34,13 +34,18 @@ const NAV_LINKS = [
 ];
 
 // Update these to your real contact details
-const PHONE_DISPLAY = "+91 90000 00000";
-const PHONE_TEL = "+919000000000";
-const WHATSAPP_NUMBER = "919000000000"; // country code + number, no +
+const PHONE_DISPLAY = "+91 84286 38871";
+const PHONE_TEL = "+918428638871";
+const WHATSAPP_NUMBER = "918428638871"; // country code + number, no +
 const WHATSAPP_MSG = encodeURIComponent(
-  "Hi! I'd like to book a session to discuss a product idea.",
+  "Hi Pranavya! I'd like to book a session to discuss a product idea.",
 );
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
+
+function waLink(message: string) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
