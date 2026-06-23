@@ -13,7 +13,21 @@ import {
   Heart,
   Zap,
   Users,
+  Menu,
+  X,
 } from "lucide-react";
+
+const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
+const COMPANY_SHORT = "Pranavya";
+
+const NAV_LINKS = [
+  { href: "#about", label: "About" },
+  { href: "#services", label: "Services" },
+  { href: "#team", label: "Team" },
+  { href: "#projects", label: "Projects" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contact", label: "Contact" },
+];
 
 // Update these to your real contact details
 const PHONE_DISPLAY = "+91 90000 00000";
@@ -27,13 +41,13 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Maren Studio — Simple products customers love" },
+      { title: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
       {
         name: "description",
         content:
-          "A small product studio that understands real customers, designs optimal solutions and ships user-friendly software at lighting speed.",
+          "Pranavya Solutions builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed.",
       },
-      { property: "og:title", content: "Maren Studio — Simple products customers love" },
+      { property: "og:title", content: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
       {
         property: "og:description",
         content:
@@ -62,34 +76,78 @@ function Index() {
 }
 
 function Nav() {
+  const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
   return (
-    <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-      <a href="#" className="flex items-center gap-2">
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground">
-          <span className="font-display text-lg leading-none">m</span>
-        </span>
-        <span className="font-display text-xl">Maren</span>
-      </a>
-      <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
-        <a href="#about" className="transition-colors hover:text-foreground">About</a>
-        <a href="#services" className="transition-colors hover:text-foreground">Services</a>
-        <a href="#team" className="transition-colors hover:text-foreground">Team</a>
-        <a href="#projects" className="transition-colors hover:text-foreground">Projects</a>
-        <a href="#faq" className="transition-colors hover:text-foreground">FAQ</a>
-      </nav>
-      <a
-        href="#contact"
-        className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
-      >
-        Book a session <ArrowUpRight className="h-3.5 w-3.5" />
-      </a>
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 md:px-6 md:py-5">
+        <a href="#" onClick={close} className="flex min-w-0 items-center gap-2">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+            <span className="font-display text-lg leading-none">p</span>
+          </span>
+          <span className="truncate font-display text-base sm:text-lg md:text-xl">
+            <span className="hidden sm:inline">{COMPANY_NAME}</span>
+            <span className="sm:hidden">{COMPANY_SHORT}</span>
+          </span>
+        </a>
+
+        <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+          {NAV_LINKS.map((l) => (
+            <a key={l.href} href={l.href} className="transition-colors hover:text-foreground">
+              {l.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <a
+            href="#contact"
+            className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 md:inline-flex"
+          >
+            Book a session <ArrowUpRight className="h-3.5 w-3.5" />
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card md:hidden"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      {open && (
+        <div className="border-t border-border bg-background md:hidden">
+          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={close}
+                className="rounded-xl px-3 py-3 text-base text-foreground/90 transition-colors hover:bg-secondary"
+              >
+                {l.label}
+              </a>
+            ))}
+            <a
+              href="#contact"
+              onClick={close}
+              className="mt-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-foreground px-4 py-3 text-sm text-background"
+            >
+              Book a session <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
 
 function Hero() {
   return (
-    <section className="relative mx-auto max-w-6xl px-6 pt-16 pb-28 md:pt-24 md:pb-36">
+    <section className="relative mx-auto max-w-6xl px-5 pt-12 pb-20 md:px-6 md:pt-24 md:pb-36">
       <div className="absolute left-1/2 top-32 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blush/40 blur-3xl" />
       <div className="absolute right-10 top-48 -z-10 h-56 w-56 rounded-full bg-sage/30 blur-3xl" />
 
@@ -98,7 +156,7 @@ function Hero() {
         Booking two new projects this month
       </span>
 
-      <h1 className="mt-6 max-w-4xl font-display text-5xl leading-[1.05] tracking-tight md:text-7xl">
+      <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
         Simple products,
         <br />
         <em className="font-display italic text-muted-foreground">built around real customers</em>
@@ -199,7 +257,7 @@ function About() {
             <em className="text-muted-foreground"> simple software</em> for every kind of business.
           </h2>
           <p className="mt-6 text-muted-foreground">
-            Maren is a product studio led by designers and AI full-stack engineers. We help founders
+            Pranavya Solutions is a product studio led by designers and AI full-stack engineers. We help founders
             and teams turn complex problems into clear, user-friendly products — websites, SaaS,
             internal tools and AI workflows — without the usual agency drag.
           </p>
@@ -529,7 +587,7 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-muted-foreground md:flex-row md:items-center">
-        <p>© {new Date().getFullYear()} Maren Studio. Built simply, shipped quickly.</p>
+        <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
         <div className="flex flex-wrap gap-6">
           <a href={WHATSAPP_URL} target="_blank" rel="noreferrer noopener" className="hover:text-foreground">
             WhatsApp
