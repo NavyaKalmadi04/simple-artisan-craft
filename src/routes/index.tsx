@@ -13,7 +13,21 @@ import {
   Heart,
   Zap,
   Users,
+  Menu,
+  X,
 } from "lucide-react";
+
+const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
+const COMPANY_SHORT = "Pranavya";
+
+const NAV_LINKS = [
+  { href: "#about", label: "About" },
+  { href: "#services", label: "Services" },
+  { href: "#team", label: "Team" },
+  { href: "#projects", label: "Projects" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contact", label: "Contact" },
+];
 
 // Update these to your real contact details
 const PHONE_DISPLAY = "+91 90000 00000";
