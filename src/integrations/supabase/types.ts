@@ -14,7 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          budget: string | null
+          company: string | null
+          created_at: string
+          email: string
+          forwarded_to_whatsapp: boolean
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          project_type: string | null
+          referrer: string | null
+          service: string
+          service_label: string
+          source_page: string | null
+          status: string
+          timeline: string | null
+          user_agent: string | null
+          whatsapp_message: string | null
+        }
+        Insert: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          forwarded_to_whatsapp?: boolean
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          project_type?: string | null
+          referrer?: string | null
+          service: string
+          service_label: string
+          source_page?: string | null
+          status?: string
+          timeline?: string | null
+          user_agent?: string | null
+          whatsapp_message?: string | null
+        }
+        Update: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          forwarded_to_whatsapp?: boolean
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          project_type?: string | null
+          referrer?: string | null
+          service?: string
+          service_label?: string
+          source_page?: string | null
+          status?: string
+          timeline?: string | null
+          user_agent?: string | null
+          whatsapp_message?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
