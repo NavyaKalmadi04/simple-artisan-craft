@@ -41,13 +41,13 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Maren Studio — Simple products customers love" },
+      { title: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
       {
         name: "description",
         content:
-          "A small product studio that understands real customers, designs optimal solutions and ships user-friendly software at lighting speed.",
+          "Pranavya Solutions builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed.",
       },
-      { property: "og:title", content: "Maren Studio — Simple products customers love" },
+      { property: "og:title", content: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
       {
         property: "og:description",
         content:
