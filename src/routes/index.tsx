@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   Sparkles,
@@ -15,7 +15,11 @@ import {
   Users,
   Menu,
   X,
+  GraduationCap,
+  Send,
+  Bot,
 } from "lucide-react";
+
 
 const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
 const COMPANY_SHORT = "Pranavya";
@@ -30,13 +34,18 @@ const NAV_LINKS = [
 ];
 
 // Update these to your real contact details
-const PHONE_DISPLAY = "+91 90000 00000";
-const PHONE_TEL = "+919000000000";
-const WHATSAPP_NUMBER = "919000000000"; // country code + number, no +
+const PHONE_DISPLAY = "+91 84286 38871";
+const PHONE_TEL = "+918428638871";
+const WHATSAPP_NUMBER = "918428638871"; // country code + number, no +
 const WHATSAPP_MSG = encodeURIComponent(
-  "Hi! I'd like to book a session to discuss a product idea.",
+  "Hi Pranavya! I'd like to book a session to discuss a product idea.",
 );
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG}`;
+
+function waLink(message: string) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -71,9 +80,11 @@ function Index() {
       <FAQ />
       <Contact />
       <Footer />
+      <ChatBot />
     </main>
   );
 }
+
 
 function Nav() {
   const [open, setOpen] = useState(false);
@@ -285,21 +296,31 @@ function Services() {
       icon: Wand2,
       title: "Product design",
       body: "Interfaces with care for tone, rhythm and the small details that make a product feel inevitable.",
+      enquiry: "Hi Pranavya! I'd like to enquire about Product Design services.",
     },
     {
       icon: Layers,
       title: "Website building",
       body: "Marketing sites that load fast, read well and convert — for any business type, edited by you.",
+      enquiry: "Hi Pranavya! I'd like to enquire about Website Building services.",
     },
     {
       icon: Sparkles,
       title: "AI full-stack apps",
       body: "End-to-end apps with AI in the right places — never gimmicks, always useful workflows.",
+      enquiry: "Hi Pranavya! I'd like to enquire about AI Full-stack App services.",
     },
     {
       icon: Compass,
       title: "Product strategy",
       body: "PM-grade thinking: roadmap, scope, metrics. We help you pick the smallest right next thing.",
+      enquiry: "Hi Pranavya! I'd like to enquire about Product Strategy services.",
+    },
+    {
+      icon: GraduationCap,
+      title: "Workshops for colleges & events",
+      body: "Hands-on sessions on product thinking, design and AI full-stack — for colleges, hackathons and corporate events.",
+      enquiry: "Hi Pranavya! I'd like to book a Workshop for our college / event.",
     },
   ];
   return (
@@ -309,7 +330,7 @@ function Services() {
           <div>
             <span className="text-xs uppercase tracking-widest text-muted-foreground">Services</span>
             <h2 className="mt-4 max-w-xl font-display text-4xl tracking-tight md:text-5xl">
-              Four ways we help <em className="text-muted-foreground">your business ship.</em>
+              Five ways we help <em className="text-muted-foreground">your business ship & grow.</em>
             </h2>
           </div>
           <p className="max-w-sm text-muted-foreground">
@@ -322,11 +343,19 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-background"
+              className="group flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-background"
             >
               <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
               <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
-              <p className="mt-3 text-muted-foreground">{s.body}</p>
+              <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
+              <a
+                href={waLink(s.enquiry)}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
+              >
+                <MessageCircle className="h-4 w-4" /> Enquire on WhatsApp
+              </a>
             </article>
           ))}
         </div>
@@ -334,6 +363,7 @@ function Services() {
     </section>
   );
 }
+
 
 function Team() {
   const team = [
@@ -603,3 +633,224 @@ function Footer() {
     </footer>
   );
 }
+
+type ChatMsg = { from: "bot" | "user"; text: string; actions?: { label: string; href: string }[] };
+
+const QUICK_PROMPTS = [
+  "What services do you offer?",
+  "How much does a website cost?",
+  "Do you do workshops for colleges?",
+  "How fast can you ship?",
+  "How do I book a session?",
+];
+
+function botAnswer(input: string): ChatMsg {
+  const q = input.toLowerCase();
+  const book = { label: "Book on WhatsApp", href: WHATSAPP_URL };
+
+  if (/(workshop|college|event|hackathon|seminar|training)/.test(q)) {
+    return {
+      from: "bot",
+      text: "Yes! We run hands-on workshops for colleges, hackathons and corporate events — on product thinking, design and AI full-stack. Typical formats: 2-hour talk, half-day, or full-day hands-on.",
+      actions: [{ label: "Book a workshop", href: waLink("Hi Pranavya! I'd like to book a Workshop for our college / event.") }],
+    };
+  }
+  if (/(price|cost|pricing|charge|budget|how much)/.test(q)) {
+    return {
+      from: "bot",
+      text: "Small websites start around the cost of a junior hire for a month. SaaS and AI apps are scoped as fixed monthly engagements. We send a clear quote after the first 30-min call.",
+      actions: [book],
+    };
+  }
+  if (/(time|fast|speed|how long|duration|deadline|ship)/.test(q)) {
+    return {
+      from: "bot",
+      text: "Most first launches go live in 2–4 weeks. We work in short weekly loops, so you see something real almost immediately.",
+      actions: [book],
+    };
+  }
+  if (/(service|offer|do you|what.*build)/.test(q)) {
+    return {
+      from: "bot",
+      text: "We offer 5 services: Product Design, Website Building, AI Full-stack Apps, Product Strategy, and Workshops for colleges & events.",
+      actions: [{ label: "See services", href: "#services" }],
+    };
+  }
+  if (/(ai|gpt|llm|chatbot|automation)/.test(q)) {
+    return {
+      from: "bot",
+      text: "We build AI full-stack apps end-to-end — chatbots, internal copilots, automation workflows. AI is added only where it's genuinely useful, never as a gimmick.",
+      actions: [{ label: "Enquire about AI", href: waLink("Hi Pranavya! I'd like to enquire about AI Full-stack App services.") }],
+    };
+  }
+  if (/(website|landing|marketing site|web)/.test(q)) {
+    return {
+      from: "bot",
+      text: "Yes — we build fast, beautiful marketing sites for any business type. You can edit content yourself after launch.",
+      actions: [{ label: "Enquire about Website", href: waLink("Hi Pranavya! I'd like to enquire about Website Building services.") }],
+    };
+  }
+  if (/(design|ux|ui)/.test(q)) {
+    return {
+      from: "bot",
+      text: "Product Design is our core craft — calm, simple interfaces that feel inevitable. We design AND build, so handoffs never go cold.",
+      actions: [{ label: "Enquire about Design", href: waLink("Hi Pranavya! I'd like to enquire about Product Design services.") }],
+    };
+  }
+  if (/(book|session|call|meet|contact|talk|reach|whatsapp|phone)/.test(q)) {
+    return {
+      from: "bot",
+      text: `Easiest way: book a 30-min session on WhatsApp, or call ${PHONE_DISPLAY}.`,
+      actions: [book, { label: `Call ${PHONE_DISPLAY}`, href: `tel:${PHONE_TEL}` }],
+    };
+  }
+  if (/(team|who|people|founder)/.test(q)) {
+    return {
+      from: "bot",
+      text: "We're a tiny team of designers and AI full-stack engineers. The people you talk to are the people who design and build your product.",
+      actions: [{ label: "Meet the team", href: "#team" }],
+    };
+  }
+  if (/(project|portfolio|work|case|example)/.test(q)) {
+    return {
+      from: "bot",
+      text: "We've shipped 60+ products across SaaS, marketing sites, AI workflows and internal tools. Full case studies on request.",
+      actions: [{ label: "See projects", href: "#projects" }],
+    };
+  }
+  if (/(hi|hello|hey|namaste)/.test(q)) {
+    return {
+      from: "bot",
+      text: "Hi there! I'm Pranavya's assistant. Ask me about services, pricing, workshops, or how to book a session.",
+    };
+  }
+  return {
+    from: "bot",
+    text: "Good question! I'd love to get our team on it — the fastest way is a quick WhatsApp message.",
+    actions: [book],
+  };
+}
+
+function ChatBot() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMsg[]>([
+    {
+      from: "bot",
+      text: "Hi! I'm Pranavya's assistant 🌿 Ask me about our services, pricing, workshops, or how to book a session.",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, open]);
+
+  const send = (text: string) => {
+    const t = text.trim();
+    if (!t) return;
+    setMessages((m) => [...m, { from: "user", text: t }]);
+    setInput("");
+    setTimeout(() => {
+      setMessages((m) => [...m, botAnswer(t)]);
+    }, 350);
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label={open ? "Close chat" : "Open chat"}
+        className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105"
+      >
+        {open ? <X className="h-5 w-5" /> : <Bot className="h-6 w-6" />}
+      </button>
+
+      {open && (
+        <div className="fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-5">
+          <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
+              <Bot className="h-4 w-4" />
+            </span>
+            <div className="min-w-0">
+              <p className="font-display text-base leading-tight">Ask Pranavya</p>
+              <p className="text-xs text-muted-foreground">Usually replies instantly</p>
+            </div>
+          </div>
+
+          <div ref={scrollRef} className="flex max-h-[55vh] min-h-[280px] flex-col gap-3 overflow-y-auto px-4 py-4">
+            {messages.map((m, i) => (
+              <div key={i} className={m.from === "user" ? "self-end" : "self-start"}>
+                <div
+                  className={
+                    m.from === "user"
+                      ? "max-w-[85%] rounded-2xl rounded-br-md bg-primary px-4 py-2 text-sm text-primary-foreground"
+                      : "max-w-[90%] rounded-2xl rounded-bl-md bg-secondary px-4 py-2 text-sm text-foreground"
+                  }
+                >
+                  {m.text}
+                </div>
+                {m.actions && m.actions.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {m.actions.map((a) => (
+                      <a
+                        key={a.label}
+                        href={a.href}
+                        target={a.href.startsWith("http") ? "_blank" : undefined}
+                        rel="noreferrer noopener"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs transition-colors hover:bg-secondary"
+                      >
+                        {a.label} <ArrowUpRight className="h-3 w-3" />
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {messages.length <= 1 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {QUICK_PROMPTS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => send(p)}
+                    className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              send(input);
+            }}
+            className="flex items-center gap-2 border-t border-border bg-card px-3 py-3"
+          >
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask a question…"
+              className="flex-1 rounded-full border border-border bg-background px-4 py-2 text-sm outline-none focus:border-foreground/40"
+            />
+            <button
+              type="submit"
+              aria-label="Send"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background transition-opacity hover:opacity-90"
+            >
+              <Send className="h-4 w-4" />
+            </button>
+          </form>
+        </div>
+      )}
+    </>
+  );
+}
+
