@@ -321,38 +321,44 @@ function About() {
 }
 
 function Services() {
-  const services = [
+  const services: {
+    icon: typeof Wand2;
+    title: string;
+    body: string;
+    template: ServiceKey;
+  }[] = [
     {
       icon: Wand2,
       title: "Product design",
       body: "Interfaces with care for tone, rhythm and the small details that make a product feel inevitable.",
-      enquiry: "Hi Pranavya! I'd like to enquire about Product Design services.",
+      template: "productDesign",
     },
     {
       icon: Layers,
       title: "Website building",
       body: "Marketing sites that load fast, read well and convert — for any business type, edited by you.",
-      enquiry: "Hi Pranavya! I'd like to enquire about Website Building services.",
+      template: "websiteBuilding",
     },
     {
       icon: Sparkles,
       title: "AI full-stack apps",
       body: "End-to-end apps with AI in the right places — never gimmicks, always useful workflows.",
-      enquiry: "Hi Pranavya! I'd like to enquire about AI Full-stack App services.",
+      template: "aiFullstack",
     },
     {
       icon: Compass,
       title: "Product strategy",
       body: "PM-grade thinking: roadmap, scope, metrics. We help you pick the smallest right next thing.",
-      enquiry: "Hi Pranavya! I'd like to enquire about Product Strategy services.",
+      template: "productStrategy",
     },
     {
       icon: GraduationCap,
       title: "Workshops for colleges & events",
       body: "Hands-on sessions on product thinking, design and AI full-stack — for colleges, hackathons and corporate events.",
-      enquiry: "Hi Pranavya! I'd like to book a Workshop for our college / event.",
+      template: "workshops",
     },
   ];
+
   return (
     <section id="services" className="bg-secondary/50 py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
