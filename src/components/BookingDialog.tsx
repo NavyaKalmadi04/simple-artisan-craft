@@ -137,9 +137,18 @@ export function BookingDialog({
       return;
     }
 
-    setSubmitting(true);
     const data = parsed.data;
     const whatsappMessage = buildWhatsAppMessage(service, data);
+    const waUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(
+      whatsappMessage,
+    )}`;
+
+    // Open the WhatsApp tab SYNCHRONOUSLY from the user click so desktop
+    // browsers don't block it as a popup. We navigate it after the insert.
+    const waWindow =
+      typeof window !== "undefined" ? window.open("about:blank", "_blank") : null;
+
+    setSubmitting(true);
 
     const { error } = await supabase.from("bookings").insert({
       service: service.key,
@@ -163,15 +172,32 @@ export function BookingDialog({
 
     if (error) {
       console.error("[booking] insert failed", error);
+      if (waWindow && !waWindow.closed) waWindow.close();
       toast.error("Couldn't save your booking. Please try again or WhatsApp us directly.");
       return;
     }
 
     toast.success("Booking received — opening WhatsApp…");
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
-    if (typeof window !== "undefined") {
-      window.open(url, "_blank", "noopener,noreferrer");
+    if (waWindow && !waWindow.closed) {
+      try {
+        waWindow.location.href = waUrl;
+      } catch {
+        waWindow.location.replace(waUrl);
+      }
+    } else if (typeof window !== "undefined") {
+      // Popup blocked — surface a manual link and fall back to same-tab nav.
+      toast.message("WhatsApp didn't open automatically.", {
+        description: "Tap to continue your enquiry.",
+        action: {
+          label: "Open WhatsApp",
+          onClick: () => window.open(waUrl, "_blank", "noopener,noreferrer"),
+        },
+        duration: 15000,
+      });
+      setTimeout(() => {
+        window.location.href = waUrl;
+      }, 600);
     }
 
     setForm({
