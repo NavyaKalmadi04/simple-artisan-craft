@@ -257,7 +257,7 @@ function About() {
             <em className="text-muted-foreground"> simple software</em> for every kind of business.
           </h2>
           <p className="mt-6 text-muted-foreground">
-            Maren is a product studio led by designers and AI full-stack engineers. We help founders
+            Pranavya Solutions is a product studio led by designers and AI full-stack engineers. We help founders
             and teams turn complex problems into clear, user-friendly products — websites, SaaS,
             internal tools and AI workflows — without the usual agency drag.
           </p>
