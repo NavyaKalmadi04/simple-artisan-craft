@@ -129,51 +129,51 @@ function Index() {
 function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-4 md:px-6 md:py-5">
-        {/* Desktop logo (left). Mobile keeps left empty so brand can center. */}
+      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-6 md:py-5">
+        {/* Brand (left on desktop, hidden on mobile to keep header compact) */}
         <a href="#" className="hidden md:flex min-w-0 items-center gap-2">
           <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             <span className="font-display text-lg leading-none">p</span>
           </span>
-          <span className="truncate font-display text-xl">{COMPANY_NAME}</span>
+          <span className="truncate font-display text-lg lg:text-xl">{COMPANY_NAME}</span>
         </a>
-        <span className="md:hidden" />
 
         {/* Centered brand on mobile */}
-        <a href="#" className="flex items-center gap-2 justify-self-center md:hidden">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-lg leading-none">p</span>
+        <a href="#" className="flex items-center gap-2 md:hidden">
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+            <span className="font-display text-base leading-none">p</span>
           </span>
-          <span className="font-display text-base">{COMPANY_SHORT} Solutions</span>
         </a>
-        <span className="hidden md:block" />
 
-        {/* Desktop Mac-dock style nav */}
-        <nav className="hidden md:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground justify-self-center backdrop-blur">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-125 hover:-translate-y-1 hover:bg-secondary hover:text-foreground hover:shadow-md"
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
+        {/* Center: nav menu on desktop / brand name on mobile */}
+        <div className="flex items-center justify-center">
+          <span className="font-display text-sm sm:text-base md:hidden">{COMPANY_SHORT} Solutions</span>
+          <nav className="hidden md:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-110 hover:-translate-y-0.5 hover:bg-secondary hover:text-foreground hover:shadow-md"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+        </div>
 
         {/* Right CTA */}
-        <div className="justify-self-end">
-          <a
-            href="#contact"
-            className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 md:inline-flex"
-          >
-            Book a session <ArrowUpRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
+        <a
+          href="#contact"
+          className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 md:inline-flex"
+        >
+          Book a session <ArrowUpRight className="h-3.5 w-3.5" />
+        </a>
+        <span className="md:hidden" />
       </div>
     </header>
   );
 }
+
 
 function MobileTabBar() {
   return (
@@ -226,7 +226,7 @@ function BookCTA() {
         onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
       >
-        <MessageCircle className="h-4 w-4" /> Book your session
+        <MessageCircle className="h-4 w-4" /> Book a session
       </button>
       {open && (
         <>
@@ -460,7 +460,7 @@ function Services() {
                 onClick={() => openBooking(s)}
                 className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
               >
-                <MessageCircle className="h-4 w-4" /> Book this service
+                <MessageCircle className="h-4 w-4" /> Book a session
               </button>
             </article>
           ))}
@@ -704,7 +704,7 @@ function Contact() {
       <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-16 text-primary-foreground md:px-16 md:py-24">
         <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blush/30 blur-3xl" />
         <div className="absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
-        <p className="font-display text-sm italic opacity-70">Book your session</p>
+        <p className="font-display text-sm italic opacity-70">Book a session</p>
         <h2 className="mt-4 max-w-2xl font-display text-4xl leading-tight md:text-6xl">
           Tell us about the thing you wish existed.
         </h2>
@@ -730,7 +730,7 @@ function ContactBookCTA() {
         onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
       >
-        <MessageCircle className="h-4 w-4" /> Book your session
+        <MessageCircle className="h-4 w-4" /> Book a session
       </button>
       {open && (
         <>
@@ -798,14 +798,14 @@ const QUICK_PROMPTS = [
 
 function botAnswer(input: string): ChatMsg {
   const q = input.toLowerCase();
-  const book = { label: "Book on WhatsApp", href: WHATSAPP_URL };
+  const book = { label: "Book a session", href: WHATSAPP_URL };
 
   if (/(workshop|college|event|hackathon|seminar|training)/.test(q)) {
     return {
       from: "bot",
       text: "Yes! We run hands-on workshops for colleges, hackathons and corporate events — on product thinking, design and AI full-stack. Typical formats: 2-hour talk, half-day, or full-day hands-on.",
       actions: [
-        { label: "Book a workshop", href: waLink(WHATSAPP_TEMPLATES.workshops) },
+        { label: "Book a session", href: waLink(WHATSAPP_TEMPLATES.workshops) },
         { label: "See services", href: "#services" },
       ],
     };
@@ -933,13 +933,14 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-24 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 md:bottom-5"
+        className="fixed bottom-20 left-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 md:bottom-5 md:left-auto md:right-5"
       >
         {open ? <X className="h-5 w-5" /> : <Bot className="h-6 w-6" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-44 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-5 md:bottom-24">
+        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-auto md:bottom-24 md:left-auto md:right-5">
+
           <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
               <Bot className="h-4 w-4" />
