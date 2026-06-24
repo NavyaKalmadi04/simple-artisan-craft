@@ -129,51 +129,51 @@ function Index() {
 function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 py-4 md:px-6 md:py-5">
-        {/* Desktop logo (left). Mobile keeps left empty so brand can center. */}
+      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-6 md:py-5">
+        {/* Brand (left on desktop, hidden on mobile to keep header compact) */}
         <a href="#" className="hidden md:flex min-w-0 items-center gap-2">
           <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             <span className="font-display text-lg leading-none">p</span>
           </span>
-          <span className="truncate font-display text-xl">{COMPANY_NAME}</span>
+          <span className="truncate font-display text-lg lg:text-xl">{COMPANY_NAME}</span>
         </a>
-        <span className="md:hidden" />
 
         {/* Centered brand on mobile */}
-        <a href="#" className="flex items-center gap-2 justify-self-center md:hidden">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-lg leading-none">p</span>
+        <a href="#" className="flex items-center gap-2 md:hidden">
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+            <span className="font-display text-base leading-none">p</span>
           </span>
-          <span className="font-display text-base">{COMPANY_SHORT} Solutions</span>
         </a>
-        <span className="hidden md:block" />
 
-        {/* Desktop Mac-dock style nav */}
-        <nav className="hidden md:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground justify-self-center backdrop-blur">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-125 hover:-translate-y-1 hover:bg-secondary hover:text-foreground hover:shadow-md"
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
+        {/* Center: nav menu on desktop / brand name on mobile */}
+        <div className="flex items-center justify-center">
+          <span className="font-display text-sm sm:text-base md:hidden">{COMPANY_SHORT} Solutions</span>
+          <nav className="hidden md:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-110 hover:-translate-y-0.5 hover:bg-secondary hover:text-foreground hover:shadow-md"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+        </div>
 
         {/* Right CTA */}
-        <div className="justify-self-end">
-          <a
-            href="#contact"
-            className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 md:inline-flex"
-          >
-            Book a session <ArrowUpRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
+        <a
+          href="#contact"
+          className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 md:inline-flex"
+        >
+          Book a session <ArrowUpRight className="h-3.5 w-3.5" />
+        </a>
+        <span className="md:hidden" />
       </div>
     </header>
   );
 }
+
 
 function MobileTabBar() {
   return (
