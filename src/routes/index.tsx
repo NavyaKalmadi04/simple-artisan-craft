@@ -226,7 +226,7 @@ function BookCTA() {
         onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
       >
-        <MessageCircle className="h-4 w-4" /> Book your session
+        <MessageCircle className="h-4 w-4" /> Book a session
       </button>
       {open && (
         <>
@@ -460,7 +460,7 @@ function Services() {
                 onClick={() => openBooking(s)}
                 className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
               >
-                <MessageCircle className="h-4 w-4" /> Book this service
+                <MessageCircle className="h-4 w-4" /> Book a session
               </button>
             </article>
           ))}
@@ -704,7 +704,7 @@ function Contact() {
       <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-16 text-primary-foreground md:px-16 md:py-24">
         <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blush/30 blur-3xl" />
         <div className="absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
-        <p className="font-display text-sm italic opacity-70">Book your session</p>
+        <p className="font-display text-sm italic opacity-70">Book a session</p>
         <h2 className="mt-4 max-w-2xl font-display text-4xl leading-tight md:text-6xl">
           Tell us about the thing you wish existed.
         </h2>
@@ -730,7 +730,7 @@ function ContactBookCTA() {
         onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
       >
-        <MessageCircle className="h-4 w-4" /> Book your session
+        <MessageCircle className="h-4 w-4" /> Book a session
       </button>
       {open && (
         <>
