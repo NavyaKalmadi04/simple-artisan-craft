@@ -798,14 +798,14 @@ const QUICK_PROMPTS = [
 
 function botAnswer(input: string): ChatMsg {
   const q = input.toLowerCase();
-  const book = { label: "Book on WhatsApp", href: WHATSAPP_URL };
+  const book = { label: "Book a session", href: WHATSAPP_URL };
 
   if (/(workshop|college|event|hackathon|seminar|training)/.test(q)) {
     return {
       from: "bot",
       text: "Yes! We run hands-on workshops for colleges, hackathons and corporate events — on product thinking, design and AI full-stack. Typical formats: 2-hour talk, half-day, or full-day hands-on.",
       actions: [
-        { label: "Book a workshop", href: waLink(WHATSAPP_TEMPLATES.workshops) },
+        { label: "Book a session", href: waLink(WHATSAPP_TEMPLATES.workshops) },
         { label: "See services", href: "#services" },
       ],
     };
