@@ -933,13 +933,14 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-24 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 md:bottom-5"
+        className="fixed bottom-20 left-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 md:bottom-5 md:left-auto md:right-5"
       >
         {open ? <X className="h-5 w-5" /> : <Bot className="h-6 w-6" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-44 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-5 md:bottom-24">
+        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-auto md:bottom-24 md:left-auto md:right-5">
+
           <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
               <Bot className="h-4 w-4" />
