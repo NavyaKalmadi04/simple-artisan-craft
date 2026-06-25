@@ -769,45 +769,29 @@ function Contact() {
 }
 
 function ContactBookCTA() {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="relative inline-block">
+    <div className="flex flex-wrap items-center gap-3">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
         className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
       >
-        <MessageCircle className="h-4 w-4" /> Book a session
+        <Send className="h-4 w-4" /> Open enquiry form
       </button>
-      {open && (
-        <>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 z-10 cursor-default"
-          />
-          <div className="absolute left-0 top-full z-20 mt-2 w-60 overflow-hidden rounded-2xl border border-border bg-card text-foreground shadow-xl">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer noopener"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <MessageCircle className="h-4 w-4" /> WhatsApp
-            </a>
-            <div className="h-px bg-border" />
-            <a
-              href={`tel:${PHONE_TEL}`}
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
-            </a>
-          </div>
-        </>
-      )}
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noreferrer noopener"
+        className="inline-flex items-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10"
+      >
+        <MessageCircle className="h-4 w-4" /> WhatsApp
+      </a>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        className="inline-flex items-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10"
+      >
+        <Phone className="h-4 w-4" /> Call
+      </a>
     </div>
   );
 }
@@ -817,12 +801,22 @@ function Footer() {
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-muted-foreground md:flex-row md:items-center">
         <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
-        <div className="flex flex-wrap gap-6">
-          <a href={WHATSAPP_URL} target="_blank" rel="noreferrer noopener" className="hover:text-foreground">
-            WhatsApp
+        <div className="flex flex-wrap items-center gap-5">
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-2 hover:text-foreground"
+          >
+            <MessageCircle className="h-4 w-4" /> WhatsApp
           </a>
-          <a href={`tel:${PHONE_TEL}`} className="hover:text-foreground">
-            {PHONE_DISPLAY}
+          <a href={`tel:${PHONE_TEL}`} className="inline-flex items-center gap-2 hover:text-foreground">
+            <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
+          </a>
+          <a
+            href="mailto:hello@maren.studio"
+            className="inline-flex items-center gap-2 hover:text-foreground"
+          >
           </a>
           <a href="mailto:hello@maren.studio" className="hover:text-foreground">
             hello@maren.studio
