@@ -771,31 +771,68 @@ function ContactBookCTA() {
 function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-muted-foreground md:flex-row md:items-center">
-        <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
-        <div className="flex flex-wrap items-center gap-5">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center gap-2 hover:text-foreground"
-          >
-            <MessageCircle className="h-4 w-4" /> WhatsApp
-          </a>
-          <a href={`tel:${PHONE_TEL}`} className="inline-flex items-center gap-2 hover:text-foreground">
-            <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
-          </a>
-          <a
-            href="mailto:hello@maren.studio"
-            className="inline-flex items-center gap-2 hover:text-foreground"
-          >
-            <Mail className="h-4 w-4" /> hello@maren.studio
-          </a>
+      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
+        {/* Mobile: contacts row + logo on right */}
+        <div className="flex items-center justify-between gap-3 md:hidden">
+          <div className="flex items-center gap-4">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="WhatsApp"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
+            >
+              <MessageCircle className="h-4 w-4" />
+            </a>
+            <a
+              href={`tel:${PHONE_TEL}`}
+              aria-label="Call"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
+            >
+              <Phone className="h-4 w-4" />
+            </a>
+            <a
+              href="mailto:hello@maren.studio"
+              aria-label="Email"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
+            >
+              <Mail className="h-4 w-4" />
+            </a>
+          </div>
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
+            <span className="font-display text-base leading-none">p</span>
+          </span>
+        </div>
+        <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
+
+        {/* Desktop */}
+        <div className="hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
+          <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
+          <div className="flex flex-wrap items-center gap-5">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex items-center gap-2 hover:text-foreground"
+            >
+              <MessageCircle className="h-4 w-4" /> WhatsApp
+            </a>
+            <a href={`tel:${PHONE_TEL}`} className="inline-flex items-center gap-2 hover:text-foreground">
+              <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
+            </a>
+            <a
+              href="mailto:hello@maren.studio"
+              className="inline-flex items-center gap-2 hover:text-foreground"
+            >
+              <Mail className="h-4 w-4" /> hello@maren.studio
+            </a>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
+
 
 type ChatMsg = { from: "bot" | "user"; text: string; actions?: { label: string; href: string }[] };
 
