@@ -135,6 +135,11 @@ export function BookingDialog({
     e.preventDefault();
     setErrors({});
 
+    if (!activeService) {
+      toast.error("Please choose a service.");
+      return;
+    }
+
     const parsed = bookingSchema.safeParse(form);
     if (!parsed.success) {
       const fieldErrors: Partial<Record<keyof BookingForm, string>> = {};
@@ -148,7 +153,7 @@ export function BookingDialog({
     }
 
     const data = parsed.data;
-    const whatsappMessage = buildWhatsAppMessage(service, data);
+    const whatsappMessage = buildWhatsAppMessage(activeService, data);
     const waUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(
       whatsappMessage,
     )}`;
@@ -161,8 +166,8 @@ export function BookingDialog({
     setSubmitting(true);
 
     const { error } = await supabase.from("bookings").insert({
-      service: service.key,
-      service_label: service.label,
+      service: activeService.key,
+      service_label: activeService.label,
       name: data.name,
       email: data.email,
       phone: data.phone,
