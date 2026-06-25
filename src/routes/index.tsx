@@ -716,21 +716,23 @@ function FAQItem({
 
 function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-6 pb-24 md:pb-32">
+    <section id="contact" className="mx-auto max-w-6xl px-6 pb-24 scroll-mt-24 md:pb-32 md:scroll-mt-32">
       <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-16 text-primary-foreground md:px-16 md:py-24">
-        <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blush/30 blur-3xl" />
-        <div className="absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
-        <p className="font-display text-sm italic opacity-70">Book a session</p>
-        <h2 className="mt-4 max-w-2xl font-display text-4xl leading-tight md:text-6xl">
-          Tell us about the thing you wish existed.
-        </h2>
-        <p className="mt-6 max-w-lg opacity-80">
-          A relaxed 30-minute call — no decks, no pressure. Just a real conversation about your
-          product, your customers and the smallest next step.
-        </p>
+        <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blush/30 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
+        <div className="relative z-10">
+          <p className="font-display text-sm italic opacity-70">Book a session</p>
+          <h2 className="mt-4 max-w-2xl font-display text-4xl leading-tight md:text-6xl">
+            Tell us about the thing you wish existed.
+          </h2>
+          <p className="mt-6 max-w-lg opacity-80">
+            A relaxed 30-minute call — no decks, no pressure. Just a real conversation about your
+            product, your customers and the smallest next step.
+          </p>
 
-        <div className="mt-10">
-          <ContactBookCTA />
+          <div className="mt-10">
+            <ContactBookCTA />
+          </div>
         </div>
       </div>
     </section>
@@ -739,11 +741,11 @@ function Contact() {
 
 function ContactBookCTA() {
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="grid w-full grid-cols-1 gap-3 sm:flex sm:w-auto sm:flex-wrap sm:items-center">
       <button
         type="button"
         onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
-        className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90 sm:w-auto"
       >
         <Send className="h-4 w-4" /> Open enquiry form
       </button>
@@ -751,19 +753,20 @@ function ContactBookCTA() {
         href={WHATSAPP_URL}
         target="_blank"
         rel="noreferrer noopener"
-        className="inline-flex items-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10 sm:w-auto"
       >
         <MessageCircle className="h-4 w-4" /> WhatsApp
       </a>
       <a
         href={`tel:${PHONE_TEL}`}
-        className="inline-flex items-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10 sm:w-auto"
       >
         <Phone className="h-4 w-4" /> Call
       </a>
     </div>
   );
 }
+
 
 function Footer() {
   return (
