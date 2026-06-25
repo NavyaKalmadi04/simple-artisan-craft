@@ -112,6 +112,7 @@ function Index() {
       <Nav />
       <Hero />
       <Marquee />
+      <CalmWay />
       <About />
       <Services />
       <Team />
@@ -122,6 +123,51 @@ function Index() {
       <ChatBot />
       <MobileTabBar />
     </main>
+  );
+}
+
+function CalmWay() {
+  const pillars = [
+    {
+      icon: Users,
+      t: "Understand real customers",
+      b: "We start with people, not features — interviews and observation until the real problem is sharp.",
+    },
+    {
+      icon: Compass,
+      t: "Optimal solution design",
+      b: "PM-grade thinking that picks the smallest, sharpest thing that earns trust on day one.",
+    },
+    {
+      icon: Heart,
+      t: "Build products users love",
+      b: "Calm, simple interfaces with the small details that make a product feel inevitable.",
+    },
+    {
+      icon: Zap,
+      t: "Ship at lighting speed",
+      b: "Design and engineering in one room — short loops, visible progress, weekly shipping.",
+    },
+  ];
+  return (
+    <section className="mx-auto max-w-6xl px-6 pt-24 pb-8 md:pt-32 md:pb-16">
+      <span className="text-xs uppercase tracking-widest text-muted-foreground">How we work</span>
+      <h2 className="mt-4 max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
+        A calm way of working, <em className="text-muted-foreground">on purpose.</em>
+      </h2>
+      <p className="mt-6 max-w-xl text-muted-foreground">
+        Four quiet principles guide every project — they're how we move fast without losing care.
+      </p>
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {pillars.map((p) => (
+          <div key={p.t} className="rounded-3xl border border-border bg-card p-6">
+            <p.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
+            <h3 className="mt-5 font-display text-lg">{p.t}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{p.b}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
