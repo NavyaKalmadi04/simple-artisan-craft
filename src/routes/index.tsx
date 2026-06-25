@@ -464,17 +464,12 @@ function Services() {
     },
   ];
 
-  const [activeService, setActiveService] = useState<BookingService | null>(null);
+  const serviceOptions: BookingService[] = services.map((s) => ({
+    key: s.template,
+    label: s.title,
+    whatsappTemplate: WHATSAPP_TEMPLATES[s.template],
+  }));
   const [bookingOpen, setBookingOpen] = useState(false);
-
-  const openBooking = (s: (typeof services)[number]) => {
-    setActiveService({
-      key: s.template,
-      label: s.title,
-      whatsappTemplate: WHATSAPP_TEMPLATES[s.template],
-    });
-    setBookingOpen(true);
-  };
 
   return (
     <section id="services" className="bg-secondary/50 py-24 md:py-32">
