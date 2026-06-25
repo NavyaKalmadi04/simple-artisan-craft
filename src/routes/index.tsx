@@ -501,16 +501,16 @@ function Services() {
               <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
               <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
               <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
-              <button
-                type="button"
-                onClick={() => openBooking(s)}
-                className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
-              >
-                <MessageCircle className="h-4 w-4" /> Book a session
-              </button>
             </article>
           ))}
         </div>
+        <p className="mt-10 text-sm text-muted-foreground">
+          Ready to start?{" "}
+          <a href="#contact" className="font-medium text-foreground underline-offset-4 hover:underline">
+            Book a session →
+          </a>{" "}
+          and pick the service from the form.
+        </p>
       </div>
 
       <BookingDialog
