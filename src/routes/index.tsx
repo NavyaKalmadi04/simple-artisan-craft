@@ -265,48 +265,16 @@ function RotatingBadge() {
 }
 
 function BookCTA() {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="relative inline-block">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
-      >
-        <MessageCircle className="h-4 w-4" /> Book a session
-      </button>
-      {open && (
-        <>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 z-10 cursor-default"
-          />
-          <div className="absolute left-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer noopener"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <MessageCircle className="h-4 w-4" /> WhatsApp
-            </a>
-            <div className="h-px bg-border" />
-            <a
-              href={`tel:${PHONE_TEL}`}
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
-            </a>
-          </div>
-        </>
-      )}
-    </div>
+    <a
+      href="#contact"
+      className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
+    >
+      <MessageCircle className="h-4 w-4" /> Book a session
+    </a>
   );
 }
+
 
 function Hero() {
   return (
