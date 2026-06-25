@@ -817,9 +817,7 @@ function Footer() {
             href="mailto:hello@maren.studio"
             className="inline-flex items-center gap-2 hover:text-foreground"
           >
-          </a>
-          <a href="mailto:hello@maren.studio" className="hover:text-foreground">
-            hello@maren.studio
+            <Mail className="h-4 w-4" /> hello@maren.studio
           </a>
         </div>
       </div>
