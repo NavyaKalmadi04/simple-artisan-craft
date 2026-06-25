@@ -704,11 +704,17 @@ function FAQItem({
         aria-expanded={open}
       >
         <span className="font-display text-lg md:text-xl">{q}</span>
-        {open ? (
-          <Minus className="h-4 w-4 shrink-0 text-muted-foreground" />
-        ) : (
-          <Plus className="h-4 w-4 shrink-0 text-muted-foreground" />
-        )}
+        <span
+          className={`grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-colors ${
+            open
+              ? "border-foreground bg-foreground text-background"
+              : "border-border text-muted-foreground"
+          }`}
+          aria-hidden
+        >
+          {open ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+        </span>
+
       </button>
       {open && <p className="pb-6 pr-10 text-muted-foreground">{a}</p>}
     </div>
