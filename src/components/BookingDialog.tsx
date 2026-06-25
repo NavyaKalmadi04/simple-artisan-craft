@@ -88,10 +88,12 @@ function buildWhatsAppMessage(service: BookingService, form: BookingForm) {
 
 export function BookingDialog({
   service,
+  serviceOptions,
   open,
   onOpenChange,
 }: {
   service: BookingService | null;
+  serviceOptions?: BookingService[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
@@ -107,15 +109,23 @@ export function BookingDialog({
   });
   const [errors, setErrors] = useState<Partial<Record<keyof BookingForm, string>>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [selectedKey, setSelectedKey] = useState<string>("");
 
   useEffect(() => {
     if (!open) {
       setErrors({});
       setSubmitting(false);
+      setSelectedKey("");
+    } else if (service) {
+      setSelectedKey(service.key);
     }
-  }, [open]);
+  }, [open, service]);
 
-  if (!service) return null;
+  const showPicker = !service && !!serviceOptions?.length;
+  const activeService: BookingService | null =
+    service ?? serviceOptions?.find((s) => s.key === selectedKey) ?? null;
+
+  if (!service && !serviceOptions?.length) return null;
 
   const setField = <K extends keyof BookingForm>(key: K, value: BookingForm[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -124,6 +134,11 @@ export function BookingDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+
+    if (!activeService) {
+      toast.error("Please choose a service.");
+      return;
+    }
 
     const parsed = bookingSchema.safeParse(form);
     if (!parsed.success) {
@@ -138,7 +153,7 @@ export function BookingDialog({
     }
 
     const data = parsed.data;
-    const whatsappMessage = buildWhatsAppMessage(service, data);
+    const whatsappMessage = buildWhatsAppMessage(activeService, data);
     const waUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(
       whatsappMessage,
     )}`;
@@ -151,8 +166,8 @@ export function BookingDialog({
     setSubmitting(true);
 
     const { error } = await supabase.from("bookings").insert({
-      service: service.key,
-      service_label: service.label,
+      service: activeService.key,
+      service_label: activeService.label,
       name: data.name,
       email: data.email,
       phone: data.phone,
@@ -217,7 +232,9 @@ export function BookingDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="font-display text-2xl">Book: {service.label}</DialogTitle>
+          <DialogTitle className="font-display text-2xl">
+            {service ? `Book: ${service.label}` : "Book a session"}
+          </DialogTitle>
           <DialogDescription>
             Share a few details — we save your enquiry and open WhatsApp with the full message
             pre-filled, ready to send to our team.
@@ -225,6 +242,23 @@ export function BookingDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-2 grid gap-4">
+          {showPicker && (
+            <div className="grid gap-2">
+              <Label htmlFor="b-service">Which service? *</Label>
+              <Select value={selectedKey} onValueChange={setSelectedKey}>
+                <SelectTrigger id="b-service">
+                  <SelectValue placeholder="Select a service" />
+                </SelectTrigger>
+                <SelectContent>
+                  {serviceOptions!.map((s) => (
+                    <SelectItem key={s.key} value={s.key}>
+                      {s.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div className="grid gap-2">
             <Label htmlFor="b-name">Your name *</Label>
             <Input

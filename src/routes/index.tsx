@@ -15,6 +15,7 @@ import {
   Users,
   GraduationCap,
   Send,
+  Mail,
   Bot,
   Home,
   Briefcase,
@@ -112,6 +113,7 @@ function Index() {
       <Nav />
       <Hero />
       <Marquee />
+      <CalmWay />
       <About />
       <Services />
       <Team />
@@ -122,6 +124,51 @@ function Index() {
       <ChatBot />
       <MobileTabBar />
     </main>
+  );
+}
+
+function CalmWay() {
+  const pillars = [
+    {
+      icon: Users,
+      t: "Understand real customers",
+      b: "We start with people, not features — interviews and observation until the real problem is sharp.",
+    },
+    {
+      icon: Compass,
+      t: "Optimal solution design",
+      b: "PM-grade thinking that picks the smallest, sharpest thing that earns trust on day one.",
+    },
+    {
+      icon: Heart,
+      t: "Build products users love",
+      b: "Calm, simple interfaces with the small details that make a product feel inevitable.",
+    },
+    {
+      icon: Zap,
+      t: "Ship at lighting speed",
+      b: "Design and engineering in one room — short loops, visible progress, weekly shipping.",
+    },
+  ];
+  return (
+    <section className="mx-auto max-w-6xl px-6 pt-24 pb-8 md:pt-32 md:pb-16">
+      <span className="text-xs uppercase tracking-widest text-muted-foreground">How we work</span>
+      <h2 className="mt-4 max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
+        A calm way of working, <em className="text-muted-foreground">on purpose.</em>
+      </h2>
+      <p className="mt-6 max-w-xl text-muted-foreground">
+        Four quiet principles guide every project — they're how we move fast without losing care.
+      </p>
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {pillars.map((p) => (
+          <div key={p.t} className="rounded-3xl border border-border bg-card p-6">
+            <p.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
+            <h3 className="mt-5 font-display text-lg">{p.t}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{p.b}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -418,17 +465,17 @@ function Services() {
     },
   ];
 
-  const [activeService, setActiveService] = useState<BookingService | null>(null);
+  const serviceOptions: BookingService[] = services.map((s) => ({
+    key: s.template,
+    label: s.title,
+    whatsappTemplate: WHATSAPP_TEMPLATES[s.template],
+  }));
   const [bookingOpen, setBookingOpen] = useState(false);
-
-  const openBooking = (s: (typeof services)[number]) => {
-    setActiveService({
-      key: s.template,
-      label: s.title,
-      whatsappTemplate: WHATSAPP_TEMPLATES[s.template],
-    });
-    setBookingOpen(true);
-  };
+  useEffect(() => {
+    const open = () => setBookingOpen(true);
+    window.addEventListener("open-booking", open);
+    return () => window.removeEventListener("open-booking", open);
+  }, []);
 
   return (
     <section id="services" className="bg-secondary/50 py-24 md:py-32">
@@ -455,20 +502,21 @@ function Services() {
               <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
               <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
               <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
-              <button
-                type="button"
-                onClick={() => openBooking(s)}
-                className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90"
-              >
-                <MessageCircle className="h-4 w-4" /> Book a session
-              </button>
             </article>
           ))}
         </div>
+        <p className="mt-10 text-sm text-muted-foreground">
+          Ready to start?{" "}
+          <a href="#contact" className="font-medium text-foreground underline-offset-4 hover:underline">
+            Book a session →
+          </a>{" "}
+          and pick the service from the form.
+        </p>
       </div>
 
       <BookingDialog
-        service={activeService}
+        service={null}
+        serviceOptions={serviceOptions}
         open={bookingOpen}
         onOpenChange={setBookingOpen}
       />
@@ -722,45 +770,29 @@ function Contact() {
 }
 
 function ContactBookCTA() {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="relative inline-block">
+    <div className="flex flex-wrap items-center gap-3">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
         className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90"
       >
-        <MessageCircle className="h-4 w-4" /> Book a session
+        <Send className="h-4 w-4" /> Open enquiry form
       </button>
-      {open && (
-        <>
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 z-10 cursor-default"
-          />
-          <div className="absolute left-0 top-full z-20 mt-2 w-60 overflow-hidden rounded-2xl border border-border bg-card text-foreground shadow-xl">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer noopener"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <MessageCircle className="h-4 w-4" /> WhatsApp
-            </a>
-            <div className="h-px bg-border" />
-            <a
-              href={`tel:${PHONE_TEL}`}
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <Phone className="h-4 w-4" /> Call {PHONE_DISPLAY}
-            </a>
-          </div>
-        </>
-      )}
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noreferrer noopener"
+        className="inline-flex items-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10"
+      >
+        <MessageCircle className="h-4 w-4" /> WhatsApp
+      </a>
+      <a
+        href={`tel:${PHONE_TEL}`}
+        className="inline-flex items-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10"
+      >
+        <Phone className="h-4 w-4" /> Call
+      </a>
     </div>
   );
 }
@@ -770,15 +802,23 @@ function Footer() {
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-10 text-sm text-muted-foreground md:flex-row md:items-center">
         <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
-        <div className="flex flex-wrap gap-6">
-          <a href={WHATSAPP_URL} target="_blank" rel="noreferrer noopener" className="hover:text-foreground">
-            WhatsApp
+        <div className="flex flex-wrap items-center gap-5">
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex items-center gap-2 hover:text-foreground"
+          >
+            <MessageCircle className="h-4 w-4" /> WhatsApp
           </a>
-          <a href={`tel:${PHONE_TEL}`} className="hover:text-foreground">
-            {PHONE_DISPLAY}
+          <a href={`tel:${PHONE_TEL}`} className="inline-flex items-center gap-2 hover:text-foreground">
+            <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
           </a>
-          <a href="mailto:hello@maren.studio" className="hover:text-foreground">
-            hello@maren.studio
+          <a
+            href="mailto:hello@maren.studio"
+            className="inline-flex items-center gap-2 hover:text-foreground"
+          >
+            <Mail className="h-4 w-4" /> hello@maren.studio
           </a>
         </div>
       </div>
