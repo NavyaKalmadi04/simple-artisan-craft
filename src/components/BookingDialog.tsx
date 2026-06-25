@@ -232,7 +232,9 @@ export function BookingDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="font-display text-2xl">Book: {service.label}</DialogTitle>
+          <DialogTitle className="font-display text-2xl">
+            {service ? `Book: ${service.label}` : "Book a session"}
+          </DialogTitle>
           <DialogDescription>
             Share a few details — we save your enquiry and open WhatsApp with the full message
             pre-filled, ready to send to our team.
@@ -240,6 +242,23 @@ export function BookingDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-2 grid gap-4">
+          {showPicker && (
+            <div className="grid gap-2">
+              <Label htmlFor="b-service">Which service? *</Label>
+              <Select value={selectedKey} onValueChange={setSelectedKey}>
+                <SelectTrigger id="b-service">
+                  <SelectValue placeholder="Select a service" />
+                </SelectTrigger>
+                <SelectContent>
+                  {serviceOptions!.map((s) => (
+                    <SelectItem key={s.key} value={s.key}>
+                      {s.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div className="grid gap-2">
             <Label htmlFor="b-name">Your name *</Label>
             <Input
