@@ -509,7 +509,8 @@ function Services() {
       </div>
 
       <BookingDialog
-        service={activeService}
+        service={null}
+        serviceOptions={serviceOptions}
         open={bookingOpen}
         onOpenChange={setBookingOpen}
       />
