@@ -88,10 +88,12 @@ function buildWhatsAppMessage(service: BookingService, form: BookingForm) {
 
 export function BookingDialog({
   service,
+  serviceOptions,
   open,
   onOpenChange,
 }: {
   service: BookingService | null;
+  serviceOptions?: BookingService[];
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
@@ -107,15 +109,23 @@ export function BookingDialog({
   });
   const [errors, setErrors] = useState<Partial<Record<keyof BookingForm, string>>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [selectedKey, setSelectedKey] = useState<string>("");
 
   useEffect(() => {
     if (!open) {
       setErrors({});
       setSubmitting(false);
+      setSelectedKey("");
+    } else if (service) {
+      setSelectedKey(service.key);
     }
-  }, [open]);
+  }, [open, service]);
 
-  if (!service) return null;
+  const showPicker = !service && !!serviceOptions?.length;
+  const activeService: BookingService | null =
+    service ?? serviceOptions?.find((s) => s.key === selectedKey) ?? null;
+
+  if (!service && !serviceOptions?.length) return null;
 
   const setField = <K extends keyof BookingForm>(key: K, value: BookingForm[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
