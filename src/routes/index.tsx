@@ -470,6 +470,11 @@ function Services() {
     whatsappTemplate: WHATSAPP_TEMPLATES[s.template],
   }));
   const [bookingOpen, setBookingOpen] = useState(false);
+  useEffect(() => {
+    const open = () => setBookingOpen(true);
+    window.addEventListener("open-booking", open);
+    return () => window.removeEventListener("open-booking", open);
+  }, []);
 
   return (
     <section id="services" className="bg-secondary/50 py-24 md:py-32">
