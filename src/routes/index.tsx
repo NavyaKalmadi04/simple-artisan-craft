@@ -15,6 +15,7 @@ import {
   Users,
   GraduationCap,
   Send,
+  Mail,
   Bot,
   Home,
   Briefcase,
