@@ -224,13 +224,13 @@ function Nav() {
 
 function MobileTabBar() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 backdrop-blur md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-foreground/20 bg-foreground text-background/80 backdrop-blur md:hidden">
       <ul className="mx-auto grid max-w-md grid-cols-5">
         {MOBILE_NAV.map((l) => (
           <li key={l.label}>
             <a
               href={l.href}
-              className="flex flex-col items-center justify-center gap-1 py-2.5 text-[10px] text-muted-foreground transition-colors hover:text-foreground"
+              className="flex flex-col items-center justify-center gap-1 py-2.5 text-[10px] text-background/70 transition-colors hover:text-background"
             >
               <l.icon className="h-5 w-5" strokeWidth={1.6} />
               {l.label}
@@ -241,6 +241,7 @@ function MobileTabBar() {
     </nav>
   );
 }
+
 
 function RotatingBadge() {
   const [i, setI] = useState(0);
