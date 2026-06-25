@@ -113,7 +113,6 @@ function Index() {
       <Nav />
       <Hero />
       <Marquee />
-      <CalmWay />
       <About />
       <Services />
       <Team />
@@ -178,24 +177,24 @@ function Nav() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-6 md:py-5">
         {/* Brand (left on desktop, hidden on mobile to keep header compact) */}
-        <a href="#" className="hidden md:flex min-w-0 items-center gap-2">
+        <a href="#" className="hidden md:flex items-center gap-2 shrink-0">
           <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             <span className="font-display text-lg leading-none">p</span>
           </span>
-          <span className="truncate font-display text-lg lg:text-xl">{COMPANY_NAME}</span>
+          <span className="whitespace-nowrap font-display text-base lg:text-xl">{COMPANY_NAME}</span>
         </a>
 
         {/* Centered brand on mobile */}
-        <a href="#" className="flex items-center gap-2 md:hidden">
+        <a href="#" className="flex items-center gap-2 lg:hidden md:hidden">
           <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
             <span className="font-display text-base leading-none">p</span>
           </span>
         </a>
 
         {/* Center: nav menu on desktop / brand name on mobile */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center min-w-0">
           <span className="font-display text-sm sm:text-base md:hidden">{COMPANY_SHORT} Solutions</span>
-          <nav className="hidden md:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
+          <nav className="hidden lg:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
@@ -211,11 +210,11 @@ function Nav() {
         {/* Right CTA */}
         <a
           href="#contact"
-          className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 md:inline-flex"
+          className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 lg:inline-flex"
         >
           Book a session <ArrowUpRight className="h-3.5 w-3.5" />
         </a>
-        <span className="md:hidden" />
+        <span className="lg:hidden" />
       </div>
     </header>
   );
@@ -224,13 +223,13 @@ function Nav() {
 
 function MobileTabBar() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-foreground/20 bg-foreground text-background/80 backdrop-blur md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-primary/30 bg-primary text-primary-foreground/85 backdrop-blur lg:hidden">
       <ul className="mx-auto grid max-w-md grid-cols-5">
         {MOBILE_NAV.map((l) => (
           <li key={l.label}>
             <a
               href={l.href}
-              className="flex flex-col items-center justify-center gap-1 py-2.5 text-[10px] text-background/70 transition-colors hover:text-background"
+              className="flex flex-col items-center justify-center gap-1 py-2.5 text-[10px] text-primary-foreground/75 transition-colors hover:text-primary-foreground"
             >
               <l.icon className="h-5 w-5" strokeWidth={1.6} />
               {l.label}
