@@ -272,14 +272,14 @@ function Nav() {
             <img
               src={zetacraftLogo.url}
               alt="Zetacraft"
-              className="h-[58px] w-auto object-contain sm:h-[68px] md:h-[82px] lg:h-[92px]"
+              className="h-[72px] w-auto object-contain sm:h-[78px] md:h-[88px] lg:h-[96px]"
             />
             <span className="sr-only">{COMPANY_NAME}</span>
           </motion.a>
 
           <div className="flex justify-center overflow-hidden">
             <h1
-              className="text-xl font-medium tracking-[0.18em] sm:text-2xl md:text-[28px]"
+              className="text-[22px] font-medium tracking-[0.18em] sm:text-2xl md:text-[28px]"
               style={{ fontFamily: "var(--font-wordmark)" }}
             >
               {letters.map((ch, i) => {
@@ -308,7 +308,7 @@ function Nav() {
 
           <motion.a
             href="#contact"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
+            className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
             initial={prefersReduced ? false : { opacity: 0, y: -6 }}
             animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
             transition={
@@ -317,7 +317,7 @@ function Nav() {
                 : { duration: 0.4, delay: 2.7, ease: "easeOut" }
             }
           >
-            Book a session
+            <MessageCircle className="h-4 w-4" /> Book a session
           </motion.a>
         </div>
       </header>
