@@ -22,6 +22,8 @@ import {
   FolderOpen,
   HelpCircle,
   X,
+  ChevronDown,
+
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
@@ -129,6 +131,7 @@ function Index() {
 
   return (
     <>
+      <Nav />
       {!introDone && <IntroLogo />}
       <motion.main
         className="min-h-screen bg-background text-foreground pb-20 lg:pb-0"
@@ -137,7 +140,6 @@ function Index() {
         transition={{ duration: 0.4, ease: "easeOut" }}
         aria-hidden={!introDone}
       >
-        <Nav />
         <Hero />
         <Marquee />
         <About />
@@ -157,20 +159,20 @@ function Index() {
 function IntroLogo() {
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
-      initial={{ opacity: 1 }}
+      className="pointer-events-none fixed inset-x-0 top-[180px] z-[60] flex justify-center sm:top-[210px] md:top-[240px]"
+      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       aria-hidden="true"
     >
       <motion.img
         src={zetacraftLogo.url}
         alt=""
-        className="h-32 w-auto object-contain sm:h-40 md:h-48 will-change-transform"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: [0.9, 1.05, 1], opacity: 1 }}
-        transition={{ duration: 1.4, times: [0, 0.7, 1], ease: "easeOut" }}
+        className="h-24 w-auto object-contain sm:h-28 md:h-32 will-change-transform"
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: [0.92, 1.04, 1], opacity: 1 }}
+        transition={{ duration: 1.2, times: [0, 0.7, 1], ease: "easeOut" }}
       />
     </motion.div>
   );
@@ -244,7 +246,7 @@ function Nav() {
   return (
     <div className="relative">
       {/* Header */}
-      <header className="bg-background">
+      <header className="border-b border-border/60 bg-background">
         <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
           <motion.a
             href="#"
@@ -707,6 +709,8 @@ function Projects() {
     },
   ];
   const [showAll, setShowAll] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
     <section id="projects" className="bg-secondary/50 py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
@@ -730,8 +734,15 @@ function Projects() {
           {items.map((w, i) => (
             <article
               key={w.title}
-              className={`group block transition-[grid-column] duration-500 ease-out md:hover:col-span-2 ${!showAll && i >= 1 ? "hidden md:block" : ""}`}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              className={`group block transition-all duration-500 ease-out ${
+                hovered !== null && hovered !== i ? "md:hidden" : ""
+              } ${hovered === i ? "md:col-span-3" : ""} ${
+                !showAll && i >= 1 ? "hidden md:block" : ""
+              }`}
             >
+
               <div
                 className={`aspect-[4/5] md:aspect-auto md:h-full md:min-h-[360px] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
               >
@@ -823,23 +834,26 @@ function FAQ() {
         <div>
           <div className="divide-y divide-border border-y border-border">
             {qa.map((item, i) => (
-              <div key={item.q} className={!showAll && i >= 1 ? "hidden md:block" : ""}>
+              <div key={item.q} className={!showAll && i >= 2 ? "hidden" : ""}>
                 <FAQItem {...item} defaultOpen={i === 0} />
               </div>
             ))}
           </div>
-          {!showAll && (
-            <div className="mt-6 flex justify-center md:hidden">
-              <button
-                type="button"
-                onClick={() => setShowAll(true)}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
-              >
-                See more questions <ArrowUpRight className="h-4 w-4" />
-              </button>
-            </div>
-          )}
+          <div className="mt-6 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              aria-expanded={showAll}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
+            >
+              {showAll ? "Show less" : "See more questions"}
+              <ChevronDown
+                className={`h-4 w-4 transition-transform duration-300 ${showAll ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
         </div>
+
       </div>
     </section>
   );
