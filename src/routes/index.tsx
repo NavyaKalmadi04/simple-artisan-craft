@@ -120,10 +120,11 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // last letter finishes at 0.7 + 9*0.12 + 0.12 = 1.9s, wait 1s = 2.9s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 5200);
+    }, prefersReduced ? 200 : 2900);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
