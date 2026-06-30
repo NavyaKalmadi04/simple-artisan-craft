@@ -43,11 +43,9 @@ const SPLASH_DURATION_MS =
   Math.ceil((TAGLINE_START_DELAY + (TAGLINE_LENGTH - 1) * TAGLINE_STAGGER + TAGLINE_DURATION + 1) * 1000);
 
 const NAV_LINKS = [
-  { href: "#top", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
-  { href: "#team", label: "Team" },
-  { href: "#projects", label: "Projects" },
+  { href: "#projects", label: "Work" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
@@ -175,7 +173,8 @@ function IntroLogo() {
   const total = name.length;
   return (
     <motion.div
-      className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
+      className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center px-6 text-center"
+      style={{ backgroundColor: "#f5f5f5" }}
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -305,7 +304,7 @@ function Nav({ start }: { start: boolean }) {
   const play = start && !prefersReduced;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 lg:relative lg:z-30">
+    <header className="sticky top-0 z-40 lg:relative lg:z-30" style={{ backgroundColor: "#f5f5f5" }}>
       <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
@@ -394,50 +393,56 @@ function NavPills() {
   return (
     <div className="sticky top-0 z-40 hidden lg:flex justify-center pointer-events-none">
       <motion.nav
-        className="pointer-events-auto w-full max-w-6xl px-4 sm:px-5 md:px-6"
+        className="pointer-events-auto w-full max-w-6xl px-4 sm:px-5 md:px-6 pt-2"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
       >
         <div
-          className={`flex items-center rounded-full border border-border/70 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 px-2.5 py-1.5 transition-all duration-300 ${
-            scrolled ? "shadow-lg shadow-foreground/10 justify-between" : "shadow-sm justify-center"
+          className={`flex items-center justify-between gap-3 rounded-full border border-border/70 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 px-2.5 py-1.5 transition-all duration-300 ${
+            scrolled ? "shadow-lg shadow-foreground/10" : "shadow-sm"
           }`}
         >
-          {scrolled && (
-            <a
-              href="#top"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="flex shrink-0 items-center gap-2 pl-1"
-            >
-              <img
-                src={zetacraftLogo.url}
-                alt="Zetacraft"
-                className="h-8 w-auto object-contain"
-              />
-            </a>
-          )}
+          {/* Left: logo appears only after scroll */}
+          <div className="flex shrink-0 items-center pl-1 min-w-[40px]">
+            {scrolled && (
+              <a
+                href="#top"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="flex items-center"
+              >
+                <img
+                  src={zetacraftLogo.url}
+                  alt="Zetacraft"
+                  className="h-8 w-auto object-contain"
+                />
+              </a>
+            )}
+          </div>
+
+          {/* Center: mac-style dock links */}
           <div className="inline-flex items-end gap-1">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                onClick={(e) => {
-                  if (l.href === "#top") {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }
-                }}
-                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.18] hover:-translate-y-0.5 hover:font-medium"
               >
                 {l.label}
               </a>
             ))}
           </div>
-          {scrolled && <div className="w-20" aria-hidden />}
+
+          {/* Right: Book a session CTA */}
+          <a
+            href="#contact"
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:scale-[1.04] hover:shadow-md"
+          >
+            <MessageCircle className="h-4 w-4" /> Book a session
+          </a>
         </div>
       </motion.nav>
     </div>
