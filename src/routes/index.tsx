@@ -173,13 +173,6 @@ function IntroLogo() {
   const name = "ZETAACRAFT".split("");
   const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
   const total = name.length;
-  // right-to-left reveal: index 0 (Z) appears last
-  const letterStagger = 0.12;
-  const letterDuration = 0.12; // 0.12s ease-out per letter
-  // tagline reveal starts after wordmark finishes
-  const taglineStart = 0.7 + (name.length - 1) * letterStagger + letterDuration + 0.15;
-  const taglineDuration = 0.8;
-  const taglineStagger = 0.05;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
