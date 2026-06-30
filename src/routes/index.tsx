@@ -522,11 +522,11 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="rounded-3xl border border-border bg-card p-6"
+              className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-6 transition-all duration-200 ease-out hover:scale-[1.04] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
             >
-              <p.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
+              <p.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <h3 className="mt-5 font-display text-lg">{p.t}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{p.b}</p>
+              <p className="mt-2 text-sm text-foreground/70">{p.b}</p>
             </div>
           ))}
         </div>
