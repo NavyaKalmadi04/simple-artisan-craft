@@ -114,6 +114,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [introDone, setIntroDone] = useState(false);
   useEffect(() => {
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "auto" });
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -122,7 +123,7 @@ function Index() {
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 1800);
+    }, prefersReduced ? 200 : 2900);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -159,7 +160,7 @@ function Index() {
 function IntroLogo() {
   return (
     <motion.div
-      className="pointer-events-none fixed inset-x-0 top-[180px] z-[60] flex justify-center sm:top-[210px] md:top-[240px]"
+      className="pointer-events-none fixed inset-x-0 top-1/2 z-[60] flex -translate-y-1/2 justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -169,10 +170,10 @@ function IntroLogo() {
       <motion.img
         src={zetacraftLogo.url}
         alt=""
-        className="h-24 w-auto object-contain sm:h-28 md:h-32 will-change-transform"
-        initial={{ scale: 0.92, opacity: 0 }}
-        animate={{ scale: [0.92, 1.04, 1], opacity: 1 }}
-        transition={{ duration: 1.2, times: [0, 0.7, 1], ease: "easeOut" }}
+        className="h-44 w-auto object-contain sm:h-56 md:h-64 lg:h-72 will-change-transform"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: [0.9, 1.06, 1], opacity: 1 }}
+        transition={{ duration: 1.8, times: [0, 0.7, 1], ease: "easeOut" }}
       />
     </motion.div>
   );
