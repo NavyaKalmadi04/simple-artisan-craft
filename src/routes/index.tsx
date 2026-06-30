@@ -801,9 +801,7 @@ function Footer() {
               <Mail className="h-4 w-4" />
             </a>
           </div>
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-base leading-none">Z</span>
-          </span>
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-9 w-auto object-contain" />
         </div>
         <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
 
