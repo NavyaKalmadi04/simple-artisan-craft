@@ -131,11 +131,10 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    // tagline ends at ~5.0s; wait 1s after = ~6.0s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 6000);
+    }, prefersReduced ? 200 : SPLASH_DURATION_MS);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
