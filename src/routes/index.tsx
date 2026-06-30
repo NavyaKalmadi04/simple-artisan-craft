@@ -391,7 +391,7 @@ function RotatingBadge() {
     return () => clearInterval(t);
   }, []);
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+    <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1 text-xs text-muted-foreground shadow-sm backdrop-blur-md">
       <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse" />
       <span className="relative inline-block h-4 overflow-hidden">
         <span
@@ -654,7 +654,7 @@ function Team() {
         {traits.map((t) => (
           <span
             key={t}
-            className="rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground"
+            className="rounded-full border border-border/70 bg-background/80 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-md"
           >
             {t}
           </span>
