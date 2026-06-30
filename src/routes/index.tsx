@@ -25,10 +25,7 @@ import {
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
-import zetacraftRing from "@/assets/zetacraft-ring.png";
-import zetacraftZ from "@/assets/zetacraft-z.png";
 import { motion } from "framer-motion";
-import gsap from "gsap";
 
 
 const COMPANY_NAME = "Zetaacraft";
@@ -113,16 +110,32 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [splashDone, setSplashDone] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const t = window.setTimeout(() => {
+      document.body.style.overflow = prevOverflow;
+      setIntroDone(true);
+    }, prefersReduced ? 200 : 1800);
+    return () => {
+      window.clearTimeout(t);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+
   return (
     <>
-      {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
+      {!introDone && <IntroLogo />}
       <motion.main
         className="min-h-screen bg-background text-foreground pb-20 lg:pb-0"
         initial={{ opacity: 0 }}
-        animate={{ opacity: splashDone ? 1 : 0 }}
+        animate={{ opacity: introDone ? 1 : 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        aria-hidden={!splashDone}
+        aria-hidden={!introDone}
       >
         <Nav />
         <Hero />
@@ -141,121 +154,28 @@ function Index() {
   );
 }
 
-function SplashScreen({ onDone }: { onDone: () => void }) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLImageElement>(null);
-  const zRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
-    // Lock scroll while splash is up
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    if (prefersReduced) {
-      const t = window.setTimeout(() => {
-        document.body.style.overflow = prevOverflow;
-        onDone();
-      }, 200);
-      return () => {
-        window.clearTimeout(t);
-        document.body.style.overflow = prevOverflow;
-      };
-    }
-
-    const ctx = gsap.context(() => {
-      // Continuous ring rotation (GPU transform)
-      const spin = gsap.to(ringRef.current, {
-        rotate: 360,
-        duration: 1.6,
-        ease: "none",
-        repeat: -1,
-        transformOrigin: "50% 50%",
-      });
-
-      // Subtle Z scale-in
-      gsap.from(zRef.current, {
-        scale: 0.85,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-
-      // Main timeline — stops ring at end, performs 2 bounces, fades splash
-      const tl = gsap.timeline({
-        delay: 2.0, // let ring rotate visibly + header animation play
-        onComplete: () => {
-          document.body.style.overflow = prevOverflow;
-          onDone();
-        },
-      });
-
-      // Stop ring rotation smoothly
-      tl.add(() => spin.kill());
-      // 2 premium bounces on the whole logo
-      tl.to([ringRef.current, zRef.current], {
-        scale: 1.12,
-        duration: 0.18,
-        ease: "power2.out",
-      })
-        .to([ringRef.current, zRef.current], {
-          scale: 1,
-          duration: 0.22,
-          ease: "power2.inOut",
-        })
-        .to([ringRef.current, zRef.current], {
-          scale: 1.06,
-          duration: 0.14,
-          ease: "power2.out",
-        })
-        .to([ringRef.current, zRef.current], {
-          scale: 1,
-          duration: 0.18,
-          ease: "power2.inOut",
-        })
-        // Fade out splash
-        .to(
-          rootRef.current,
-          { opacity: 0, duration: 0.45, ease: "power2.out" },
-          "+=0.05",
-        );
-    }, rootRef);
-
-    return () => {
-      ctx.revert();
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [onDone]);
-
+function IntroLogo() {
   return (
-    <div
-      ref={rootRef}
-      className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ backgroundColor: "#0a1535" }}
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <div className="relative h-40 w-40 sm:h-48 sm:w-48 md:h-56 md:w-56">
-        <img
-          ref={ringRef}
-          src={zetacraftRing}
-          alt=""
-          className="absolute inset-0 h-full w-full object-contain will-change-transform"
-          style={{ filter: "brightness(0) invert(1)" }}
-        />
-        <img
-          ref={zRef}
-          src={zetacraftZ}
-          alt=""
-          className="absolute inset-0 h-full w-full object-contain will-change-transform"
-          style={{ filter: "brightness(0) invert(1)" }}
-        />
-      </div>
-    </div>
+      <motion.img
+        src={zetacraftLogo.url}
+        alt=""
+        className="h-32 w-auto object-contain sm:h-40 md:h-48 will-change-transform"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: [0.9, 1.05, 1], opacity: 1 }}
+        transition={{ duration: 1.4, times: [0, 0.7, 1], ease: "easeOut" }}
+      />
+    </motion.div>
   );
 }
+
 
 function CalmWay() {
   const pillars = [
@@ -313,9 +233,17 @@ function Nav() {
   const letterStagger = 0.07;
   const totalLetters = letters.length;
 
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div className="relative">
-      {/* Header: reduced height, same logo/font sizes */}
+      {/* Header */}
       <header className="border-b border-border/60 bg-background">
         <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
           <motion.a
@@ -344,7 +272,7 @@ function Nav() {
             <img
               src={zetacraftLogo.url}
               alt="Zetacraft"
-              className="h-10 w-auto object-contain sm:h-12 md:h-14"
+              className="h-12 w-auto object-contain sm:h-14 md:h-[68px] lg:h-[76px]"
             />
             <span className="sr-only">{COMPANY_NAME}</span>
           </motion.a>
@@ -391,7 +319,7 @@ function Nav() {
         </div>
       </header>
 
-      {/* Sticky nav pill — centered, with Apple-dock hover scale */}
+      {/* Sticky nav pill — centered, Apple-dock hover, blur+shadow on scroll */}
       <motion.div
         className="sticky top-0 z-40 hidden lg:block pointer-events-none"
         initial={prefersReduced ? false : { opacity: 0, y: -8 }}
@@ -402,13 +330,19 @@ function Nav() {
             : { duration: 0.45, delay: 2.1, ease: "easeOut" }
         }
       >
-        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
-          <nav className="pointer-events-auto inline-flex items-end gap-1 rounded-full border border-border bg-background/95 px-3 py-1.5 shadow-sm backdrop-blur">
+        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6 pt-2">
+          <nav
+            className={`pointer-events-auto inline-flex items-end gap-1 rounded-full border bg-background/80 px-3 py-1.5 backdrop-blur-md transition-shadow duration-300 ${
+              scrolled
+                ? "border-border shadow-lg shadow-foreground/5"
+                : "border-border/70 shadow-sm"
+            }`}
+          >
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.35] hover:-translate-y-1 hover:font-medium"
+                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
               >
                 {l.label}
               </a>
@@ -419,6 +353,7 @@ function Nav() {
     </div>
   );
 }
+
 
 
 
@@ -479,7 +414,7 @@ function BookCTA() {
 
 function Hero() {
   return (
-    <section className="relative mx-auto max-w-6xl px-5 pt-12 pb-20 md:px-6 md:pt-24 md:pb-36">
+    <section className="relative mx-auto max-w-6xl px-5 pt-10 pb-16 md:px-6 md:pt-20 md:pb-28">
       <div className="absolute left-1/2 top-32 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blush/40 blur-3xl" />
       <div className="absolute right-10 top-48 -z-10 h-56 w-56 rounded-full bg-sage/30 blur-3xl" />
 
@@ -501,7 +436,7 @@ function Hero() {
         <BookCTA />
       </div>
 
-      <dl className="mt-20 grid max-w-2xl grid-cols-3 gap-8 border-t border-border pt-8">
+      <dl className="mt-14 grid max-w-2xl grid-cols-3 gap-8 border-t border-border pt-6">
         {[
           { k: "60+", v: "Products shipped" },
           { k: "2 wks", v: "Avg. to first launch" },
@@ -564,8 +499,8 @@ function About() {
     },
   ];
   return (
-    <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <div className="grid gap-12 md:grid-cols-2 md:gap-20">
+    <section id="about" className="mx-auto max-w-6xl px-6 py-20 md:py-24">
+      <div className="grid gap-10 md:grid-cols-2 md:gap-16">
         <div>
           <span className="text-xs uppercase tracking-widest text-muted-foreground">About</span>
           <h2 className="mt-4 font-display text-4xl tracking-tight md:text-5xl">
@@ -647,7 +582,7 @@ function Services() {
   }, []);
 
   return (
-    <section id="services" className="bg-secondary/50 py-24 md:py-32">
+    <section id="services" className="bg-secondary/50 py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
@@ -662,15 +597,15 @@ function Services() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 md:grid-cols-2">
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-background"
+              className="group flex flex-col rounded-3xl border border-border bg-accent/40 p-7 transition-colors hover:bg-accent/60"
             >
-              <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
-              <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
-              <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
+              <s.icon className="h-5 w-5 text-foreground/70" strokeWidth={1.5} />
+              <h3 className="mt-5 font-display text-2xl">{s.title}</h3>
+              <p className="mt-3 flex-1 text-foreground/70">{s.body}</p>
             </article>
           ))}
         </div>
@@ -697,7 +632,7 @@ function Services() {
 function Team() {
   const traits = ["Young", "Aspiring", "Driven", "Curious", "Hands-on", "Ship-first"];
   return (
-    <section id="team" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+    <section id="team" className="mx-auto max-w-6xl px-6 py-20 md:py-24">
       <span className="text-xs uppercase tracking-widest text-muted-foreground">Team</span>
       <h2 className="mt-4 max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
         A tiny team — <em className="text-muted-foreground">young, aspiring, deeply driven.</em>
@@ -729,42 +664,48 @@ function Projects() {
       tag: "SaaS · Scheduling",
       title: "Folio — a calendar for studios",
       meta: "Shipped in 3 weeks · 4.9★ from early users",
+      desc: "A calm booking calendar that lets indie studios manage classes, payments and reminders without spreadsheets.",
       tint: "bg-blush/40",
     },
     {
       tag: "Marketing site",
       title: "Petal & Pine — a florist online",
       meta: "+38% online orders in 30 days",
+      desc: "A soft, fast Shopify-style storefront with same-day delivery checkout designed for a neighbourhood florist.",
       tint: "bg-sage/40",
     },
     {
       tag: "AI workflow",
       title: "Drafts — quiet writing for PMs",
       meta: "Saves ~6 hours / PM / week",
+      desc: "An AI writing companion for product managers — turns rough notes into specs, updates and stakeholder emails.",
       tint: "bg-accent/50",
     },
     {
       tag: "Internal tool",
       title: "Tally — ops dashboard for a clinic",
       meta: "Replaced 4 spreadsheets",
+      desc: "One simple dashboard for appointments, billing and inventory — built around how the front-desk actually works.",
       tint: "bg-cream",
     },
     {
       tag: "SaaS · Marketplace",
       title: "Common — a hire board for makers",
       meta: "0 → 1,200 users in 8 weeks",
+      desc: "A friendly two-sided marketplace connecting independent makers with small studios looking to hire by the week.",
       tint: "bg-blush/30",
     },
     {
       tag: "Website",
       title: "Hearth Law — a friendly law firm",
       meta: "Triple the qualified leads",
+      desc: "A warm, human law-firm site with clear pricing pages and a one-click consultation flow — far from the usual.",
       tint: "bg-sage/30",
     },
   ];
   const [showAll, setShowAll] = useState(false);
   return (
-    <section id="projects" className="bg-secondary/50 py-24 md:py-32">
+    <section id="projects" className="bg-secondary/50 py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex items-end justify-between">
           <div>
@@ -782,7 +723,7 @@ function Projects() {
             Full case studies on request →
           </a>
         </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
           {items.map((w, i) => (
             <article
               key={w.title}
@@ -801,6 +742,14 @@ function Projects() {
               </div>
               <h3 className="mt-4 font-display text-xl">{w.title}</h3>
               <p className="text-sm text-muted-foreground">{w.meta}</p>
+              {/* Hover-reveal description: no layout shift, GPU transform + opacity */}
+              <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr] motion-reduce:transition-none">
+                <div className="overflow-hidden">
+                  <p className="mt-2 translate-y-1 text-sm text-muted-foreground opacity-0 transition-all duration-300 ease-out will-change-transform group-hover:translate-y-0 group-hover:opacity-100">
+                    {w.desc}
+                  </p>
+                </div>
+              </div>
             </article>
           ))}
         </div>
@@ -850,8 +799,8 @@ function FAQ() {
   ];
   const [showAll, setShowAll] = useState(false);
   return (
-    <section id="faq" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
+    <section id="faq" className="mx-auto max-w-6xl px-6 py-20 md:py-24">
+      <div className="grid gap-10 md:grid-cols-[1fr_1.4fr] md:gap-16">
         <div>
           <span className="text-xs uppercase tracking-widest text-muted-foreground">FAQ</span>
           <h2 className="mt-4 font-display text-4xl tracking-tight md:text-5xl">
@@ -923,8 +872,8 @@ function FAQItem({
 
 function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-6 pb-24 scroll-mt-24 md:pb-32 md:scroll-mt-32">
-      <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-16 text-primary-foreground md:px-16 md:py-24">
+    <section id="contact" className="mx-auto max-w-6xl px-6 pb-20 scroll-mt-24 md:pb-24 md:scroll-mt-32">
+      <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-12 text-primary-foreground md:px-14 md:py-20">
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blush/30 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
         <div className="relative z-10">
