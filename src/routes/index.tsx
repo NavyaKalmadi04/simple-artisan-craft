@@ -587,12 +587,14 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-6 transition-all duration-200 ease-out hover:scale-[1.04] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group relative overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/70 via-primary/[0.04] to-primary/[0.10] p-6 shadow-[0_8px_30px_-12px_rgba(30,40,90,0.18)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_18px_40px_-12px_rgba(30,40,90,0.28)] hover:border-primary/30"
             >
-              <p.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
-              <h3 className="mt-5 font-display text-lg">{p.t}</h3>
-              <p className="mt-2 text-sm text-foreground/70">{p.b}</p>
+              <span className="pointer-events-none absolute -top-12 -right-10 h-32 w-32 rounded-full bg-gradient-to-br from-accent/40 to-primary/20 blur-2xl opacity-60 transition-opacity duration-300 group-hover:opacity-90" />
+              <p.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
+              <h3 className="relative mt-5 font-display text-lg">{p.t}</h3>
+              <p className="relative mt-2 text-sm text-foreground/70">{p.b}</p>
             </div>
+
           ))}
         </div>
       </div>
