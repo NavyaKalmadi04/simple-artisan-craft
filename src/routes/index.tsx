@@ -881,7 +881,7 @@ function FAQ() {
               aria-expanded={showAll}
               className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
             >
-              {showAll ? "Show less" : "See more questions"}
+              {showAll ? "See less" : "See more"}
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 ${showAll ? "rotate-180" : ""}`}
               />
