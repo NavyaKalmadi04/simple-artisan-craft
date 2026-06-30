@@ -120,10 +120,11 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // last letter finishes at 0.7 + 9*0.12 + 0.12 = 1.9s, wait 1s = 2.9s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 5200);
+    }, prefersReduced ? 200 : 2900);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -164,9 +165,9 @@ function IntroLogo() {
   const total = name.length;
   // right-to-left reveal: index 0 (Z) appears last
   const letterStagger = 0.12;
-  const letterDuration = 0.5;
+  const letterDuration = 0.12; // 0.12s ease-out per letter
   // tagline reveal starts after wordmark finishes
-  const taglineStart = 0.7 + (name.length - 1) * 0.12 + 0.5 + 0.15;
+  const taglineStart = 0.7 + (name.length - 1) * letterStagger + letterDuration + 0.15;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
@@ -176,11 +177,12 @@ function IntroLogo() {
       transition={{ duration: 0.4, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <div className="flex items-center gap-3 sm:gap-4">
+      {/* Mobile: logo on its own line; desktop: logo + name inline */}
+      <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
         <motion.img
           src={zetacraftLogo.url}
           alt=""
-          className="h-16 w-auto object-contain sm:h-20 md:h-24"
+          className="h-20 w-auto object-contain sm:h-20 md:h-24"
           initial={{ x: 120, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -209,10 +211,11 @@ function IntroLogo() {
           })}
         </h2>
       </div>
-      <div className="mt-6 flex items-center gap-3 sm:gap-4">
-        <span className="h-px w-8 bg-primary/60 sm:w-12" />
+      {/* Tagline on its own third line on mobile */}
+      <div className="mt-5 flex items-center gap-2 sm:mt-6 sm:gap-3">
+        <span className="hidden h-px w-6 bg-primary/60 sm:inline-block sm:w-12" />
         <p
-          className="text-[10px] tracking-[0.28em] text-primary sm:text-xs md:text-sm"
+          className="whitespace-nowrap text-[7px] tracking-[0.08em] text-primary sm:text-[8px] sm:tracking-[0.1em] md:text-[9px] md:tracking-[0.15em] lg:text-[10px] lg:tracking-[0.2em] xl:text-xs"
           style={{ fontFamily: "var(--font-wordmark)" }}
         >
           {tagline.map((ch, i) => (
@@ -231,7 +234,7 @@ function IntroLogo() {
             </motion.span>
           ))}
         </p>
-        <span className="h-px w-8 bg-primary/60 sm:w-12" />
+        <span className="hidden h-px w-6 bg-primary/60 sm:inline-block sm:w-12" />
       </div>
     </motion.div>
   );
@@ -298,10 +301,11 @@ function Nav({ start }: { start: boolean }) {
 
   return (
     <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
+      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
+        {/* Logo — left */}
         <motion.a
           href="#"
-          className="flex items-center gap-2 shrink-0"
+          className="flex shrink-0 items-center gap-2 justify-self-start"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
             play
@@ -329,8 +333,12 @@ function Nav({ start }: { start: boolean }) {
             alt="Zetacraft"
             className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
           />
+        </motion.a>
+
+        {/* Company name — centered */}
+        <div className="flex justify-center">
           <h1
-            className="hidden font-medium tracking-[0.18em] text-foreground sm:inline-block text-base md:text-lg lg:text-xl"
+            className="font-medium tracking-[0.18em] text-foreground text-[15px] sm:text-base md:text-lg lg:text-xl"
             style={{ fontFamily: "var(--font-wordmark)" }}
           >
             {letters.map((ch, i) => {
@@ -357,28 +365,23 @@ function Nav({ start }: { start: boolean }) {
               );
             })}
           </h1>
-          <span
-            className="inline-block sm:hidden text-[15px] font-medium tracking-[0.18em] text-foreground"
-            style={{ fontFamily: "var(--font-wordmark)" }}
+        </div>
+
+        {/* CTA — right */}
+        <div className="flex justify-end">
+          <motion.a
+            href="#contact"
+            className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
+            initial={prefersReduced ? false : { opacity: 0, y: -6 }}
+            animate={
+              play ? { opacity: 1, y: 0 } : prefersReduced ? undefined : { opacity: 0, y: -6 }
+            }
+            transition={play ? { duration: 0.4, delay: 2.75, ease: "easeOut" } : undefined}
           >
-            ZETAACRAFT
-          </span>
-        </motion.a>
-
-        <div />
-
-        <motion.a
-          href="#contact"
-          className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
-          initial={prefersReduced ? false : { opacity: 0, y: -6 }}
-          animate={
-            play ? { opacity: 1, y: 0 } : prefersReduced ? undefined : { opacity: 0, y: -6 }
-          }
-          transition={play ? { duration: 0.4, delay: 2.75, ease: "easeOut" } : undefined}
-        >
-          <MessageCircle className="h-4 w-4" /> Book a session
-        </motion.a>
-        <div aria-hidden className="lg:hidden h-2 w-2" />
+            <MessageCircle className="h-4 w-4" /> Book a session
+          </motion.a>
+          <div aria-hidden className="lg:hidden h-2 w-2" />
+        </div>
       </div>
     </header>
   );
