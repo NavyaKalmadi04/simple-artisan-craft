@@ -601,11 +601,11 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-border bg-card p-8 transition-colors hover:bg-background"
+              className="group flex flex-col rounded-3xl border border-border bg-accent/40 p-7 transition-colors hover:bg-accent/60"
             >
-              <s.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
-              <h3 className="mt-6 font-display text-2xl">{s.title}</h3>
-              <p className="mt-3 flex-1 text-muted-foreground">{s.body}</p>
+              <s.icon className="h-5 w-5 text-foreground/70" strokeWidth={1.5} />
+              <h3 className="mt-5 font-display text-2xl">{s.title}</h3>
+              <p className="mt-3 flex-1 text-foreground/70">{s.body}</p>
             </article>
           ))}
         </div>
