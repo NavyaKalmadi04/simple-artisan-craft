@@ -259,15 +259,15 @@ function Nav() {
                 : {
                     x: [null, "55vw", 0, 0],
                     opacity: [0, 1, 1, 1],
-                    scale: [1, 1, 1.15, 1],
+                    scale: [1, 1, 1.28, 1],
                   }
             }
             transition={
               prefersReduced
                 ? undefined
                 : {
-                    duration: 1.7,
-                    times: [0, 0.05, 0.8, 1],
+                    duration: 2.6,
+                    times: [0, 0.08, 0.78, 1],
                     ease: [0.22, 1, 0.36, 1],
                   }
             }
