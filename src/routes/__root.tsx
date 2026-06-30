@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
+import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
 
 
 function NotFoundComponent() {
@@ -79,20 +80,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Soft Spot Design creates user-friendly websites with a minimal, soft, and simple aesthetic for businesses." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Soft Spot Design creates user-friendly websites with a minimal, soft, and simple aesthetic for businesses." },
+      { title: "Zetaacraft — Simple products customers love" },
+      { name: "description", content: "Zetaacraft builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed." },
+      { name: "author", content: "Zetaacraft" },
+      { property: "og:title", content: "Zetaacraft — Simple products customers love" },
+      { property: "og:description", content: "Zetaacraft builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Soft Spot Design creates user-friendly websites with a minimal, soft, and simple aesthetic for businesses." },
+      { name: "twitter:site", content: "@Zetaacraft" },
+      { name: "twitter:title", content: "Zetaacraft — Simple products customers love" },
+      { name: "twitter:description", content: "Zetaacraft builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/40ed3952-f33d-45a7-8748-faa41a86020b/id-preview-a84475e4--858322e0-da09-42d8-9e4e-ccf24e9d9542.lovable.app-1782189423233.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/40ed3952-f33d-45a7-8748-faa41a86020b/id-preview-a84475e4--858322e0-da09-42d8-9e4e-ccf24e9d9542.lovable.app-1782189423233.png" },
     ],
     links: [
+      { rel: "icon", href: zetacraftLogo.url, type: "image/png" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
