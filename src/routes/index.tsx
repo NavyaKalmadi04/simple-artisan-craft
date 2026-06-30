@@ -175,41 +175,49 @@ function CalmWay() {
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur">
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-4 py-3 sm:px-5 md:px-6 lg:pb-12">
-        {/* Top row: logo left, name center, CTA right */}
-        <div className="relative flex w-full items-center justify-center">
-          <a href="#" className="absolute left-0 flex items-center gap-2 shrink-0">
-            <img src={zetacraftLogo.url} alt="Zetacraft" className="h-12 w-auto object-contain sm:h-14 md:h-16" />
+    <div className="relative">
+      {/* Header: non-sticky, larger logo and name */}
+      <header className="border-b border-border/60 bg-background">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-5 md:px-6 md:py-7">
+          <a href="#" className="flex items-center gap-2 shrink-0">
+            <img
+              src={zetacraftLogo.url}
+              alt="Zetacraft"
+              className="h-16 w-auto object-contain sm:h-20 md:h-24"
+            />
             <span className="sr-only">{COMPANY_NAME}</span>
           </a>
 
-          <span className="font-display text-base font-semibold tracking-tight sm:text-lg md:text-xl">
+          <span className="font-display text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">
             ZETAACRAFT
           </span>
 
           <a
             href="#contact"
-            className="absolute right-0 inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
           >
-            Book <span className="hidden sm:inline">a session</span>
+            Book a session
           </a>
         </div>
+      </header>
 
-        {/* Nav pill below the header, not a separate line */}
-        <nav className="absolute bottom-0 left-1/2 z-50 hidden -translate-x-1/2 translate-y-1/2 items-center gap-1 rounded-full border border-border bg-background/95 px-2 py-1.5 shadow-sm lg:flex">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground"
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
+      {/* Sticky nav pill anchored to the right end of the header content */}
+      <div className="sticky top-0 z-40 hidden lg:block">
+        <div className="mx-auto flex max-w-6xl justify-end px-4 sm:px-5 md:px-6">
+          <nav className="inline-flex items-center gap-1 rounded-full border border-border bg-background/95 px-2 py-1.5 shadow-sm">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
-    </header>
+    </div>
   );
 }
 
