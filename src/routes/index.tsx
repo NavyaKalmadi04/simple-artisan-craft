@@ -188,8 +188,8 @@ function Nav() {
           </span>
         </div>
 
-        <div className="flex items-center justify-end gap-2">
-          <nav className="hidden items-center gap-1 lg:flex">
+        <div className="flex items-center justify-end gap-3">
+          <nav className="hidden items-center gap-1 rounded-full border border-border bg-background/80 px-2 py-1.5 shadow-sm lg:flex">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
