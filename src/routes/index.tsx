@@ -114,6 +114,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [introDone, setIntroDone] = useState(false);
   useEffect(() => {
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "auto" });
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -122,7 +123,7 @@ function Index() {
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 1800);
+    }, prefersReduced ? 200 : 2900);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -159,7 +160,7 @@ function Index() {
 function IntroLogo() {
   return (
     <motion.div
-      className="pointer-events-none fixed inset-x-0 top-[180px] z-[60] flex justify-center sm:top-[210px] md:top-[240px]"
+      className="pointer-events-none fixed inset-x-0 top-1/2 z-[60] flex -translate-y-1/2 justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -169,10 +170,10 @@ function IntroLogo() {
       <motion.img
         src={zetacraftLogo.url}
         alt=""
-        className="h-24 w-auto object-contain sm:h-28 md:h-32 will-change-transform"
-        initial={{ scale: 0.92, opacity: 0 }}
-        animate={{ scale: [0.92, 1.04, 1], opacity: 1 }}
-        transition={{ duration: 1.2, times: [0, 0.7, 1], ease: "easeOut" }}
+        className="h-44 w-auto object-contain sm:h-56 md:h-64 lg:h-72 will-change-transform"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: [0.9, 1.06, 1], opacity: 1 }}
+        transition={{ duration: 1.8, times: [0, 0.7, 1], ease: "easeOut" }}
       />
     </motion.div>
   );
@@ -231,8 +232,8 @@ function Nav() {
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-  const letterDuration = 0.35;
-  const letterStagger = 0.07;
+  const letterDuration = 0.45;
+  const letterStagger = 0.11;
   const totalLetters = letters.length;
 
   const [scrolled, setScrolled] = useState(false);
@@ -258,15 +259,15 @@ function Nav() {
                 : {
                     x: [null, "55vw", 0, 0],
                     opacity: [0, 1, 1, 1],
-                    scale: [1, 1, 1.15, 1],
+                    scale: [1, 1, 1.28, 1],
                   }
             }
             transition={
               prefersReduced
                 ? undefined
                 : {
-                    duration: 1.7,
-                    times: [0, 0.05, 0.8, 1],
+                    duration: 2.6,
+                    times: [0, 0.08, 0.78, 1],
                     ease: [0.22, 1, 0.36, 1],
                   }
             }
@@ -288,7 +289,7 @@ function Nav() {
                 const revealOrder = totalLetters - 1 - i;
                 const delay = prefersReduced
                   ? 0
-                  : 0.25 + revealOrder * letterStagger;
+                  : 0.5 + revealOrder * letterStagger;
                 return (
                   <motion.span
                     key={i}
@@ -316,7 +317,7 @@ function Nav() {
             transition={
               prefersReduced
                 ? undefined
-                : { duration: 0.4, delay: 2.0, ease: "easeOut" }
+                : { duration: 0.4, delay: 2.7, ease: "easeOut" }
             }
           >
             Book a session
@@ -332,7 +333,7 @@ function Nav() {
         transition={
           prefersReduced
             ? undefined
-            : { duration: 0.45, delay: 2.1, ease: "easeOut" }
+            : { duration: 0.45, delay: 2.8, ease: "easeOut" }
         }
       >
         <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
@@ -390,7 +391,7 @@ function RotatingBadge() {
     return () => clearInterval(t);
   }, []);
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+    <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-3 py-1 text-xs text-muted-foreground shadow-sm backdrop-blur-md">
       <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse" />
       <span className="relative inline-block h-4 overflow-hidden">
         <span
@@ -653,7 +654,7 @@ function Team() {
         {traits.map((t) => (
           <span
             key={t}
-            className="rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground"
+            className="rounded-full border border-border/70 bg-background/80 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-md"
           >
             {t}
           </span>
@@ -708,7 +709,7 @@ function Projects() {
       tint: "bg-sage/30",
     },
   ];
-  const [showAll, setShowAll] = useState(false);
+  const [activeMobile, setActiveMobile] = useState<number | null>(null);
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
@@ -730,64 +731,98 @@ function Projects() {
             Full case studies on request →
           </a>
         </div>
-        <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
-          {items.map((w, i) => (
-            <article
-              key={w.title}
-              onMouseEnter={() => setHovered(i)}
-              onMouseLeave={() => setHovered(null)}
-              className={`group block transition-all duration-500 ease-out ${
-                hovered !== null && hovered !== i ? "md:hidden" : ""
-              } ${hovered === i ? "md:col-span-3" : ""} ${
-                !showAll && i >= 1 ? "hidden md:block" : ""
-              }`}
-            >
 
-              <div
-                className={`aspect-[4/5] md:aspect-auto md:h-full md:min-h-[360px] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
+        {/* Desktop / tablet grid with smooth layout animation */}
+        <motion.div
+          layout
+          className="mt-10 hidden auto-rows-fr gap-5 md:grid md:grid-cols-3"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {items.map((w, i) => {
+            const isHovered = hovered === i;
+            return (
+              <motion.article
+                layout
+                key={w.title}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+                transition={{ layout: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }}
+                className={`group block ${isHovered ? "md:col-span-2" : ""}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 via-foreground/5 to-transparent" />
+                <ProjectTile w={w} expanded={isHovered} />
+              </motion.article>
+            );
+          })}
+        </motion.div>
 
-                {/* Top row: tag + arrow */}
-                <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
-                  <span className="rounded-full bg-background/80 px-3 py-1 text-xs backdrop-blur">
-                    {w.tag}
-                  </span>
-                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </div>
-
-                {/* Bottom content: title, meta + hover-revealed description on the tile */}
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="font-display text-xl text-foreground drop-shadow-sm md:text-2xl">
-                    {w.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-foreground/70">{w.meta}</p>
-                  <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] motion-reduce:transition-none">
-                    <div className="overflow-hidden">
-                      <p className="mt-3 translate-y-1 text-sm text-foreground/80 opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
-                        {w.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {!showAll && (
-          <div className="mt-8 flex justify-center md:hidden">
-            <button
-              type="button"
-              onClick={() => setShowAll(true)}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
-            >
-              See more projects <ArrowUpRight className="h-4 w-4" />
-            </button>
+        {/* Mobile: horizontal snap slider; press / tap toggles description */}
+        <div className="mt-8 md:hidden">
+          <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {items.map((w, i) => {
+              const expanded = activeMobile === i;
+              return (
+                <motion.article
+                  layout
+                  key={w.title}
+                  onClick={() => setActiveMobile((cur) => (cur === i ? null : i))}
+                  className="shrink-0 snap-center"
+                  style={{ width: expanded ? "90%" : "78%" }}
+                  transition={{ layout: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
+                >
+                  <ProjectTile w={w} expanded={expanded} />
+                </motion.article>
+              );
+            })}
           </div>
-        )}
+          <p className="mt-1 text-center text-xs text-muted-foreground">
+            Swipe · tap a tile to read more
+          </p>
+        </div>
       </div>
     </section>
+  );
+}
+
+function ProjectTile({
+  w,
+  expanded,
+}: {
+  w: { tag: string; title: string; meta: string; desc: string; tint: string };
+  expanded: boolean;
+}) {
+  return (
+    <div
+      className={`relative aspect-[4/5] overflow-hidden rounded-3xl border border-border md:aspect-auto md:h-full md:min-h-[360px] ${w.tint}`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 via-foreground/5 to-transparent" />
+      <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
+        <span className="rounded-full bg-background/80 px-3 py-1 text-xs backdrop-blur">
+          {w.tag}
+        </span>
+        <ArrowUpRight className="h-5 w-5" />
+      </div>
+      <div className="absolute bottom-6 left-6 right-6">
+        <h3 className="font-display text-xl text-foreground drop-shadow-sm md:text-2xl">
+          {w.title}
+        </h3>
+        <p className="mt-1 text-sm text-foreground/70">{w.meta}</p>
+        <div
+          className={`grid transition-[grid-template-rows] duration-500 ease-out ${
+            expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <p
+              className={`mt-3 text-sm text-foreground/80 transition-all duration-500 ease-out ${
+                expanded ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
+              }`}
+            >
+              {w.desc}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -844,9 +879,9 @@ function FAQ() {
               type="button"
               onClick={() => setShowAll((v) => !v)}
               aria-expanded={showAll}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
+              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-5 py-2 text-sm shadow-sm backdrop-blur-md transition-all hover:bg-secondary hover:shadow"
             >
-              {showAll ? "Show less" : "See more questions"}
+              {showAll ? "See less" : "See more"}
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 ${showAll ? "rotate-180" : ""}`}
               />
@@ -952,40 +987,43 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
-        {/* Mobile: contacts row + logo on right */}
+        {/* Mobile: logo left, contact icons right */}
         <div className="flex items-center justify-between gap-3 md:hidden">
-          <div className="flex items-center gap-4">
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-14 w-auto object-contain" />
+          <div className="flex items-center gap-3">
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer noopener"
               aria-label="WhatsApp"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <MessageCircle className="h-4 w-4" />
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
               aria-label="Call"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <Phone className="h-4 w-4" />
             </a>
             <a
               href="mailto:Zetaacraft@gmail.com"
               aria-label="Email"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <Mail className="h-4 w-4" />
             </a>
           </div>
-          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-9 w-auto object-contain" />
         </div>
         <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
 
-        {/* Desktop */}
+        {/* Desktop: logo left, contacts right */}
         <div className="hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
-          <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
+          <div className="flex items-center gap-4">
+            <img src={zetacraftLogo.url} alt="Zetacraft" className="h-16 w-auto object-contain" />
+            <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
+          </div>
           <div className="flex flex-wrap items-center gap-5">
             <a
               href={WHATSAPP_URL}
@@ -1159,13 +1197,13 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-20 left-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:left-auto lg:right-5"
+        className="fixed bottom-20 left-5 z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:left-auto lg:right-5"
       >
-        {open ? <X className="h-5 w-5" /> : <Bot className="h-6 w-6" />}
+        {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-sm flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-auto md:bottom-24 md:left-auto md:right-5">
+        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-md flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-auto md:bottom-24 md:left-auto md:right-5">
 
           <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
@@ -1185,7 +1223,7 @@ function ChatBot() {
             </button>
           </div>
 
-          <div ref={scrollRef} className="flex max-h-[55vh] min-h-[280px] flex-col gap-3 overflow-y-auto px-4 py-4">
+          <div ref={scrollRef} className="flex max-h-[62vh] min-h-[340px] flex-col gap-3 overflow-y-auto px-4 py-4">
             {messages.map((m, i) => (
               <div key={i} className={m.from === "user" ? "self-end" : "self-start max-w-full"}>
                 <div
