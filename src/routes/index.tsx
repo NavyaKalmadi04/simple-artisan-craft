@@ -368,21 +368,9 @@ function Nav({ start }: { start: boolean }) {
           </h1>
         </div>
 
-        {/* CTA — right */}
-        <div className="flex justify-end">
-          <motion.a
-            href="#contact"
-            className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
-            initial={prefersReduced ? false : { opacity: 0, y: -6 }}
-            animate={
-              play ? { opacity: 1, y: 0 } : prefersReduced ? undefined : { opacity: 0, y: -6 }
-            }
-            transition={play ? { duration: 0.4, delay: 2.75, ease: "easeOut" } : undefined}
-          >
-            <MessageCircle className="h-4 w-4" /> Book a session
-          </motion.a>
-          <div aria-hidden className="lg:hidden h-2 w-2" />
-        </div>
+        {/* Right spacer to keep wordmark centered */}
+        <div aria-hidden className="h-2 w-2 justify-self-end" />
+
       </div>
     </header>
   );
