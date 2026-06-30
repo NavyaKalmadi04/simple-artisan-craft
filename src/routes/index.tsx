@@ -832,23 +832,26 @@ function FAQ() {
         <div>
           <div className="divide-y divide-border border-y border-border">
             {qa.map((item, i) => (
-              <div key={item.q} className={!showAll && i >= 1 ? "hidden md:block" : ""}>
+              <div key={item.q} className={!showAll && i >= 2 ? "hidden" : ""}>
                 <FAQItem {...item} defaultOpen={i === 0} />
               </div>
             ))}
           </div>
-          {!showAll && (
-            <div className="mt-6 flex justify-center md:hidden">
-              <button
-                type="button"
-                onClick={() => setShowAll(true)}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
-              >
-                See more questions <ArrowUpRight className="h-4 w-4" />
-              </button>
-            </div>
-          )}
+          <div className="mt-6 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              aria-expanded={showAll}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
+            >
+              {showAll ? "Show less" : "See more questions"}
+              <ChevronDown
+                className={`h-4 w-4 transition-transform duration-300 ${showAll ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
         </div>
+
       </div>
     </section>
   );
