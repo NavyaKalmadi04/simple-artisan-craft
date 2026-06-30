@@ -233,9 +233,17 @@ function Nav() {
   const letterStagger = 0.07;
   const totalLetters = letters.length;
 
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div className="relative">
-      {/* Header: reduced height, same logo/font sizes */}
+      {/* Header */}
       <header className="border-b border-border/60 bg-background">
         <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
           <motion.a
@@ -264,7 +272,7 @@ function Nav() {
             <img
               src={zetacraftLogo.url}
               alt="Zetacraft"
-              className="h-10 w-auto object-contain sm:h-12 md:h-14"
+              className="h-12 w-auto object-contain sm:h-14 md:h-[68px] lg:h-[76px]"
             />
             <span className="sr-only">{COMPANY_NAME}</span>
           </motion.a>
@@ -311,7 +319,7 @@ function Nav() {
         </div>
       </header>
 
-      {/* Sticky nav pill — centered, with Apple-dock hover scale */}
+      {/* Sticky nav pill — centered, Apple-dock hover, blur+shadow on scroll */}
       <motion.div
         className="sticky top-0 z-40 hidden lg:block pointer-events-none"
         initial={prefersReduced ? false : { opacity: 0, y: -8 }}
@@ -322,13 +330,19 @@ function Nav() {
             : { duration: 0.45, delay: 2.1, ease: "easeOut" }
         }
       >
-        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
-          <nav className="pointer-events-auto inline-flex items-end gap-1 rounded-full border border-border bg-background/95 px-3 py-1.5 shadow-sm backdrop-blur">
+        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6 pt-2">
+          <nav
+            className={`pointer-events-auto inline-flex items-end gap-1 rounded-full border bg-background/80 px-3 py-1.5 backdrop-blur-md transition-shadow duration-300 ${
+              scrolled
+                ? "border-border shadow-lg shadow-foreground/5"
+                : "border-border/70 shadow-sm"
+            }`}
+          >
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.35] hover:-translate-y-1 hover:font-medium"
+                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
               >
                 {l.label}
               </a>
@@ -339,6 +353,7 @@ function Nav() {
     </div>
   );
 }
+
 
 
 
