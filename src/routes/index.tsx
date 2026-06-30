@@ -23,15 +23,24 @@ import {
   HelpCircle,
   X,
   ChevronDown,
-
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
 import { motion } from "framer-motion";
 
-
 const COMPANY_NAME = "Zetaacraft";
 const COMPANY_SHORT = "Zetaacraft";
+
+// Splash animation timing constants (seconds)
+const WORDMARK_STAGGER = 0.12;
+const WORDMARK_DURATION = 0.12;
+const TAGLINE_DURATION = 0.35;
+const TAGLINE_STAGGER = 0.03;
+const TAGLINE_START_DELAY =
+  0.7 + ("ZETAACRAFT".length - 1) * WORDMARK_STAGGER + WORDMARK_DURATION + 0.15;
+const TAGLINE_LENGTH = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".length;
+const SPLASH_DURATION_MS =
+  Math.ceil((TAGLINE_START_DELAY + (TAGLINE_LENGTH - 1) * TAGLINE_STAGGER + TAGLINE_DURATION + 1) * 1000);
 
 const NAV_LINKS = [
   { href: "#top", label: "Home" },
