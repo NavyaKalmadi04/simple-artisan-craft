@@ -123,7 +123,7 @@ function Index() {
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 2900);
+    }, prefersReduced ? 200 : 5200);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -132,13 +132,14 @@ function Index() {
 
   return (
     <>
-      <Nav />
       {!introDone && <IntroLogo />}
+      <Nav start={introDone} />
+      {introDone && <NavPills />}
       <motion.main
         className="min-h-screen bg-background text-foreground pb-20 lg:pb-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: introDone ? 1 : 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: introDone ? 1 : 0, y: introDone ? 0 : 8 }}
+        transition={{ duration: 1.2, ease: "easeOut", delay: introDone ? 0.15 : 0 }}
         aria-hidden={!introDone}
       >
         <Hero />
@@ -160,38 +161,53 @@ function Index() {
 function IntroLogo() {
   const name = "ZETAACRAFT".split("");
   const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
+  const total = name.length;
+  // right-to-left reveal: index 0 (Z) appears last
+  const letterStagger = 0.3;
+  const letterDuration = 1.5;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <h2
-        className="font-medium tracking-[0.18em] text-foreground text-[34px] sm:text-5xl md:text-6xl lg:text-7xl"
-        style={{ fontFamily: "var(--font-wordmark)" }}
-      >
-        {name.map((ch, i) => (
-          <motion.span
-            key={i}
-            className="inline-block"
-            initial={{ y: -140, opacity: 0, rotate: -8 }}
-            animate={{ y: 0, opacity: 1, rotate: 0 }}
-            transition={{
-              delay: 0.15 + i * 0.07,
-              duration: 0.75,
-              type: "spring",
-              stiffness: 220,
-              damping: 14,
-            }}
-          >
-            {ch}
-          </motion.span>
-        ))}
-      </h2>
-      <div className="mt-5 flex items-center gap-3 sm:gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <motion.img
+          src={zetacraftLogo.url}
+          alt=""
+          className="h-16 w-auto object-contain sm:h-20 md:h-24"
+          initial={{ x: 120, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <h2
+          className="font-medium tracking-[0.18em] text-foreground text-[28px] sm:text-4xl md:text-5xl lg:text-6xl"
+          style={{ fontFamily: "var(--font-wordmark)" }}
+        >
+          {name.map((ch, i) => {
+            const revealOrder = total - 1 - i; // right-to-left
+            return (
+              <motion.span
+                key={i}
+                className="inline-block"
+                initial={{ x: 30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{
+                  delay: 0.7 + revealOrder * letterStagger,
+                  duration: letterDuration,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {ch}
+              </motion.span>
+            );
+          })}
+        </h2>
+      </div>
+      <div className="mt-6 flex items-center gap-3 sm:gap-4">
         <span className="h-px w-8 bg-primary/60 sm:w-12" />
         <p
           className="text-[10px] tracking-[0.28em] text-primary sm:text-xs md:text-sm"
@@ -201,11 +217,11 @@ function IntroLogo() {
             <motion.span
               key={i}
               className="inline-block whitespace-pre"
-              initial={{ y: -70, opacity: 0 }}
+              initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: 1.1 + i * 0.025,
-                duration: 0.45,
+                delay: 3.6 + i * 0.025,
+                duration: 0.5,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
@@ -218,6 +234,7 @@ function IntroLogo() {
     </motion.div>
   );
 }
+
 
 
 function CalmWay() {
