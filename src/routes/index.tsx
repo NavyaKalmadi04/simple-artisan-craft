@@ -124,7 +124,8 @@ function Index() {
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 2900);
+    // wordmark ends ~1.93s; tagline ends ~7.3s; wait 1s after = ~8.3s
+    }, prefersReduced ? 200 : 8300);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
