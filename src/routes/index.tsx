@@ -123,7 +123,7 @@ function Index() {
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 2900);
+    }, prefersReduced ? 200 : 5200);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -132,13 +132,14 @@ function Index() {
 
   return (
     <>
-      <Nav />
       {!introDone && <IntroLogo />}
+      <Nav start={introDone} />
+      {introDone && <NavPills />}
       <motion.main
         className="min-h-screen bg-background text-foreground pb-20 lg:pb-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: introDone ? 1 : 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: introDone ? 1 : 0, y: introDone ? 0 : 8 }}
+        transition={{ duration: 1.2, ease: "easeOut", delay: introDone ? 0.15 : 0 }}
         aria-hidden={!introDone}
       >
         <Hero />
@@ -160,38 +161,53 @@ function Index() {
 function IntroLogo() {
   const name = "ZETAACRAFT".split("");
   const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
+  const total = name.length;
+  // right-to-left reveal: index 0 (Z) appears last
+  const letterStagger = 0.3;
+  const letterDuration = 1.5;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <h2
-        className="font-medium tracking-[0.18em] text-foreground text-[34px] sm:text-5xl md:text-6xl lg:text-7xl"
-        style={{ fontFamily: "var(--font-wordmark)" }}
-      >
-        {name.map((ch, i) => (
-          <motion.span
-            key={i}
-            className="inline-block"
-            initial={{ y: -140, opacity: 0, rotate: -8 }}
-            animate={{ y: 0, opacity: 1, rotate: 0 }}
-            transition={{
-              delay: 0.15 + i * 0.07,
-              duration: 0.75,
-              type: "spring",
-              stiffness: 220,
-              damping: 14,
-            }}
-          >
-            {ch}
-          </motion.span>
-        ))}
-      </h2>
-      <div className="mt-5 flex items-center gap-3 sm:gap-4">
+      <div className="flex items-center gap-3 sm:gap-4">
+        <motion.img
+          src={zetacraftLogo.url}
+          alt=""
+          className="h-16 w-auto object-contain sm:h-20 md:h-24"
+          initial={{ x: 120, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <h2
+          className="font-medium tracking-[0.18em] text-foreground text-[28px] sm:text-4xl md:text-5xl lg:text-6xl"
+          style={{ fontFamily: "var(--font-wordmark)" }}
+        >
+          {name.map((ch, i) => {
+            const revealOrder = total - 1 - i; // right-to-left
+            return (
+              <motion.span
+                key={i}
+                className="inline-block"
+                initial={{ x: 30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{
+                  delay: 0.7 + revealOrder * letterStagger,
+                  duration: letterDuration,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {ch}
+              </motion.span>
+            );
+          })}
+        </h2>
+      </div>
+      <div className="mt-6 flex items-center gap-3 sm:gap-4">
         <span className="h-px w-8 bg-primary/60 sm:w-12" />
         <p
           className="text-[10px] tracking-[0.28em] text-primary sm:text-xs md:text-sm"
@@ -201,11 +217,11 @@ function IntroLogo() {
             <motion.span
               key={i}
               className="inline-block whitespace-pre"
-              initial={{ y: -70, opacity: 0 }}
+              initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: 1.1 + i * 0.025,
-                duration: 0.45,
+                delay: 3.6 + i * 0.025,
+                duration: 0.5,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
@@ -218,6 +234,7 @@ function IntroLogo() {
     </motion.div>
   );
 }
+
 
 
 function CalmWay() {
@@ -266,7 +283,7 @@ function CalmWay() {
 }
 
 
-function Nav() {
+function Nav({ start }: { start: boolean }) {
   const letters = "ZETAACRAFT".split("");
   const prefersReduced =
     typeof window !== "undefined" &&
@@ -275,43 +292,34 @@ function Nav() {
   const letterDuration = 0.45;
   const letterStagger = 0.11;
   const totalLetters = letters.length;
-
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const play = start && !prefersReduced;
 
   return (
-    <header
-      className={`sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md transition-shadow duration-300 ${
-        scrolled ? "shadow-md shadow-foreground/5" : ""
-      }`}
-    >
+    <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
         <motion.a
           href="#"
           className="flex items-center gap-2 shrink-0"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
-            prefersReduced
-              ? undefined
-              : {
+            play
+              ? {
                   x: [null, "55vw", 0, 0],
                   opacity: [0, 1, 1, 1],
                   scale: [1, 1, 1.28, 1],
                 }
+              : prefersReduced
+                ? undefined
+                : { x: "55vw", opacity: 0 }
           }
           transition={
-            prefersReduced
-              ? undefined
-              : {
+            play
+              ? {
                   duration: 2.6,
                   times: [0, 0.08, 0.78, 1],
                   ease: [0.22, 1, 0.36, 1],
                 }
+              : undefined
           }
         >
           <img
@@ -325,17 +333,21 @@ function Nav() {
           >
             {letters.map((ch, i) => {
               const revealOrder = totalLetters - 1 - i;
-              const delay = prefersReduced ? 0 : 0.5 + revealOrder * letterStagger;
+              const delay = 0.5 + revealOrder * letterStagger;
               return (
                 <motion.span
                   key={i}
                   className="inline-block"
                   initial={prefersReduced ? false : { y: 12, opacity: 0 }}
-                  animate={prefersReduced ? undefined : { y: 0, opacity: 1 }}
+                  animate={
+                    play
+                      ? { y: 0, opacity: 1 }
+                      : prefersReduced
+                        ? undefined
+                        : { y: 12, opacity: 0 }
+                  }
                   transition={
-                    prefersReduced
-                      ? undefined
-                      : { duration: letterDuration, delay, ease: "easeOut" }
+                    play ? { duration: letterDuration, delay, ease: "easeOut" } : undefined
                   }
                 >
                   {ch}
@@ -343,7 +355,6 @@ function Nav() {
               );
             })}
           </h1>
-          {/* Mobile: smaller centered wordmark beside logo */}
           <span
             className="inline-block sm:hidden text-[15px] font-medium tracking-[0.18em] text-foreground"
             style={{ fontFamily: "var(--font-wordmark)" }}
@@ -352,49 +363,62 @@ function Nav() {
           </span>
         </motion.a>
 
-        <motion.nav
-          className="hidden lg:flex justify-center"
-          initial={prefersReduced ? false : { opacity: 0, y: -6 }}
-          animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
-          transition={
-            prefersReduced
-              ? undefined
-              : { duration: 0.45, delay: 2.7, ease: "easeOut" }
-          }
-        >
-          <div className="inline-flex items-end gap-1 rounded-full border border-border/70 bg-background/70 px-2.5 py-1 shadow-sm backdrop-blur">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
-              >
-                {l.label}
-              </a>
-            ))}
-          </div>
-        </motion.nav>
-        <div className="hidden lg:block" />
+        <div />
 
         <motion.a
           href="#contact"
           className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
           initial={prefersReduced ? false : { opacity: 0, y: -6 }}
-          animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
-          transition={
-            prefersReduced
-              ? undefined
-              : { duration: 0.4, delay: 2.75, ease: "easeOut" }
+          animate={
+            play ? { opacity: 1, y: 0 } : prefersReduced ? undefined : { opacity: 0, y: -6 }
           }
+          transition={play ? { duration: 0.4, delay: 2.75, ease: "easeOut" } : undefined}
         >
           <MessageCircle className="h-4 w-4" /> Book a session
         </motion.a>
-        {/* Mobile spacer to keep layout balanced */}
         <div aria-hidden className="lg:hidden h-2 w-2" />
       </div>
     </header>
   );
 }
+
+function NavPills() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <div className="sticky top-0 z-40 hidden lg:flex justify-center pointer-events-none">
+      <motion.nav
+        className="pointer-events-auto mt-3"
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+      >
+        <div
+          className={`inline-flex items-end gap-1 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 backdrop-blur-md transition-shadow duration-300 ${
+            scrolled ? "shadow-lg shadow-foreground/10" : "shadow-sm"
+          }`}
+        >
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+            >
+              {l.label}
+            </a>
+          ))}
+        </div>
+      </motion.nav>
+    </div>
+  );
+}
+
 
 
 
