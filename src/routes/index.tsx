@@ -23,33 +23,24 @@ import {
   HelpCircle,
   X,
   ChevronDown,
+
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
 import { motion } from "framer-motion";
 
+
 const COMPANY_NAME = "Zetaacraft";
 const COMPANY_SHORT = "Zetaacraft";
-
-// Splash animation timing constants (seconds)
-const WORDMARK_STAGGER = 0.12;
-const WORDMARK_DURATION = 0.12;
-const TAGLINE_DURATION = 0.35;
-const TAGLINE_STAGGER = 0.03;
-const TAGLINE_START_DELAY =
-  0.7 + ("ZETAACRAFT".length - 1) * WORDMARK_STAGGER + WORDMARK_DURATION + 0.15;
-const TAGLINE_LENGTH = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".length;
-const SPLASH_DURATION_MS =
-  Math.ceil((TAGLINE_START_DELAY + (TAGLINE_LENGTH - 1) * TAGLINE_STAGGER + TAGLINE_DURATION + 1) * 1000);
 
 const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
-  { href: "#projects", label: "Work" },
+  { href: "#team", label: "Team" },
+  { href: "#projects", label: "Projects" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
-
 
 const MOBILE_NAV = [
   { href: "#", label: "Home", icon: Home },
@@ -129,10 +120,12 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // last letter finishes at 0.7 + 9*0.12 + 0.12 = 1.9s, wait 1s = 2.9s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : SPLASH_DURATION_MS);
+    // wordmark ends ~1.93s; tagline ends ~7.3s; wait 1s after = ~8.3s
+    }, prefersReduced ? 200 : 8300);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -171,10 +164,14 @@ function IntroLogo() {
   const name = "ZETAACRAFT".split("");
   const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
   const total = name.length;
+  // right-to-left reveal: index 0 (Z) appears last
+  const letterStagger = 0.12;
+  const letterDuration = 0.12; // 0.12s ease-out per letter
+  // tagline reveal starts after wordmark finishes
+  const taglineStart = 0.7 + (name.length - 1) * letterStagger + letterDuration + 0.15;
   return (
     <motion.div
-      className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center px-6 text-center"
-      style={{ backgroundColor: "#f5f5f5" }}
+      className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -204,8 +201,8 @@ function IntroLogo() {
                 initial={{ x: 30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{
-                  delay: 0.7 + revealOrder * WORDMARK_STAGGER,
-                  duration: WORDMARK_DURATION,
+                  delay: 0.7 + revealOrder * letterStagger,
+                  duration: letterDuration,
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
@@ -229,8 +226,8 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: TAGLINE_START_DELAY + i * TAGLINE_STAGGER,
-                duration: TAGLINE_DURATION,
+                delay: taglineStart + i * 0.09,
+                duration: 1.4,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
@@ -304,12 +301,11 @@ function Nav({ start }: { start: boolean }) {
   const play = start && !prefersReduced;
 
   return (
-    <header className="sticky top-0 z-40 lg:relative lg:z-30" style={{ backgroundColor: "#f5f5f5" }}>
+    <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
           href="#"
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
           className="flex shrink-0 items-center gap-2 justify-self-start"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
@@ -336,14 +332,14 @@ function Nav({ start }: { start: boolean }) {
           <img
             src={zetacraftLogo.url}
             alt="Zetacraft"
-            className="h-[72px] w-auto object-contain drop-shadow-[0_4px_18px_rgba(30,40,90,0.18)] sm:h-[82px] md:h-[92px] lg:h-[100px]"
+            className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
           />
         </motion.a>
 
         {/* Company name — centered */}
         <div className="flex justify-center">
           <h1
-            className="bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text font-semibold tracking-[0.22em] text-transparent text-[16px] sm:text-lg md:text-xl lg:text-2xl"
+            className="font-medium tracking-[0.18em] text-foreground text-[15px] sm:text-base md:text-lg lg:text-xl"
             style={{ fontFamily: "var(--font-wordmark)" }}
           >
             {letters.map((ch, i) => {
@@ -377,14 +373,13 @@ function Nav({ start }: { start: boolean }) {
 
       </div>
     </header>
-
   );
 }
 
 function NavPills() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 100);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -393,56 +388,25 @@ function NavPills() {
   return (
     <div className="sticky top-0 z-40 hidden lg:flex justify-center pointer-events-none">
       <motion.nav
-        className="pointer-events-auto w-full max-w-6xl px-4 sm:px-5 md:px-6 pt-2"
+        className="pointer-events-auto mt-3"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
       >
         <div
-          className={`flex items-center justify-between gap-3 rounded-full border border-border/70 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 px-2.5 py-1.5 transition-all duration-300 ${
+          className={`inline-flex items-end gap-1 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 backdrop-blur-md transition-shadow duration-300 ${
             scrolled ? "shadow-lg shadow-foreground/10" : "shadow-sm"
           }`}
         >
-          {/* Left: logo appears only after scroll */}
-          <div className="flex shrink-0 items-center pl-1 min-w-[40px]">
-            {scrolled && (
-              <a
-                href="#top"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className="flex items-center"
-              >
-                <img
-                  src={zetacraftLogo.url}
-                  alt="Zetacraft"
-                  className="h-8 w-auto object-contain"
-                />
-              </a>
-            )}
-          </div>
-
-          {/* Center: mac-style dock links */}
-          <div className="inline-flex items-end gap-1">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.18] hover:-translate-y-0.5 hover:font-medium"
-              >
-                {l.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Right: Book a session CTA */}
-          <a
-            href="#contact"
-            className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground shadow-sm transition-all duration-200 hover:scale-[1.04] hover:shadow-md"
-          >
-            <MessageCircle className="h-4 w-4" /> Book a session
-          </a>
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+            >
+              {l.label}
+            </a>
+          ))}
         </div>
       </motion.nav>
     </div>
@@ -516,18 +480,17 @@ function Hero() {
 
       <RotatingBadge />
 
-      <h1 className="mt-6 max-w-4xl font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+      <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
         Simple products,
         <br />
         <em className="font-display italic text-muted-foreground">built around real customers</em>
         — shipped at lighting speed.
       </h1>
 
-      <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-[17px]">
+      <p className="mt-8 max-w-xl text-lg text-muted-foreground">
         We understand real customers, design the optimal solution and build products users actually
         like — for SaaS, websites and AI workflows across every kind of business.
       </p>
-
 
       <div className="mt-10">
         <BookCTA />
@@ -611,31 +574,16 @@ function About() {
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {pillars.map((p, idx) => {
-            const tints = [
-              "from-blush/30 via-white/80 to-sage/20",
-              "from-sage/30 via-white/80 to-cream/30",
-              "from-accent/30 via-white/80 to-blush/20",
-              "from-cream/40 via-white/80 to-sage/20",
-            ];
-            const blobs = [
-              "from-blush/60 to-primary/20",
-              "from-sage/60 to-primary/20",
-              "from-accent/60 to-primary/20",
-              "from-cream/80 to-sage/40",
-            ];
-            return (
-              <div
-                key={p.t}
-                className={`group relative overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br ${tints[idx]} p-6 shadow-[0_8px_30px_-12px_rgba(30,40,90,0.18)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_18px_40px_-12px_rgba(30,40,90,0.28)] hover:border-primary/30`}
-              >
-                <span className={`pointer-events-none absolute -top-12 -right-10 h-32 w-32 rounded-full bg-gradient-to-br ${blobs[idx]} blur-2xl opacity-60 transition-opacity duration-300 group-hover:opacity-90`} />
-                <p.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
-                <h3 className="relative mt-5 font-display text-lg">{p.t}</h3>
-                <p className="relative mt-2 text-sm text-foreground/70">{p.b}</p>
-              </div>
-            );
-          })}
+          {pillars.map((p) => (
+            <div
+              key={p.t}
+              className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-6 transition-all duration-200 ease-out hover:scale-[1.04] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+            >
+              <p.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+              <h3 className="mt-5 font-display text-lg">{p.t}</h3>
+              <p className="mt-2 text-sm text-foreground/70">{p.b}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -710,34 +658,16 @@ function Services() {
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-2">
-          {services.map((s, idx) => {
-            const tints = [
-              "from-blush/35 via-white/80 to-cream/25",
-              "from-sage/35 via-white/80 to-blush/25",
-              "from-accent/35 via-white/80 to-sage/25",
-              "from-cream/45 via-white/80 to-accent/25",
-              "from-blush/30 via-white/80 to-sage/20",
-            ];
-            const blobs = [
-              "from-blush/70 to-primary/25",
-              "from-sage/70 to-primary/25",
-              "from-accent/70 to-primary/25",
-              "from-cream/90 to-primary/30",
-              "from-blush/60 to-sage/40",
-            ];
-            return (
-              <article
-                key={s.title}
-                className={`group relative flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br ${tints[idx]} p-7 shadow-[0_10px_30px_-14px_rgba(30,40,90,0.22)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_22px_44px_-16px_rgba(30,40,90,0.32)] hover:border-primary/30`}
-              >
-                <span className={`pointer-events-none absolute -top-16 -right-12 h-40 w-40 rounded-full bg-gradient-to-br ${blobs[idx]} blur-3xl opacity-60 transition-opacity duration-300 group-hover:opacity-95`} />
-                <span className="pointer-events-none absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-gradient-to-tr from-sage/30 to-blush/30 blur-3xl opacity-50" />
-                <s.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
-                <h3 className="relative mt-5 font-display text-2xl text-foreground">{s.title}</h3>
-                <p className="relative mt-3 flex-1 text-foreground/75">{s.body}</p>
-              </article>
-            );
-          })}
+          {services.map((s) => (
+            <article
+              key={s.title}
+              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-all duration-200 ease-out hover:scale-[1.03] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+            >
+              <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+              <h3 className="mt-5 font-display text-2xl text-foreground">{s.title}</h3>
+              <p className="mt-3 flex-1 text-foreground/70">{s.body}</p>
+            </article>
+          ))}
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Ready to start?{" "}
@@ -1321,7 +1251,7 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-20 right-4 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:right-5 lg:h-16 lg:w-16"
+        className="fixed bottom-20 right-[5.5rem] z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:right-5"
       >
         {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
       </button>
