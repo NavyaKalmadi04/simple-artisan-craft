@@ -404,6 +404,12 @@ function NavPills() {
             <a
               key={l.href}
               href={l.href}
+              onClick={(e) => {
+                if (l.href === "#top") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
               className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
             >
               {l.label}
