@@ -490,17 +490,18 @@ function Hero() {
 
       <RotatingBadge />
 
-      <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
+      <h1 className="mt-6 max-w-4xl font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
         Simple products,
         <br />
         <em className="font-display italic text-muted-foreground">built around real customers</em>
         — shipped at lighting speed.
       </h1>
 
-      <p className="mt-8 max-w-xl text-lg text-muted-foreground">
+      <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-[17px]">
         We understand real customers, design the optimal solution and build products users actually
         like — for SaaS, websites and AI workflows across every kind of business.
       </p>
+
 
       <div className="mt-10">
         <BookCTA />
