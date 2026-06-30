@@ -959,21 +959,21 @@ function ContactBookCTA() {
       <button
         type="button"
         onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-all duration-200 ease-out hover:scale-[1.06] hover:-translate-y-0.5 hover:opacity-90 sm:w-auto"
       >
-        <Send className="h-4 w-4" /> Open enquiry form
+        <MessageCircle className="h-4 w-4" /> Book a session
       </button>
       <a
         href={WHATSAPP_URL}
         target="_blank"
         rel="noreferrer noopener"
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-all duration-200 ease-out hover:scale-[1.06] hover:-translate-y-0.5 hover:bg-background/10 sm:w-auto"
       >
         <MessageCircle className="h-4 w-4" /> WhatsApp
       </a>
       <a
         href={`tel:${PHONE_TEL}`}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-all duration-200 ease-out hover:scale-[1.06] hover:-translate-y-0.5 hover:bg-background/10 sm:w-auto"
       >
         <Phone className="h-4 w-4" /> Call
       </a>
