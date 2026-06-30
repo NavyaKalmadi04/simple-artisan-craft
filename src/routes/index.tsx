@@ -110,16 +110,32 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [splashDone, setSplashDone] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const t = window.setTimeout(() => {
+      document.body.style.overflow = prevOverflow;
+      setIntroDone(true);
+    }, prefersReduced ? 200 : 1800);
+    return () => {
+      window.clearTimeout(t);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+
   return (
     <>
-      {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
+      {!introDone && <IntroLogo />}
       <motion.main
         className="min-h-screen bg-background text-foreground pb-20 lg:pb-0"
         initial={{ opacity: 0 }}
-        animate={{ opacity: splashDone ? 1 : 0 }}
+        animate={{ opacity: introDone ? 1 : 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        aria-hidden={!splashDone}
+        aria-hidden={!introDone}
       >
         <Nav />
         <Hero />
@@ -138,121 +154,28 @@ function Index() {
   );
 }
 
-function SplashScreen({ onDone }: { onDone: () => void }) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLImageElement>(null);
-  const zRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
-    // Lock scroll while splash is up
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    if (prefersReduced) {
-      const t = window.setTimeout(() => {
-        document.body.style.overflow = prevOverflow;
-        onDone();
-      }, 200);
-      return () => {
-        window.clearTimeout(t);
-        document.body.style.overflow = prevOverflow;
-      };
-    }
-
-    const ctx = gsap.context(() => {
-      // Continuous ring rotation (GPU transform)
-      const spin = gsap.to(ringRef.current, {
-        rotate: 360,
-        duration: 1.6,
-        ease: "none",
-        repeat: -1,
-        transformOrigin: "50% 50%",
-      });
-
-      // Subtle Z scale-in
-      gsap.from(zRef.current, {
-        scale: 0.85,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-
-      // Main timeline — stops ring at end, performs 2 bounces, fades splash
-      const tl = gsap.timeline({
-        delay: 2.0, // let ring rotate visibly + header animation play
-        onComplete: () => {
-          document.body.style.overflow = prevOverflow;
-          onDone();
-        },
-      });
-
-      // Stop ring rotation smoothly
-      tl.add(() => spin.kill());
-      // 2 premium bounces on the whole logo
-      tl.to([ringRef.current, zRef.current], {
-        scale: 1.12,
-        duration: 0.18,
-        ease: "power2.out",
-      })
-        .to([ringRef.current, zRef.current], {
-          scale: 1,
-          duration: 0.22,
-          ease: "power2.inOut",
-        })
-        .to([ringRef.current, zRef.current], {
-          scale: 1.06,
-          duration: 0.14,
-          ease: "power2.out",
-        })
-        .to([ringRef.current, zRef.current], {
-          scale: 1,
-          duration: 0.18,
-          ease: "power2.inOut",
-        })
-        // Fade out splash
-        .to(
-          rootRef.current,
-          { opacity: 0, duration: 0.45, ease: "power2.out" },
-          "+=0.05",
-        );
-    }, rootRef);
-
-    return () => {
-      ctx.revert();
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [onDone]);
-
+function IntroLogo() {
   return (
-    <div
-      ref={rootRef}
-      className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ backgroundColor: "#0a1535" }}
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <div className="relative h-40 w-40 sm:h-48 sm:w-48 md:h-56 md:w-56">
-        <img
-          ref={ringRef}
-          src={zetacraftRing}
-          alt=""
-          className="absolute inset-0 h-full w-full object-contain will-change-transform"
-          style={{ filter: "brightness(0) invert(1)" }}
-        />
-        <img
-          ref={zRef}
-          src={zetacraftZ}
-          alt=""
-          className="absolute inset-0 h-full w-full object-contain will-change-transform"
-          style={{ filter: "brightness(0) invert(1)" }}
-        />
-      </div>
-    </div>
+      <motion.img
+        src={zetacraftLogo.url}
+        alt=""
+        className="h-32 w-auto object-contain sm:h-40 md:h-48 will-change-transform"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: [0.9, 1.05, 1], opacity: 1 }}
+        transition={{ duration: 1.4, times: [0, 0.7, 1], ease: "easeOut" }}
+      />
+    </motion.div>
   );
 }
+
 
 function CalmWay() {
   const pillars = [
