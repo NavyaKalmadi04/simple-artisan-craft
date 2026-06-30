@@ -173,7 +173,8 @@ function IntroLogo() {
   const total = name.length;
   return (
     <motion.div
-      className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
+      className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center px-6 text-center"
+      style={{ backgroundColor: "#f5f5f5" }}
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
