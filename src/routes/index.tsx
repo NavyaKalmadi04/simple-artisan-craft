@@ -23,15 +23,24 @@ import {
   HelpCircle,
   X,
   ChevronDown,
-
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
 import { motion } from "framer-motion";
 
-
 const COMPANY_NAME = "Zetaacraft";
 const COMPANY_SHORT = "Zetaacraft";
+
+// Splash animation timing constants (seconds)
+const WORDMARK_STAGGER = 0.12;
+const WORDMARK_DURATION = 0.12;
+const TAGLINE_DURATION = 0.35;
+const TAGLINE_STAGGER = 0.03;
+const TAGLINE_START_DELAY =
+  0.7 + ("ZETAACRAFT".length - 1) * WORDMARK_STAGGER + WORDMARK_DURATION + 0.15;
+const TAGLINE_LENGTH = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".length;
+const SPLASH_DURATION_MS =
+  Math.ceil((TAGLINE_START_DELAY + (TAGLINE_LENGTH - 1) * TAGLINE_STAGGER + TAGLINE_DURATION + 1) * 1000);
 
 const NAV_LINKS = [
   { href: "#top", label: "Home" },
@@ -122,11 +131,10 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    // tagline ends at ~5.0s; wait 1s after = ~6.0s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    }, prefersReduced ? 200 : 6000);
+    }, prefersReduced ? 200 : SPLASH_DURATION_MS);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -165,13 +173,6 @@ function IntroLogo() {
   const name = "ZETAACRAFT".split("");
   const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
   const total = name.length;
-  // right-to-left reveal: index 0 (Z) appears last
-  const letterStagger = 0.12;
-  const letterDuration = 0.12; // 0.12s ease-out per letter
-  // tagline reveal starts after wordmark finishes
-  const taglineStart = 0.7 + (name.length - 1) * letterStagger + letterDuration + 0.15;
-  const taglineDuration = 0.8;
-  const taglineStagger = 0.05;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
@@ -204,8 +205,8 @@ function IntroLogo() {
                 initial={{ x: 30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{
-                  delay: 0.7 + revealOrder * letterStagger,
-                  duration: letterDuration,
+                  delay: 0.7 + revealOrder * WORDMARK_STAGGER,
+                  duration: WORDMARK_DURATION,
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
@@ -229,8 +230,8 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: taglineStart + i * taglineStagger,
-                duration: taglineDuration,
+                delay: TAGLINE_START_DELAY + i * TAGLINE_STAGGER,
+                duration: TAGLINE_DURATION,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
