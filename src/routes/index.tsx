@@ -129,6 +129,7 @@ function Index() {
 
   return (
     <>
+      <Nav />
       {!introDone && <IntroLogo />}
       <motion.main
         className="min-h-screen bg-background text-foreground pb-20 lg:pb-0"
@@ -137,7 +138,6 @@ function Index() {
         transition={{ duration: 0.4, ease: "easeOut" }}
         aria-hidden={!introDone}
       >
-        <Nav />
         <Hero />
         <Marquee />
         <About />
@@ -157,20 +157,20 @@ function Index() {
 function IntroLogo() {
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
-      initial={{ opacity: 1 }}
+      className="pointer-events-none fixed inset-x-0 top-[180px] z-[60] flex justify-center sm:top-[210px] md:top-[240px]"
+      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       aria-hidden="true"
     >
       <motion.img
         src={zetacraftLogo.url}
         alt=""
-        className="h-32 w-auto object-contain sm:h-40 md:h-48 will-change-transform"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: [0.9, 1.05, 1], opacity: 1 }}
-        transition={{ duration: 1.4, times: [0, 0.7, 1], ease: "easeOut" }}
+        className="h-24 w-auto object-contain sm:h-28 md:h-32 will-change-transform"
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: [0.92, 1.04, 1], opacity: 1 }}
+        transition={{ duration: 1.2, times: [0, 0.7, 1], ease: "easeOut" }}
       />
     </motion.div>
   );
