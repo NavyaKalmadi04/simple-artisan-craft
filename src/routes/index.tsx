@@ -606,7 +606,7 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-colors hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-all duration-200 ease-out hover:scale-[1.03] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
             >
               <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <h3 className="mt-5 font-display text-2xl text-foreground">{s.title}</h3>
