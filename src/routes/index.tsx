@@ -798,7 +798,7 @@ function Footer() {
               <Phone className="h-4 w-4" />
             </a>
             <a
-              href="mailto:hello@maren.studio"
+              href="mailto:Zetaacraft@gmail.com"
               aria-label="Email"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
             >
@@ -806,7 +806,7 @@ function Footer() {
             </a>
           </div>
           <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-base leading-none">p</span>
+            <span className="font-display text-base leading-none">Z</span>
           </span>
         </div>
         <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
@@ -827,10 +827,10 @@ function Footer() {
               <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
             </a>
             <a
-              href="mailto:hello@maren.studio"
+              href="mailto:Zetaacraft@gmail.com"
               className="inline-flex items-center gap-2 hover:text-foreground"
             >
-              <Mail className="h-4 w-4" /> hello@maren.studio
+              <Mail className="h-4 w-4" /> Zetaacraft@gmail.com
             </a>
           </div>
         </div>
@@ -939,7 +939,7 @@ function botAnswer(input: string): ChatMsg {
   if (/(hi|hello|hey|namaste)/.test(q)) {
     return {
       from: "bot",
-      text: "Hi there! I'm Pranavya's assistant. Ask me about services, pricing, workshops, or how to book a session.",
+      text: "Hi there! I'm Zetaacraft's assistant. Ask me about services, pricing, workshops, or how to book a session.",
       actions: [
         { label: "See services", href: "#services" },
         { label: "See projects", href: "#projects" },
@@ -959,7 +959,7 @@ function ChatBot() {
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       from: "bot",
-      text: "Hi! I'm Pranavya's assistant 🌿 Ask me about our services, pricing, workshops, or how to book a session.",
+      text: "Hi! I'm Zetaacraft's assistant 🌿 Ask me about our services, pricing, workshops, or how to book a session.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -1000,7 +1000,7 @@ function ChatBot() {
               <Bot className="h-4 w-4" />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="font-display text-base leading-tight">Ask Pranavya</p>
+              <p className="font-display text-base leading-tight">Ask Zetaacraft</p>
               <p className="text-xs text-muted-foreground">Usually replies instantly</p>
             </div>
             <button
