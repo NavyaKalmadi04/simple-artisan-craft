@@ -317,7 +317,7 @@ function Nav() {
             transition={
               prefersReduced
                 ? undefined
-                : { duration: 0.4, delay: 2.0, ease: "easeOut" }
+                : { duration: 0.4, delay: 2.7, ease: "easeOut" }
             }
           >
             Book a session
@@ -333,7 +333,7 @@ function Nav() {
         transition={
           prefersReduced
             ? undefined
-            : { duration: 0.45, delay: 2.1, ease: "easeOut" }
+            : { duration: 0.45, delay: 2.8, ease: "easeOut" }
         }
       >
         <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
