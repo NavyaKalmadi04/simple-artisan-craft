@@ -1025,7 +1025,7 @@ function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
         {/* Mobile: logo left, contact icons right */}
         <div className="flex items-center justify-between gap-3 md:hidden">
-          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-14 w-auto object-contain" />
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-20 w-auto object-contain" />
           <div className="flex items-center gap-3">
             <a
               href={WHATSAPP_URL}
