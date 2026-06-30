@@ -301,10 +301,11 @@ function Nav({ start }: { start: boolean }) {
 
   return (
     <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
+      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
+        {/* Logo — left */}
         <motion.a
           href="#"
-          className="flex items-center gap-2 shrink-0"
+          className="flex shrink-0 items-center gap-2 justify-self-start"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
             play
@@ -332,8 +333,12 @@ function Nav({ start }: { start: boolean }) {
             alt="Zetacraft"
             className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
           />
+        </motion.a>
+
+        {/* Company name — centered */}
+        <div className="flex justify-center">
           <h1
-            className="hidden font-medium tracking-[0.18em] text-foreground sm:inline-block text-base md:text-lg lg:text-xl"
+            className="font-medium tracking-[0.18em] text-foreground text-[15px] sm:text-base md:text-lg lg:text-xl"
             style={{ fontFamily: "var(--font-wordmark)" }}
           >
             {letters.map((ch, i) => {
@@ -360,28 +365,23 @@ function Nav({ start }: { start: boolean }) {
               );
             })}
           </h1>
-          <span
-            className="inline-block sm:hidden text-[15px] font-medium tracking-[0.18em] text-foreground"
-            style={{ fontFamily: "var(--font-wordmark)" }}
+        </div>
+
+        {/* CTA — right */}
+        <div className="flex justify-end">
+          <motion.a
+            href="#contact"
+            className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
+            initial={prefersReduced ? false : { opacity: 0, y: -6 }}
+            animate={
+              play ? { opacity: 1, y: 0 } : prefersReduced ? undefined : { opacity: 0, y: -6 }
+            }
+            transition={play ? { duration: 0.4, delay: 2.75, ease: "easeOut" } : undefined}
           >
-            ZETAACRAFT
-          </span>
-        </motion.a>
-
-        <div />
-
-        <motion.a
-          href="#contact"
-          className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
-          initial={prefersReduced ? false : { opacity: 0, y: -6 }}
-          animate={
-            play ? { opacity: 1, y: 0 } : prefersReduced ? undefined : { opacity: 0, y: -6 }
-          }
-          transition={play ? { duration: 0.4, delay: 2.75, ease: "easeOut" } : undefined}
-        >
-          <MessageCircle className="h-4 w-4" /> Book a session
-        </motion.a>
-        <div aria-hidden className="lg:hidden h-2 w-2" />
+            <MessageCircle className="h-4 w-4" /> Book a session
+          </motion.a>
+          <div aria-hidden className="lg:hidden h-2 w-2" />
+        </div>
       </div>
     </header>
   );
