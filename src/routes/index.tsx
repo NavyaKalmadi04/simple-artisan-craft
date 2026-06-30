@@ -232,8 +232,8 @@ function Nav() {
     typeof window !== "undefined" &&
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-  const letterDuration = 0.35;
-  const letterStagger = 0.07;
+  const letterDuration = 0.45;
+  const letterStagger = 0.11;
   const totalLetters = letters.length;
 
   const [scrolled, setScrolled] = useState(false);
