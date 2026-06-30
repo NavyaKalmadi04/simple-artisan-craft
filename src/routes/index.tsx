@@ -165,9 +165,9 @@ function IntroLogo() {
   const total = name.length;
   // right-to-left reveal: index 0 (Z) appears last
   const letterStagger = 0.12;
-  const letterDuration = 0.5;
+  const letterDuration = 0.12; // 0.12s ease-out per letter
   // tagline reveal starts after wordmark finishes
-  const taglineStart = 0.7 + (name.length - 1) * 0.12 + 0.5 + 0.15;
+  const taglineStart = 0.7 + (name.length - 1) * letterStagger + letterDuration + 0.15;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
@@ -177,11 +177,12 @@ function IntroLogo() {
       transition={{ duration: 0.4, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <div className="flex items-center gap-3 sm:gap-4">
+      {/* Mobile: logo on its own line; desktop: logo + name inline */}
+      <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
         <motion.img
           src={zetacraftLogo.url}
           alt=""
-          className="h-16 w-auto object-contain sm:h-20 md:h-24"
+          className="h-20 w-auto object-contain sm:h-20 md:h-24"
           initial={{ x: 120, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
@@ -210,10 +211,11 @@ function IntroLogo() {
           })}
         </h2>
       </div>
-      <div className="mt-6 flex items-center gap-3 sm:gap-4">
-        <span className="h-px w-8 bg-primary/60 sm:w-12" />
+      {/* Tagline on its own third line on mobile */}
+      <div className="mt-5 flex items-center gap-2 sm:mt-6 sm:gap-3">
+        <span className="hidden h-px w-6 bg-primary/60 sm:inline-block sm:w-12" />
         <p
-          className="text-[10px] tracking-[0.28em] text-primary sm:text-xs md:text-sm"
+          className="whitespace-nowrap text-[7px] tracking-[0.08em] text-primary sm:text-[8px] sm:tracking-[0.1em] md:text-[9px] md:tracking-[0.15em] lg:text-[10px] lg:tracking-[0.2em] xl:text-xs"
           style={{ fontFamily: "var(--font-wordmark)" }}
         >
           {tagline.map((ch, i) => (
@@ -232,7 +234,7 @@ function IntroLogo() {
             </motion.span>
           ))}
         </p>
-        <span className="h-px w-8 bg-primary/60 sm:w-12" />
+        <span className="hidden h-px w-6 bg-primary/60 sm:inline-block sm:w-12" />
       </div>
     </motion.div>
   );
