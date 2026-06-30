@@ -60,17 +60,17 @@ type ServiceKey =
 
 const WHATSAPP_TEMPLATES: Record<ServiceKey, string> = {
   general:
-    "Hi Pranavya! 👋 I'd like to book a session to discuss a product idea. Could you share the next available slot?",
+    "Hi Zetaacraft! 👋 I'd like to book a session to discuss a product idea. Could you share the next available slot?",
   productDesign:
-    "Hi Pranavya! 👋 I'm interested in your *Product Design* service. I'd love to discuss my product, target users and timeline. When can we connect?",
+    "Hi Zetaacraft! 👋 I'm interested in your *Product Design* service. I'd love to discuss my product, target users and timeline. When can we connect?",
   websiteBuilding:
-    "Hi Pranavya! 👋 I'd like to enquire about your *Website Building* service. I want a fast, simple website for my business and would love a quote.",
+    "Hi Zetaacraft! 👋 I'd like to enquire about your *Website Building* service. I want a fast, simple website for my business and would love a quote.",
   aiFullstack:
-    "Hi Pranavya! 👋 I'd like to enquire about your *AI Full-stack Apps* service. I have an idea that needs AI + a full product around it — can we discuss?",
+    "Hi Zetaacraft! 👋 I'd like to enquire about your *AI Full-stack Apps* service. I have an idea that needs AI + a full product around it — can we discuss?",
   productStrategy:
-    "Hi Pranavya! 👋 I'd like to enquire about your *Product Strategy* service. I need help with roadmap, scope and the right next step for my product.",
+    "Hi Zetaacraft! 👋 I'd like to enquire about your *Product Strategy* service. I need help with roadmap, scope and the right next step for my product.",
   workshops:
-    "Hi Pranavya! 👋 I'd like to book a *Workshop* for our college / event on product, design and AI full-stack. Please share formats, duration and pricing.",
+    "Hi Zetaacraft! 👋 I'd like to book a *Workshop* for our college / event on product, design and AI full-stack. Please share formats, duration and pricing.",
 };
 
 function waLink(message: string) {
@@ -90,13 +90,13 @@ const ROTATING_LINES = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
+      { title: "Zetaacraft — Simple products customers love" },
       {
         name: "description",
         content:
-          "Pranavya Solutions builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed.",
+          "Zetaacraft builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed.",
       },
-      { property: "og:title", content: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
+      { property: "og:title", content: "Zetaacraft — Simple products customers love" },
       {
         property: "og:description",
         content:
@@ -372,7 +372,7 @@ function About() {
             <em className="text-muted-foreground"> simple software</em> for every kind of business.
           </h2>
           <p className="mt-6 text-muted-foreground">
-            Pranavya Solutions is a product studio led by designers and AI full-stack engineers. We help founders
+            Zetaacraft is a product studio led by designers and AI full-stack engineers. We help founders
             and teams turn complex problems into clear, user-friendly products — websites, SaaS,
             internal tools and AI workflows — without the usual agency drag.
           </p>
