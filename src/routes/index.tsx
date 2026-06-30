@@ -205,8 +205,8 @@ function IntroLogo() {
                 initial={{ x: 30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{
-                  delay: 0.7 + revealOrder * letterStagger,
-                  duration: letterDuration,
+                  delay: 0.7 + revealOrder * WORDMARK_STAGGER,
+                  duration: WORDMARK_DURATION,
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >
@@ -230,8 +230,8 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: taglineStart + i * taglineStagger,
-                duration: taglineDuration,
+                delay: TAGLINE_START_DELAY + i * TAGLINE_STAGGER,
+                duration: TAGLINE_DURATION,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
