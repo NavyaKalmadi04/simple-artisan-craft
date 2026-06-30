@@ -707,6 +707,8 @@ function Projects() {
     },
   ];
   const [showAll, setShowAll] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
     <section id="projects" className="bg-secondary/50 py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
