@@ -174,49 +174,118 @@ function CalmWay() {
 
 
 function Nav() {
+  const letters = "ZETAACRAFT".split("");
+  const prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  const letterDuration = 0.35;
+  const letterStagger = 0.07;
+  const totalLetters = letters.length;
+
   return (
     <div className="relative">
-      {/* Header: non-sticky, larger logo and name */}
+      {/* Header: reduced height, same logo/font sizes */}
       <header className="border-b border-border/60 bg-background">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-5 md:px-6 md:py-7">
-          <a href="#" className="flex items-center gap-2 shrink-0">
+        <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
+          <motion.a
+            href="#"
+            className="flex items-center shrink-0"
+            initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
+            animate={
+              prefersReduced
+                ? undefined
+                : {
+                    x: [null, "55vw", 0, 0],
+                    opacity: [0, 1, 1, 1],
+                    scale: [1, 1, 1.15, 1],
+                  }
+            }
+            transition={
+              prefersReduced
+                ? undefined
+                : {
+                    duration: 1.7,
+                    times: [0, 0.05, 0.8, 1],
+                    ease: [0.22, 1, 0.36, 1],
+                  }
+            }
+          >
             <img
               src={zetacraftLogo.url}
               alt="Zetacraft"
-              className="h-16 w-auto object-contain sm:h-20 md:h-24"
+              className="h-10 w-auto object-contain sm:h-12 md:h-14"
             />
             <span className="sr-only">{COMPANY_NAME}</span>
-          </a>
+          </motion.a>
 
-          <span className="font-display text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">
-            ZETAACRAFT
-          </span>
+          <div className="flex justify-center overflow-hidden">
+            <h1 className="font-display text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">
+              {letters.map((ch, i) => {
+                const revealOrder = totalLetters - 1 - i;
+                const delay = prefersReduced
+                  ? 0
+                  : 0.25 + revealOrder * letterStagger;
+                return (
+                  <motion.span
+                    key={i}
+                    className="inline-block"
+                    initial={prefersReduced ? false : { y: 12, opacity: 0 }}
+                    animate={prefersReduced ? undefined : { y: 0, opacity: 1 }}
+                    transition={
+                      prefersReduced
+                        ? undefined
+                        : { duration: letterDuration, delay, ease: "easeOut" }
+                    }
+                  >
+                    {ch}
+                  </motion.span>
+                );
+              })}
+            </h1>
+          </div>
 
-          <a
+          <motion.a
             href="#contact"
             className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
+            initial={prefersReduced ? false : { opacity: 0, y: -6 }}
+            animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+            transition={
+              prefersReduced
+                ? undefined
+                : { duration: 0.4, delay: 2.0, ease: "easeOut" }
+            }
           >
             Book a session
-          </a>
+          </motion.a>
         </div>
       </header>
 
-      {/* Sticky nav pill anchored to the right end of the header content */}
-      <div className="sticky top-0 z-40 hidden lg:block">
-        <div className="mx-auto flex max-w-6xl justify-end px-4 sm:px-5 md:px-6">
-          <nav className="inline-flex items-center gap-1 rounded-full border border-border bg-background/95 px-2 py-1.5 shadow-sm">
+      {/* Sticky nav pill — centered, with Apple-dock hover scale */}
+      <motion.div
+        className="sticky top-0 z-40 hidden lg:block pointer-events-none"
+        initial={prefersReduced ? false : { opacity: 0, y: -8 }}
+        animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+        transition={
+          prefersReduced
+            ? undefined
+            : { duration: 0.45, delay: 2.1, ease: "easeOut" }
+        }
+      >
+        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
+          <nav className="pointer-events-auto inline-flex items-end gap-1 rounded-full border border-border bg-background/95 px-3 py-1.5 shadow-sm backdrop-blur">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
-                className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground"
+                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.35] hover:-translate-y-1 hover:font-medium"
               >
                 {l.label}
               </a>
             ))}
           </nav>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
