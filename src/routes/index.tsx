@@ -158,20 +158,63 @@ function Index() {
 }
 
 function IntroLogo() {
+  const name = "ZETAACRAFT".split("");
+  const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
   return (
     <motion.div
-      className="pointer-events-none fixed inset-x-0 top-1/2 z-[60] flex -translate-y-1/2 justify-center"
+      className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <img
-        src={zetacraftLogo.url}
-        alt=""
-        className="h-44 w-auto object-contain sm:h-56 md:h-64 lg:h-72"
-      />
+      <h2
+        className="font-medium tracking-[0.18em] text-foreground text-[34px] sm:text-5xl md:text-6xl lg:text-7xl"
+        style={{ fontFamily: "var(--font-wordmark)" }}
+      >
+        {name.map((ch, i) => (
+          <motion.span
+            key={i}
+            className="inline-block"
+            initial={{ y: -140, opacity: 0, rotate: -8 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            transition={{
+              delay: 0.15 + i * 0.07,
+              duration: 0.75,
+              type: "spring",
+              stiffness: 220,
+              damping: 14,
+            }}
+          >
+            {ch}
+          </motion.span>
+        ))}
+      </h2>
+      <div className="mt-5 flex items-center gap-3 sm:gap-4">
+        <span className="h-px w-8 bg-primary/60 sm:w-12" />
+        <p
+          className="text-[10px] tracking-[0.28em] text-primary sm:text-xs md:text-sm"
+          style={{ fontFamily: "var(--font-wordmark)" }}
+        >
+          {tagline.map((ch, i) => (
+            <motion.span
+              key={i}
+              className="inline-block whitespace-pre"
+              initial={{ y: -70, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                delay: 1.1 + i * 0.025,
+                duration: 0.45,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              {ch === " " ? "\u00A0" : ch}
+            </motion.span>
+          ))}
+        </p>
+        <span className="h-px w-8 bg-primary/60 sm:w-12" />
+      </div>
     </motion.div>
   );
 }
