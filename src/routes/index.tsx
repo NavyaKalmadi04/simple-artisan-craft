@@ -34,6 +34,7 @@ const COMPANY_NAME = "Zetaacraft";
 const COMPANY_SHORT = "Zetaacraft";
 
 const NAV_LINKS = [
+  { href: "#top", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#team", label: "Team" },
@@ -41,6 +42,7 @@ const NAV_LINKS = [
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
+
 
 const MOBILE_NAV = [
   { href: "#", label: "Home", icon: Home },
@@ -301,11 +303,12 @@ function Nav({ start }: { start: boolean }) {
   const play = start && !prefersReduced;
 
   return (
-    <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
           href="#"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
           className="flex shrink-0 items-center gap-2 justify-self-start"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
@@ -332,14 +335,14 @@ function Nav({ start }: { start: boolean }) {
           <img
             src={zetacraftLogo.url}
             alt="Zetacraft"
-            className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
+            className="h-[72px] w-auto object-contain drop-shadow-[0_4px_18px_rgba(30,40,90,0.18)] sm:h-[82px] md:h-[92px] lg:h-[100px]"
           />
         </motion.a>
 
         {/* Company name — centered */}
         <div className="flex justify-center">
           <h1
-            className="font-medium tracking-[0.18em] text-foreground text-[15px] sm:text-base md:text-lg lg:text-xl"
+            className="bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text font-semibold tracking-[0.22em] text-transparent text-[16px] sm:text-lg md:text-xl lg:text-2xl"
             style={{ fontFamily: "var(--font-wordmark)" }}
           >
             {letters.map((ch, i) => {
@@ -373,6 +376,7 @@ function Nav({ start }: { start: boolean }) {
 
       </div>
     </header>
+
   );
 }
 
@@ -402,6 +406,12 @@ function NavPills() {
             <a
               key={l.href}
               href={l.href}
+              onClick={(e) => {
+                if (l.href === "#top") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
               className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
             >
               {l.label}
@@ -480,17 +490,18 @@ function Hero() {
 
       <RotatingBadge />
 
-      <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
+      <h1 className="mt-6 max-w-4xl font-display text-3xl leading-[1.08] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
         Simple products,
         <br />
         <em className="font-display italic text-muted-foreground">built around real customers</em>
         — shipped at lighting speed.
       </h1>
 
-      <p className="mt-8 max-w-xl text-lg text-muted-foreground">
+      <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-[17px]">
         We understand real customers, design the optimal solution and build products users actually
         like — for SaaS, websites and AI workflows across every kind of business.
       </p>
+
 
       <div className="mt-10">
         <BookCTA />
@@ -577,12 +588,14 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-6 transition-all duration-200 ease-out hover:scale-[1.04] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group relative overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/70 via-primary/[0.04] to-primary/[0.10] p-6 shadow-[0_8px_30px_-12px_rgba(30,40,90,0.18)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_18px_40px_-12px_rgba(30,40,90,0.28)] hover:border-primary/30"
             >
-              <p.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
-              <h3 className="mt-5 font-display text-lg">{p.t}</h3>
-              <p className="mt-2 text-sm text-foreground/70">{p.b}</p>
+              <span className="pointer-events-none absolute -top-12 -right-10 h-32 w-32 rounded-full bg-gradient-to-br from-accent/40 to-primary/20 blur-2xl opacity-60 transition-opacity duration-300 group-hover:opacity-90" />
+              <p.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
+              <h3 className="relative mt-5 font-display text-lg">{p.t}</h3>
+              <p className="relative mt-2 text-sm text-foreground/70">{p.b}</p>
             </div>
+
           ))}
         </div>
       </div>
@@ -661,13 +674,16 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-all duration-200 ease-out hover:scale-[1.03] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/75 via-primary/[0.04] to-primary/[0.12] p-7 shadow-[0_10px_30px_-14px_rgba(30,40,90,0.22)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_22px_44px_-16px_rgba(30,40,90,0.32)] hover:border-primary/30"
             >
-              <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
-              <h3 className="mt-5 font-display text-2xl text-foreground">{s.title}</h3>
-              <p className="mt-3 flex-1 text-foreground/70">{s.body}</p>
+              <span className="pointer-events-none absolute -top-16 -right-12 h-40 w-40 rounded-full bg-gradient-to-br from-accent/50 to-primary/25 blur-3xl opacity-60 transition-opacity duration-300 group-hover:opacity-95" />
+              <span className="pointer-events-none absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-gradient-to-tr from-sage/30 to-blush/30 blur-3xl opacity-50" />
+              <s.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
+              <h3 className="relative mt-5 font-display text-2xl text-foreground">{s.title}</h3>
+              <p className="relative mt-3 flex-1 text-foreground/75">{s.body}</p>
             </article>
           ))}
+
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Ready to start?{" "}
@@ -1251,7 +1267,7 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-20 right-[5.5rem] z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:right-5"
+        className="fixed bottom-20 right-4 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:right-5 lg:h-16 lg:w-16"
       >
         {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
       </button>
