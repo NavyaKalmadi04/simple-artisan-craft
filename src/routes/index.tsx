@@ -414,7 +414,7 @@ function BookCTA() {
 
 function Hero() {
   return (
-    <section className="relative mx-auto max-w-6xl px-5 pt-12 pb-20 md:px-6 md:pt-24 md:pb-36">
+    <section className="relative mx-auto max-w-6xl px-5 pt-10 pb-16 md:px-6 md:pt-20 md:pb-28">
       <div className="absolute left-1/2 top-32 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-blush/40 blur-3xl" />
       <div className="absolute right-10 top-48 -z-10 h-56 w-56 rounded-full bg-sage/30 blur-3xl" />
 
@@ -436,7 +436,7 @@ function Hero() {
         <BookCTA />
       </div>
 
-      <dl className="mt-20 grid max-w-2xl grid-cols-3 gap-8 border-t border-border pt-8">
+      <dl className="mt-14 grid max-w-2xl grid-cols-3 gap-8 border-t border-border pt-6">
         {[
           { k: "60+", v: "Products shipped" },
           { k: "2 wks", v: "Avg. to first launch" },
@@ -582,7 +582,7 @@ function Services() {
   }, []);
 
   return (
-    <section id="services" className="bg-secondary/50 py-24 md:py-32">
+    <section id="services" className="bg-secondary/50 py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
@@ -597,7 +597,7 @@ function Services() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 md:grid-cols-2">
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
           {services.map((s) => (
             <article
               key={s.title}
@@ -632,7 +632,7 @@ function Services() {
 function Team() {
   const traits = ["Young", "Aspiring", "Driven", "Curious", "Hands-on", "Ship-first"];
   return (
-    <section id="team" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+    <section id="team" className="mx-auto max-w-6xl px-6 py-20 md:py-24">
       <span className="text-xs uppercase tracking-widest text-muted-foreground">Team</span>
       <h2 className="mt-4 max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
         A tiny team — <em className="text-muted-foreground">young, aspiring, deeply driven.</em>
@@ -699,7 +699,7 @@ function Projects() {
   ];
   const [showAll, setShowAll] = useState(false);
   return (
-    <section id="projects" className="bg-secondary/50 py-24 md:py-32">
+    <section id="projects" className="bg-secondary/50 py-20 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex items-end justify-between">
           <div>
@@ -717,7 +717,7 @@ function Projects() {
             Full case studies on request →
           </a>
         </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
           {items.map((w, i) => (
             <article
               key={w.title}
@@ -785,8 +785,8 @@ function FAQ() {
   ];
   const [showAll, setShowAll] = useState(false);
   return (
-    <section id="faq" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
+    <section id="faq" className="mx-auto max-w-6xl px-6 py-20 md:py-24">
+      <div className="grid gap-10 md:grid-cols-[1fr_1.4fr] md:gap-16">
         <div>
           <span className="text-xs uppercase tracking-widest text-muted-foreground">FAQ</span>
           <h2 className="mt-4 font-display text-4xl tracking-tight md:text-5xl">
@@ -858,8 +858,8 @@ function FAQItem({
 
 function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-6xl px-6 pb-24 scroll-mt-24 md:pb-32 md:scroll-mt-32">
-      <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-16 text-primary-foreground md:px-16 md:py-24">
+    <section id="contact" className="mx-auto max-w-6xl px-6 pb-20 scroll-mt-24 md:pb-24 md:scroll-mt-32">
+      <div className="relative overflow-hidden rounded-[2rem] bg-primary px-8 py-12 text-primary-foreground md:px-14 md:py-20">
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blush/30 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-24 -left-10 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
         <div className="relative z-10">
