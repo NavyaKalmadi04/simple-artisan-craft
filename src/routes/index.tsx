@@ -26,8 +26,8 @@ import {
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 
 
-const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
-const COMPANY_SHORT = "Pranavya";
+const COMPANY_NAME = "Zetaacraft";
+const COMPANY_SHORT = "Zetaacraft";
 
 const NAV_LINKS = [
   { href: "#about", label: "About" },
@@ -60,17 +60,17 @@ type ServiceKey =
 
 const WHATSAPP_TEMPLATES: Record<ServiceKey, string> = {
   general:
-    "Hi Pranavya! 👋 I'd like to book a session to discuss a product idea. Could you share the next available slot?",
+    "Hi Zetaacraft! 👋 I'd like to book a session to discuss a product idea. Could you share the next available slot?",
   productDesign:
-    "Hi Pranavya! 👋 I'm interested in your *Product Design* service. I'd love to discuss my product, target users and timeline. When can we connect?",
+    "Hi Zetaacraft! 👋 I'm interested in your *Product Design* service. I'd love to discuss my product, target users and timeline. When can we connect?",
   websiteBuilding:
-    "Hi Pranavya! 👋 I'd like to enquire about your *Website Building* service. I want a fast, simple website for my business and would love a quote.",
+    "Hi Zetaacraft! 👋 I'd like to enquire about your *Website Building* service. I want a fast, simple website for my business and would love a quote.",
   aiFullstack:
-    "Hi Pranavya! 👋 I'd like to enquire about your *AI Full-stack Apps* service. I have an idea that needs AI + a full product around it — can we discuss?",
+    "Hi Zetaacraft! 👋 I'd like to enquire about your *AI Full-stack Apps* service. I have an idea that needs AI + a full product around it — can we discuss?",
   productStrategy:
-    "Hi Pranavya! 👋 I'd like to enquire about your *Product Strategy* service. I need help with roadmap, scope and the right next step for my product.",
+    "Hi Zetaacraft! 👋 I'd like to enquire about your *Product Strategy* service. I need help with roadmap, scope and the right next step for my product.",
   workshops:
-    "Hi Pranavya! 👋 I'd like to book a *Workshop* for our college / event on product, design and AI full-stack. Please share formats, duration and pricing.",
+    "Hi Zetaacraft! 👋 I'd like to book a *Workshop* for our college / event on product, design and AI full-stack. Please share formats, duration and pricing.",
 };
 
 function waLink(message: string) {
@@ -90,13 +90,13 @@ const ROTATING_LINES = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
+      { title: "Zetaacraft — Simple products customers love" },
       {
         name: "description",
         content:
-          "Pranavya Solutions builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed.",
+          "Zetaacraft builds user-friendly SaaS, websites and AI full-stack products for every kind of business — shipped at lighting speed.",
       },
-      { property: "og:title", content: "Pranavya Solutions Pvt. Ltd. — Simple products customers love" },
+      { property: "og:title", content: "Zetaacraft — Simple products customers love" },
       {
         property: "og:description",
         content:
@@ -372,7 +372,7 @@ function About() {
             <em className="text-muted-foreground"> simple software</em> for every kind of business.
           </h2>
           <p className="mt-6 text-muted-foreground">
-            Pranavya Solutions is a product studio led by designers and AI full-stack engineers. We help founders
+            Zetaacraft is a product studio led by designers and AI full-stack engineers. We help founders
             and teams turn complex problems into clear, user-friendly products — websites, SaaS,
             internal tools and AI workflows — without the usual agency drag.
           </p>
@@ -798,7 +798,7 @@ function Footer() {
               <Phone className="h-4 w-4" />
             </a>
             <a
-              href="mailto:hello@maren.studio"
+              href="mailto:Zetaacraft@gmail.com"
               aria-label="Email"
               className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:text-foreground"
             >
@@ -806,7 +806,7 @@ function Footer() {
             </a>
           </div>
           <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-base leading-none">p</span>
+            <span className="font-display text-base leading-none">Z</span>
           </span>
         </div>
         <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
@@ -827,10 +827,10 @@ function Footer() {
               <Phone className="h-4 w-4" /> {PHONE_DISPLAY}
             </a>
             <a
-              href="mailto:hello@maren.studio"
+              href="mailto:Zetaacraft@gmail.com"
               className="inline-flex items-center gap-2 hover:text-foreground"
             >
-              <Mail className="h-4 w-4" /> hello@maren.studio
+              <Mail className="h-4 w-4" /> Zetaacraft@gmail.com
             </a>
           </div>
         </div>
@@ -939,7 +939,7 @@ function botAnswer(input: string): ChatMsg {
   if (/(hi|hello|hey|namaste)/.test(q)) {
     return {
       from: "bot",
-      text: "Hi there! I'm Pranavya's assistant. Ask me about services, pricing, workshops, or how to book a session.",
+      text: "Hi there! I'm Zetaacraft's assistant. Ask me about services, pricing, workshops, or how to book a session.",
       actions: [
         { label: "See services", href: "#services" },
         { label: "See projects", href: "#projects" },
@@ -959,7 +959,7 @@ function ChatBot() {
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       from: "bot",
-      text: "Hi! I'm Pranavya's assistant 🌿 Ask me about our services, pricing, workshops, or how to book a session.",
+      text: "Hi! I'm Zetaacraft's assistant 🌿 Ask me about our services, pricing, workshops, or how to book a session.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -1000,7 +1000,7 @@ function ChatBot() {
               <Bot className="h-4 w-4" />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="font-display text-base leading-tight">Ask Pranavya</p>
+              <p className="font-display text-base leading-tight">Ask Zetaacraft</p>
               <p className="text-xs text-muted-foreground">Usually replies instantly</p>
             </div>
             <button
