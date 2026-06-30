@@ -653,7 +653,7 @@ function Team() {
         {traits.map((t) => (
           <span
             key={t}
-            className="rounded-full border border-border/70 bg-background/80 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-md"
+            className="inline-block rounded-full border border-border/70 bg-background/80 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-md transition-all duration-200 ease-out hover:scale-[1.12] hover:-translate-y-0.5 hover:text-foreground"
           >
             {t}
           </span>
