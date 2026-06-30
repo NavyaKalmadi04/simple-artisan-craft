@@ -304,7 +304,7 @@ function Nav({ start }: { start: boolean }) {
   const play = start && !prefersReduced;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 lg:relative lg:z-30">
+    <header className="sticky top-0 z-40 lg:relative lg:z-30" style={{ backgroundColor: "#f5f5f5" }}>
       <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
