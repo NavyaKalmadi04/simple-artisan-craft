@@ -604,10 +604,10 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-border bg-accent/40 p-7 transition-colors hover:bg-accent/60"
+              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-colors hover:bg-primary/[0.1] hover:border-primary/25"
             >
-              <s.icon className="h-5 w-5 text-foreground/70" strokeWidth={1.5} />
-              <h3 className="mt-5 font-display text-2xl">{s.title}</h3>
+              <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+              <h3 className="mt-5 font-display text-2xl text-foreground">{s.title}</h3>
               <p className="mt-3 flex-1 text-foreground/70">{s.body}</p>
             </article>
           ))}
