@@ -1220,7 +1220,7 @@ function ChatBot() {
             </button>
           </div>
 
-          <div ref={scrollRef} className="flex max-h-[55vh] min-h-[280px] flex-col gap-3 overflow-y-auto px-4 py-4">
+          <div ref={scrollRef} className="flex max-h-[62vh] min-h-[340px] flex-col gap-3 overflow-y-auto px-4 py-4">
             {messages.map((m, i) => (
               <div key={i} className={m.from === "user" ? "self-end" : "self-start max-w-full"}>
                 <div
