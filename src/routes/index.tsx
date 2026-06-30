@@ -499,7 +499,7 @@ function About() {
     },
   ];
   return (
-    <section id="about" className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+    <section id="about" className="mx-auto max-w-6xl px-6 py-20 md:py-24">
       <div className="grid gap-12 md:grid-cols-2 md:gap-20">
         <div>
           <span className="text-xs uppercase tracking-widest text-muted-foreground">About</span>
