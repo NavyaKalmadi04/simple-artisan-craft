@@ -289,7 +289,7 @@ function Nav() {
                 const revealOrder = totalLetters - 1 - i;
                 const delay = prefersReduced
                   ? 0
-                  : 0.25 + revealOrder * letterStagger;
+                  : 0.5 + revealOrder * letterStagger;
                 return (
                   <motion.span
                     key={i}
