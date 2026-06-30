@@ -26,8 +26,8 @@ import {
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 
 
-const COMPANY_NAME = "Pranavya Solutions Pvt. Ltd.";
-const COMPANY_SHORT = "Pranavya";
+const COMPANY_NAME = "Zetaacraft";
+const COMPANY_SHORT = "Zetaacraft";
 
 const NAV_LINKS = [
   { href: "#about", label: "About" },
