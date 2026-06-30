@@ -879,7 +879,7 @@ function FAQ() {
               type="button"
               onClick={() => setShowAll((v) => !v)}
               aria-expanded={showAll}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
+              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-5 py-2 text-sm shadow-sm backdrop-blur-md transition-all hover:bg-secondary hover:shadow"
             >
               {showAll ? "See less" : "See more"}
               <ChevronDown
