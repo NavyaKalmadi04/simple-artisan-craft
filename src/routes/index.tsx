@@ -222,8 +222,8 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: 3.6 + i * 0.025,
-                duration: 0.5,
+                delay: taglineStart + i * 0.09,
+                duration: 1.4,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
