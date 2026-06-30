@@ -163,8 +163,10 @@ function IntroLogo() {
   const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
   const total = name.length;
   // right-to-left reveal: index 0 (Z) appears last
-  const letterStagger = 0.3;
-  const letterDuration = 1.5;
+  const letterStagger = 0.12;
+  const letterDuration = 0.5;
+  // tagline reveal starts after wordmark finishes
+  const taglineStart = 0.7 + (name.length - 1) * 0.12 + 0.5 + 0.15;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
@@ -220,8 +222,8 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: 3.6 + i * 0.025,
-                duration: 0.5,
+                delay: taglineStart + i * 0.09,
+                duration: 1.4,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
@@ -1076,13 +1078,13 @@ function Footer() {
             </a>
           </div>
         </div>
-        <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
+        <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
 
         {/* Desktop: logo left, contacts right */}
         <div className="hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
           <div className="flex items-center gap-4">
             <img src={zetacraftLogo.url} alt="Zetacraft" className="h-24 w-auto object-contain" />
-            <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
+            <p>© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
           </div>
           <div className="flex flex-wrap items-center gap-5">
             <a
@@ -1257,7 +1259,7 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-20 right-5 z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5"
+        className="fixed bottom-20 right-[5.5rem] z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:right-5"
       >
         {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
       </button>
