@@ -616,8 +616,8 @@ function Services() {
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Ready to start?{" "}
-          <a href="#contact" className="font-medium text-foreground underline-offset-4 hover:underline">
-            Book a session →
+          <a href="#contact" className="inline-flex items-center gap-1.5 font-medium text-foreground underline-offset-4 hover:underline">
+            <MessageCircle className="h-4 w-4" /> Book a session →
           </a>{" "}
           and pick the service from the form.
         </p>
