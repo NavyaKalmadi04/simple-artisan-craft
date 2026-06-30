@@ -22,6 +22,8 @@ import {
   FolderOpen,
   HelpCircle,
   X,
+  ChevronDown,
+
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
 import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
