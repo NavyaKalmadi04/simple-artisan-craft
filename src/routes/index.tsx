@@ -24,6 +24,7 @@ import {
   X,
 } from "lucide-react";
 import { BookingDialog, type BookingService } from "@/components/BookingDialog";
+import zetacraftLogo from "@/assets/zetacraft-logo.png.asset.json";
 
 
 const COMPANY_NAME = "Zetaacraft";
@@ -178,22 +179,17 @@ function Nav() {
       <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-6 md:py-5">
         {/* Brand (left on desktop, hidden on mobile to keep header compact) */}
         <a href="#" className="hidden md:flex items-center gap-2 shrink-0">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-lg leading-none">p</span>
-          </span>
-          <span className="whitespace-nowrap font-display text-base lg:text-xl">{COMPANY_NAME}</span>
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-9 w-auto object-contain" />
         </a>
 
         {/* Centered brand on mobile */}
         <a href="#" className="flex items-center gap-2 lg:hidden md:hidden">
-          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-base leading-none">p</span>
-          </span>
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-8 w-auto object-contain" />
         </a>
 
         {/* Center: nav menu on desktop / brand name on mobile */}
         <div className="flex items-center justify-center min-w-0">
-          <span className="font-display text-sm sm:text-base md:hidden">{COMPANY_SHORT} Solutions</span>
+          <span className="sr-only">{COMPANY_SHORT} Solutions</span>
           <nav className="hidden lg:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
             {NAV_LINKS.map((l) => (
               <a
@@ -805,9 +801,7 @@ function Footer() {
               <Mail className="h-4 w-4" />
             </a>
           </div>
-          <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-base leading-none">Z</span>
-          </span>
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-9 w-auto object-contain" />
         </div>
         <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
 
