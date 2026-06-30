@@ -112,7 +112,6 @@ function Index() {
   return (
     <main className="min-h-screen bg-background text-foreground pb-20 lg:pb-0">
       <Nav />
-      <SubNav />
       <Hero />
       <Marquee />
       <About />
@@ -176,41 +175,40 @@ function CalmWay() {
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-5 sm:py-4 md:px-6 md:py-5">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur">
+      <div className="relative mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 md:px-6 md:py-4">
         <a href="#" className="flex items-center gap-2 shrink-0">
-          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-10 w-auto object-contain sm:h-11 md:h-12" />
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-12 w-auto object-contain sm:h-14 md:h-16" />
           <span className="sr-only">{COMPANY_NAME}</span>
         </a>
 
-        <a
-          href="#contact"
-          className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 sm:inline-flex"
-        >
-          Book a session <ArrowUpRight className="h-3.5 w-3.5" />
-        </a>
+        <div className="flex items-center justify-center">
+          <span className="font-display text-base font-semibold tracking-tight sm:text-lg md:text-xl">
+            ZETAACRAFT
+          </span>
+        </div>
+
+        <div className="flex items-center justify-end gap-2">
+          <nav className="hidden items-center gap-1 lg:flex">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="shrink-0 rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 hover:bg-secondary hover:text-foreground"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+          <a
+            href="#contact"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
+          >
+            Book <span className="hidden sm:inline">a session</span>
+          </a>
+        </div>
       </div>
     </header>
-  );
-}
-
-function SubNav() {
-  return (
-    <div className="border-b border-border/60 bg-background">
-      <div className="mx-auto max-w-6xl px-4 py-3 sm:px-5 md:px-6">
-        <nav className="mx-auto flex w-max max-w-full items-center gap-1 overflow-x-auto rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="shrink-0 rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-110 hover:-translate-y-0.5 hover:bg-secondary hover:text-foreground hover:shadow-md"
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </div>
   );
 }
 
