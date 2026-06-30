@@ -179,17 +179,12 @@ function Nav() {
       <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-6 md:py-5">
         {/* Brand (left on desktop, hidden on mobile to keep header compact) */}
         <a href="#" className="hidden md:flex items-center gap-2 shrink-0">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-lg leading-none">p</span>
-          </span>
-          <span className="whitespace-nowrap font-display text-base lg:text-xl">{COMPANY_NAME}</span>
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-9 w-auto object-contain" />
         </a>
 
         {/* Centered brand on mobile */}
         <a href="#" className="flex items-center gap-2 lg:hidden md:hidden">
-          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="font-display text-base leading-none">p</span>
-          </span>
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-8 w-auto object-contain" />
         </a>
 
         {/* Center: nav menu on desktop / brand name on mobile */}
