@@ -244,7 +244,7 @@ function Nav() {
   return (
     <div className="relative">
       {/* Header */}
-      <header className="border-b border-border/60 bg-background">
+      <header className="bg-background">
         <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
           <motion.a
             href="#"
@@ -272,13 +272,16 @@ function Nav() {
             <img
               src={zetacraftLogo.url}
               alt="Zetacraft"
-              className="h-12 w-auto object-contain sm:h-14 md:h-[68px] lg:h-[76px]"
+              className="h-[58px] w-auto object-contain sm:h-[68px] md:h-[82px] lg:h-[92px]"
             />
             <span className="sr-only">{COMPANY_NAME}</span>
           </motion.a>
 
           <div className="flex justify-center overflow-hidden">
-            <h1 className="font-display text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">
+            <h1
+              className="text-xl font-medium tracking-[0.18em] sm:text-2xl md:text-[28px]"
+              style={{ fontFamily: "var(--font-wordmark)" }}
+            >
               {letters.map((ch, i) => {
                 const revealOrder = totalLetters - 1 - i;
                 const delay = prefersReduced
@@ -319,7 +322,7 @@ function Nav() {
         </div>
       </header>
 
-      {/* Sticky nav pill — centered, Apple-dock hover, blur+shadow on scroll */}
+      {/* Sticky nav pill — flush under header, no gap */}
       <motion.div
         className="sticky top-0 z-40 hidden lg:block pointer-events-none"
         initial={prefersReduced ? false : { opacity: 0, y: -8 }}
@@ -330,7 +333,7 @@ function Nav() {
             : { duration: 0.45, delay: 2.1, ease: "easeOut" }
         }
       >
-        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6 pt-2">
+        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
           <nav
             className={`pointer-events-auto inline-flex items-end gap-1 rounded-full border bg-background/80 px-3 py-1.5 backdrop-blur-md transition-shadow duration-300 ${
               scrolled
