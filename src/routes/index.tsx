@@ -167,13 +167,10 @@ function IntroLogo() {
       transition={{ duration: 0.3, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <motion.img
+      <img
         src={zetacraftLogo.url}
         alt=""
-        className="h-44 w-auto object-contain sm:h-56 md:h-64 lg:h-72 will-change-transform"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: [0.9, 1.06, 1], opacity: 1 }}
-        transition={{ duration: 1.8, times: [0, 0.7, 1], ease: "easeOut" }}
+        className="h-44 w-auto object-contain sm:h-56 md:h-64 lg:h-72"
       />
     </motion.div>
   );
