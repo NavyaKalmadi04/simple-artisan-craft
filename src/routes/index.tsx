@@ -43,11 +43,9 @@ const SPLASH_DURATION_MS =
   Math.ceil((TAGLINE_START_DELAY + (TAGLINE_LENGTH - 1) * TAGLINE_STAGGER + TAGLINE_DURATION + 1) * 1000);
 
 const NAV_LINKS = [
-  { href: "#top", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
-  { href: "#team", label: "Team" },
-  { href: "#projects", label: "Projects" },
+  { href: "#projects", label: "Work" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
