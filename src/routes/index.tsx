@@ -177,43 +177,40 @@ function CalmWay() {
 function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-5 sm:py-4 md:px-6 md:py-5">
-        {/* Brand (left on desktop, hidden on mobile to keep header compact) */}
-        <a href="#" className="hidden md:flex items-center gap-2 shrink-0">
-          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-9 w-auto object-contain" />
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-5 sm:py-4 md:px-6 md:py-5">
+        <a href="#" className="flex items-center gap-2 shrink-0">
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-10 w-auto object-contain sm:h-11 md:h-12" />
+          <span className="sr-only">{COMPANY_NAME}</span>
         </a>
 
-        {/* Centered brand on mobile */}
-        <a href="#" className="flex items-center gap-2 lg:hidden md:hidden">
-          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-8 w-auto object-contain" />
-        </a>
-
-        {/* Center: nav menu on desktop / brand name on mobile */}
-        <div className="flex items-center justify-center min-w-0">
-          <span className="sr-only">{COMPANY_SHORT} Solutions</span>
-          <nav className="hidden lg:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-110 hover:-translate-y-0.5 hover:bg-secondary hover:text-foreground hover:shadow-md"
-              >
-                {l.label}
-              </a>
-            ))}
-          </nav>
-        </div>
-
-        {/* Right CTA */}
         <a
           href="#contact"
-          className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 lg:inline-flex"
+          className="hidden shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-opacity hover:opacity-90 sm:inline-flex"
         >
           Book a session <ArrowUpRight className="h-3.5 w-3.5" />
         </a>
-        <span className="lg:hidden" />
       </div>
     </header>
+  );
+}
+
+function SubNav() {
+  return (
+    <div className="border-b border-border/60 bg-background">
+      <div className="mx-auto max-w-6xl px-4 py-3 sm:px-5 md:px-6">
+        <nav className="flex items-center justify-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-110 hover:-translate-y-0.5 hover:bg-secondary hover:text-foreground hover:shadow-md"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </div>
   );
 }
 
