@@ -319,6 +319,8 @@ function Nav() {
           >
             <MessageCircle className="h-4 w-4" /> Book a session
           </motion.a>
+          {/* Mobile spacer to keep wordmark centered (logo width approx) */}
+          <div aria-hidden className="lg:hidden h-[72px] w-[72px] sm:h-[78px] sm:w-[78px] md:h-[88px] md:w-[88px]" />
         </div>
       </header>
 
