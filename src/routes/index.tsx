@@ -764,8 +764,8 @@ function Projects() {
                   layout
                   key={w.title}
                   onClick={() => setActiveMobile((cur) => (cur === i ? null : i))}
-                  className="shrink-0 snap-center"
-                  style={{ width: expanded ? "90%" : "78%" }}
+                  className="shrink-0 snap-center w-full"
+
                   transition={{ layout: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
                 >
                   <ProjectTile w={w} expanded={expanded} />
