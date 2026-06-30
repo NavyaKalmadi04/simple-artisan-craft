@@ -709,7 +709,7 @@ function Projects() {
       tint: "bg-sage/30",
     },
   ];
-  const [showAll, setShowAll] = useState(false);
+  const [activeMobile, setActiveMobile] = useState<number | null>(null);
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
@@ -731,64 +731,98 @@ function Projects() {
             Full case studies on request →
           </a>
         </div>
-        <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
-          {items.map((w, i) => (
-            <article
-              key={w.title}
-              onMouseEnter={() => setHovered(i)}
-              onMouseLeave={() => setHovered(null)}
-              className={`group block transition-all duration-500 ease-out ${
-                hovered !== null && hovered !== i ? "md:hidden" : ""
-              } ${hovered === i ? "md:col-span-3" : ""} ${
-                !showAll && i >= 1 ? "hidden md:block" : ""
-              }`}
-            >
 
-              <div
-                className={`aspect-[4/5] md:aspect-auto md:h-full md:min-h-[360px] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
+        {/* Desktop / tablet grid with smooth layout animation */}
+        <motion.div
+          layout
+          className="mt-10 hidden auto-rows-fr gap-5 md:grid md:grid-cols-3"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {items.map((w, i) => {
+            const isHovered = hovered === i;
+            return (
+              <motion.article
+                layout
+                key={w.title}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+                transition={{ layout: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }}
+                className={`group block ${isHovered ? "md:col-span-2" : ""}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 via-foreground/5 to-transparent" />
+                <ProjectTile w={w} expanded={isHovered} />
+              </motion.article>
+            );
+          })}
+        </motion.div>
 
-                {/* Top row: tag + arrow */}
-                <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
-                  <span className="rounded-full bg-background/80 px-3 py-1 text-xs backdrop-blur">
-                    {w.tag}
-                  </span>
-                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </div>
-
-                {/* Bottom content: title, meta + hover-revealed description on the tile */}
-                <div className="absolute bottom-6 left-6 right-6">
-                  <h3 className="font-display text-xl text-foreground drop-shadow-sm md:text-2xl">
-                    {w.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-foreground/70">{w.meta}</p>
-                  <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] motion-reduce:transition-none">
-                    <div className="overflow-hidden">
-                      <p className="mt-3 translate-y-1 text-sm text-foreground/80 opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
-                        {w.desc}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {!showAll && (
-          <div className="mt-8 flex justify-center md:hidden">
-            <button
-              type="button"
-              onClick={() => setShowAll(true)}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm transition-colors hover:bg-background"
-            >
-              See more projects <ArrowUpRight className="h-4 w-4" />
-            </button>
+        {/* Mobile: horizontal snap slider; press / tap toggles description */}
+        <div className="mt-8 md:hidden">
+          <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {items.map((w, i) => {
+              const expanded = activeMobile === i;
+              return (
+                <motion.article
+                  layout
+                  key={w.title}
+                  onClick={() => setActiveMobile((cur) => (cur === i ? null : i))}
+                  className="shrink-0 snap-center"
+                  style={{ width: expanded ? "90%" : "78%" }}
+                  transition={{ layout: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
+                >
+                  <ProjectTile w={w} expanded={expanded} />
+                </motion.article>
+              );
+            })}
           </div>
-        )}
+          <p className="mt-1 text-center text-xs text-muted-foreground">
+            Swipe · tap a tile to read more
+          </p>
+        </div>
       </div>
     </section>
+  );
+}
+
+function ProjectTile({
+  w,
+  expanded,
+}: {
+  w: { tag: string; title: string; meta: string; desc: string; tint: string };
+  expanded: boolean;
+}) {
+  return (
+    <div
+      className={`relative aspect-[4/5] overflow-hidden rounded-3xl border border-border md:aspect-auto md:h-full md:min-h-[360px] ${w.tint}`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 via-foreground/5 to-transparent" />
+      <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
+        <span className="rounded-full bg-background/80 px-3 py-1 text-xs backdrop-blur">
+          {w.tag}
+        </span>
+        <ArrowUpRight className="h-5 w-5" />
+      </div>
+      <div className="absolute bottom-6 left-6 right-6">
+        <h3 className="font-display text-xl text-foreground drop-shadow-sm md:text-2xl">
+          {w.title}
+        </h3>
+        <p className="mt-1 text-sm text-foreground/70">{w.meta}</p>
+        <div
+          className={`grid transition-[grid-template-rows] duration-500 ease-out ${
+            expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <p
+              className={`mt-3 text-sm text-foreground/80 transition-all duration-500 ease-out ${
+                expanded ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
+              }`}
+            >
+              {w.desc}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
