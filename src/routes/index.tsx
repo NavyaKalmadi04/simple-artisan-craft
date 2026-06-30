@@ -163,8 +163,10 @@ function IntroLogo() {
   const tagline = "SOFTWARE SYSTEMS LLP. CRAFTED FOR EXCELLENCE".split("");
   const total = name.length;
   // right-to-left reveal: index 0 (Z) appears last
-  const letterStagger = 0.3;
-  const letterDuration = 1.5;
+  const letterStagger = 0.12;
+  const letterDuration = 0.5;
+  // tagline reveal starts after wordmark finishes
+  const taglineStart = 0.7 + (name.length - 1) * 0.12 + 0.5 + 0.15;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
