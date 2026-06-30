@@ -285,107 +285,84 @@ function Nav() {
   }, []);
 
   return (
-    <div className="relative">
-      {/* Header */}
-      <header className="border-b border-border/60 bg-background">
-        <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
-          <motion.a
-            href="#"
-            className="flex items-center shrink-0"
-            initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
-            animate={
-              prefersReduced
-                ? undefined
-                : {
-                    x: [null, "55vw", 0, 0],
-                    opacity: [0, 1, 1, 1],
-                    scale: [1, 1, 1.28, 1],
+    <header
+      className={`sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-md transition-shadow duration-300 ${
+        scrolled ? "shadow-md shadow-foreground/5" : ""
+      }`}
+    >
+      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
+        <motion.a
+          href="#"
+          className="flex items-center gap-2 shrink-0"
+          initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
+          animate={
+            prefersReduced
+              ? undefined
+              : {
+                  x: [null, "55vw", 0, 0],
+                  opacity: [0, 1, 1, 1],
+                  scale: [1, 1, 1.28, 1],
+                }
+          }
+          transition={
+            prefersReduced
+              ? undefined
+              : {
+                  duration: 2.6,
+                  times: [0, 0.08, 0.78, 1],
+                  ease: [0.22, 1, 0.36, 1],
+                }
+          }
+        >
+          <img
+            src={zetacraftLogo.url}
+            alt="Zetacraft"
+            className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
+          />
+          <h1
+            className="hidden font-medium tracking-[0.18em] text-foreground sm:inline-block text-base md:text-lg lg:text-xl"
+            style={{ fontFamily: "var(--font-wordmark)" }}
+          >
+            {letters.map((ch, i) => {
+              const revealOrder = totalLetters - 1 - i;
+              const delay = prefersReduced ? 0 : 0.5 + revealOrder * letterStagger;
+              return (
+                <motion.span
+                  key={i}
+                  className="inline-block"
+                  initial={prefersReduced ? false : { y: 12, opacity: 0 }}
+                  animate={prefersReduced ? undefined : { y: 0, opacity: 1 }}
+                  transition={
+                    prefersReduced
+                      ? undefined
+                      : { duration: letterDuration, delay, ease: "easeOut" }
                   }
-            }
-            transition={
-              prefersReduced
-                ? undefined
-                : {
-                    duration: 2.6,
-                    times: [0, 0.08, 0.78, 1],
-                    ease: [0.22, 1, 0.36, 1],
-                  }
-            }
+                >
+                  {ch}
+                </motion.span>
+              );
+            })}
+          </h1>
+          {/* Mobile: smaller centered wordmark beside logo */}
+          <span
+            className="inline-block sm:hidden text-[15px] font-medium tracking-[0.18em] text-foreground"
+            style={{ fontFamily: "var(--font-wordmark)" }}
           >
-            <img
-              src={zetacraftLogo.url}
-              alt="Zetacraft"
-              className="h-[72px] w-auto object-contain sm:h-[78px] md:h-[88px] lg:h-[96px]"
-            />
-            <span className="sr-only">{COMPANY_NAME}</span>
-          </motion.a>
+            ZETAACRAFT
+          </span>
+        </motion.a>
 
-          <div className="flex justify-center overflow-hidden">
-            <h1
-              className="text-[22px] font-medium tracking-[0.18em] sm:text-2xl md:text-[28px]"
-              style={{ fontFamily: "var(--font-wordmark)" }}
-            >
-              {letters.map((ch, i) => {
-                const revealOrder = totalLetters - 1 - i;
-                const delay = prefersReduced
-                  ? 0
-                  : 0.5 + revealOrder * letterStagger;
-                return (
-                  <motion.span
-                    key={i}
-                    className="inline-block"
-                    initial={prefersReduced ? false : { y: 12, opacity: 0 }}
-                    animate={prefersReduced ? undefined : { y: 0, opacity: 1 }}
-                    transition={
-                      prefersReduced
-                        ? undefined
-                        : { duration: letterDuration, delay, ease: "easeOut" }
-                    }
-                  >
-                    {ch}
-                  </motion.span>
-                );
-              })}
-            </h1>
-          </div>
-
-          <motion.a
-            href="#contact"
-            className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
-            initial={prefersReduced ? false : { opacity: 0, y: -6 }}
-            animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
-            transition={
-              prefersReduced
-                ? undefined
-                : { duration: 0.4, delay: 2.7, ease: "easeOut" }
-            }
-          >
-            <MessageCircle className="h-4 w-4" /> Book a session
-          </motion.a>
-          {/* Mobile spacer to keep wordmark centered (logo width approx) */}
-          <div aria-hidden className="lg:hidden h-[72px] w-[72px] sm:h-[78px] sm:w-[78px] md:h-[88px] md:w-[88px]" />
-        </div>
-      </header>
-
-      {/* Sticky nav pill — flush under header, no gap */}
-      <motion.div
-        className="sticky top-0 z-40 hidden lg:block pointer-events-none"
-        initial={prefersReduced ? false : { opacity: 0, y: -8 }}
-        animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
-        transition={
-          prefersReduced
-            ? undefined
-            : { duration: 0.45, delay: 2.8, ease: "easeOut" }
-        }
-      >
-        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
-          <nav
-            className={`pointer-events-auto inline-flex items-end gap-1 rounded-full border bg-background/80 px-3 py-1.5 backdrop-blur-md transition-shadow duration-300 ${
-              scrolled
-                ? "border-border shadow-lg shadow-foreground/5"
-                : "border-border/70 shadow-sm"
-            }`}
-          >
+        <motion.nav
+          className="hidden lg:flex justify-center"
+          initial={prefersReduced ? false : { opacity: 0, y: -6 }}
+          animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+          transition={
+            prefersReduced
+              ? undefined
+              : { duration: 0.45, delay: 2.7, ease: "easeOut" }
+          }
+        >
+          <div className="inline-flex items-end gap-1 rounded-full border border-border/70 bg-background/70 px-2.5 py-1 shadow-sm backdrop-blur">
             {NAV_LINKS.map((l) => (
               <a
                 key={l.href}
@@ -395,10 +372,27 @@ function Nav() {
                 {l.label}
               </a>
             ))}
-          </nav>
-        </div>
-      </motion.div>
-    </div>
+          </div>
+        </motion.nav>
+        <div className="hidden lg:block" />
+
+        <motion.a
+          href="#contact"
+          className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
+          initial={prefersReduced ? false : { opacity: 0, y: -6 }}
+          animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+          transition={
+            prefersReduced
+              ? undefined
+              : { duration: 0.4, delay: 2.75, ease: "easeOut" }
+          }
+        >
+          <MessageCircle className="h-4 w-4" /> Book a session
+        </motion.a>
+        {/* Mobile spacer to keep layout balanced */}
+        <div aria-hidden className="lg:hidden h-2 w-2" />
+      </div>
+    </header>
   );
 }
 
