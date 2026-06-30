@@ -1078,7 +1078,7 @@ function Footer() {
             </a>
           </div>
         </div>
-        <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME}.</p>
+        <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
 
         {/* Desktop: logo left, contacts right */}
         <div className="hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
