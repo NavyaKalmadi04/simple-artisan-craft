@@ -244,7 +244,7 @@ function Nav() {
   return (
     <div className="relative">
       {/* Header */}
-      <header className="border-b border-border/60 bg-background">
+      <header className="bg-background">
         <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
           <motion.a
             href="#"
@@ -272,13 +272,16 @@ function Nav() {
             <img
               src={zetacraftLogo.url}
               alt="Zetacraft"
-              className="h-12 w-auto object-contain sm:h-14 md:h-[68px] lg:h-[76px]"
+              className="h-[58px] w-auto object-contain sm:h-[68px] md:h-[82px] lg:h-[92px]"
             />
             <span className="sr-only">{COMPANY_NAME}</span>
           </motion.a>
 
           <div className="flex justify-center overflow-hidden">
-            <h1 className="font-display text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">
+            <h1
+              className="text-xl font-medium tracking-[0.18em] sm:text-2xl md:text-[28px]"
+              style={{ fontFamily: "var(--font-wordmark)" }}
+            >
               {letters.map((ch, i) => {
                 const revealOrder = totalLetters - 1 - i;
                 const delay = prefersReduced
@@ -319,7 +322,7 @@ function Nav() {
         </div>
       </header>
 
-      {/* Sticky nav pill — centered, Apple-dock hover, blur+shadow on scroll */}
+      {/* Sticky nav pill — flush under header, no gap */}
       <motion.div
         className="sticky top-0 z-40 hidden lg:block pointer-events-none"
         initial={prefersReduced ? false : { opacity: 0, y: -8 }}
@@ -330,7 +333,7 @@ function Nav() {
             : { duration: 0.45, delay: 2.1, ease: "easeOut" }
         }
       >
-        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6 pt-2">
+        <div className="mx-auto flex max-w-6xl justify-center px-4 sm:px-5 md:px-6">
           <nav
             className={`pointer-events-auto inline-flex items-end gap-1 rounded-full border bg-background/80 px-3 py-1.5 backdrop-blur-md transition-shadow duration-300 ${
               scrolled
@@ -601,10 +604,10 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-border bg-accent/40 p-7 transition-colors hover:bg-accent/60"
+              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-colors hover:bg-primary/[0.1] hover:border-primary/25"
             >
-              <s.icon className="h-5 w-5 text-foreground/70" strokeWidth={1.5} />
-              <h3 className="mt-5 font-display text-2xl">{s.title}</h3>
+              <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+              <h3 className="mt-5 font-display text-2xl text-foreground">{s.title}</h3>
               <p className="mt-3 flex-1 text-foreground/70">{s.body}</p>
             </article>
           ))}
@@ -723,31 +726,38 @@ function Projects() {
             Full case studies on request →
           </a>
         </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-10 grid auto-rows-fr gap-5 md:grid-cols-3">
           {items.map((w, i) => (
             <article
               key={w.title}
-              className={`group block ${!showAll && i >= 1 ? "hidden md:block" : ""}`}
+              className={`group block transition-[grid-column] duration-500 ease-out md:hover:col-span-2 ${!showAll && i >= 1 ? "hidden md:block" : ""}`}
             >
               <div
-                className={`aspect-[4/5] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
+                className={`aspect-[4/5] md:aspect-auto md:h-full md:min-h-[360px] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/10 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 via-foreground/5 to-transparent" />
+
+                {/* Top row: tag + arrow */}
+                <div className="absolute left-6 right-6 top-6 flex items-center justify-between">
                   <span className="rounded-full bg-background/80 px-3 py-1 text-xs backdrop-blur">
                     {w.tag}
                   </span>
                   <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
-              </div>
-              <h3 className="mt-4 font-display text-xl">{w.title}</h3>
-              <p className="text-sm text-muted-foreground">{w.meta}</p>
-              {/* Hover-reveal description: no layout shift, GPU transform + opacity */}
-              <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr] motion-reduce:transition-none">
-                <div className="overflow-hidden">
-                  <p className="mt-2 translate-y-1 text-sm text-muted-foreground opacity-0 transition-all duration-300 ease-out will-change-transform group-hover:translate-y-0 group-hover:opacity-100">
-                    {w.desc}
-                  </p>
+
+                {/* Bottom content: title, meta + hover-revealed description on the tile */}
+                <div className="absolute bottom-6 left-6 right-6">
+                  <h3 className="font-display text-xl text-foreground drop-shadow-sm md:text-2xl">
+                    {w.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-foreground/70">{w.meta}</p>
+                  <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] motion-reduce:transition-none">
+                    <div className="overflow-hidden">
+                      <p className="mt-3 translate-y-1 text-sm text-foreground/80 opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100">
+                        {w.desc}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </article>
