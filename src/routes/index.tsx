@@ -500,7 +500,7 @@ function About() {
   ];
   return (
     <section id="about" className="mx-auto max-w-6xl px-6 py-20 md:py-24">
-      <div className="grid gap-12 md:grid-cols-2 md:gap-20">
+      <div className="grid gap-10 md:grid-cols-2 md:gap-16">
         <div>
           <span className="text-xs uppercase tracking-widest text-muted-foreground">About</span>
           <h2 className="mt-4 font-display text-4xl tracking-tight md:text-5xl">
