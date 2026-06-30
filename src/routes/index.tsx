@@ -1084,7 +1084,7 @@ function Footer() {
         <div className="hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
           <div className="flex items-center gap-4">
             <img src={zetacraftLogo.url} alt="Zetacraft" className="h-24 w-auto object-contain" />
-            <p>© {new Date().getFullYear()} {COMPANY_NAME}. Built simply, shipped quickly.</p>
+            <p>© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
           </div>
           <div className="flex flex-wrap items-center gap-5">
             <a
