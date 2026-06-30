@@ -409,7 +409,7 @@ function BookCTA() {
   return (
     <a
       href="#contact"
-      className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
+      className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
     >
       <MessageCircle className="h-4 w-4" /> Book a session
     </a>
