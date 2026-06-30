@@ -189,7 +189,7 @@ function Nav() {
 
         {/* Center: nav menu on desktop / brand name on mobile */}
         <div className="flex items-center justify-center min-w-0">
-          <span className="font-display text-sm sm:text-base md:hidden">{COMPANY_SHORT} Solutions</span>
+          <span className="sr-only">{COMPANY_SHORT} Solutions</span>
           <nav className="hidden lg:flex items-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
             {NAV_LINKS.map((l) => (
               <a
