@@ -742,6 +742,14 @@ function Projects() {
               </div>
               <h3 className="mt-4 font-display text-xl">{w.title}</h3>
               <p className="text-sm text-muted-foreground">{w.meta}</p>
+              {/* Hover-reveal description: no layout shift, GPU transform + opacity */}
+              <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr] motion-reduce:transition-none">
+                <div className="overflow-hidden">
+                  <p className="mt-2 translate-y-1 text-sm text-muted-foreground opacity-0 transition-all duration-300 ease-out will-change-transform group-hover:translate-y-0 group-hover:opacity-100">
+                    {w.desc}
+                  </p>
+                </div>
+              </div>
             </article>
           ))}
         </div>
