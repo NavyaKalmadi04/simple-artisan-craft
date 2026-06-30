@@ -732,8 +732,15 @@ function Projects() {
           {items.map((w, i) => (
             <article
               key={w.title}
-              className={`group block transition-[grid-column] duration-500 ease-out md:hover:col-span-2 ${!showAll && i >= 1 ? "hidden md:block" : ""}`}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              className={`group block transition-all duration-500 ease-out ${
+                hovered !== null && hovered !== i ? "md:hidden" : ""
+              } ${hovered === i ? "md:col-span-3" : ""} ${
+                !showAll && i >= 1 ? "hidden md:block" : ""
+              }`}
             >
+
               <div
                 className={`aspect-[4/5] md:aspect-auto md:h-full md:min-h-[360px] overflow-hidden rounded-3xl border border-border ${w.tint} relative`}
               >
