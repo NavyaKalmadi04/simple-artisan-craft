@@ -167,13 +167,10 @@ function IntroLogo() {
       transition={{ duration: 0.3, ease: "easeOut" }}
       aria-hidden="true"
     >
-      <motion.img
+      <img
         src={zetacraftLogo.url}
         alt=""
-        className="h-44 w-auto object-contain sm:h-56 md:h-64 lg:h-72 will-change-transform"
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: [0.9, 1.06, 1], opacity: 1 }}
-        transition={{ duration: 1.8, times: [0, 0.7, 1], ease: "easeOut" }}
+        className="h-44 w-auto object-contain sm:h-56 md:h-64 lg:h-72"
       />
     </motion.div>
   );
@@ -275,14 +272,14 @@ function Nav() {
             <img
               src={zetacraftLogo.url}
               alt="Zetacraft"
-              className="h-[58px] w-auto object-contain sm:h-[68px] md:h-[82px] lg:h-[92px]"
+              className="h-[72px] w-auto object-contain sm:h-[78px] md:h-[88px] lg:h-[96px]"
             />
             <span className="sr-only">{COMPANY_NAME}</span>
           </motion.a>
 
           <div className="flex justify-center overflow-hidden">
             <h1
-              className="text-xl font-medium tracking-[0.18em] sm:text-2xl md:text-[28px]"
+              className="text-[22px] font-medium tracking-[0.18em] sm:text-2xl md:text-[28px]"
               style={{ fontFamily: "var(--font-wordmark)" }}
             >
               {letters.map((ch, i) => {
@@ -311,7 +308,7 @@ function Nav() {
 
           <motion.a
             href="#contact"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-3 py-2 text-xs text-background transition-opacity hover:opacity-90 sm:px-4 sm:text-sm"
+            className="hidden lg:inline-flex shrink-0 items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
             initial={prefersReduced ? false : { opacity: 0, y: -6 }}
             animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
             transition={
@@ -320,8 +317,10 @@ function Nav() {
                 : { duration: 0.4, delay: 2.7, ease: "easeOut" }
             }
           >
-            Book a session
+            <MessageCircle className="h-4 w-4" /> Book a session
           </motion.a>
+          {/* Mobile spacer to keep wordmark centered (logo width approx) */}
+          <div aria-hidden className="lg:hidden h-[72px] w-[72px] sm:h-[78px] sm:w-[78px] md:h-[88px] md:w-[88px]" />
         </div>
       </header>
 
@@ -410,7 +409,7 @@ function BookCTA() {
   return (
     <a
       href="#contact"
-      className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-opacity hover:opacity-90"
+      className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm text-background transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:opacity-90"
     >
       <MessageCircle className="h-4 w-4" /> Book a session
     </a>
@@ -523,11 +522,11 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="rounded-3xl border border-border bg-card p-6"
+              className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-6 transition-all duration-200 ease-out hover:scale-[1.04] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
             >
-              <p.icon className="h-5 w-5 text-muted-foreground" strokeWidth={1.5} />
+              <p.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <h3 className="mt-5 font-display text-lg">{p.t}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{p.b}</p>
+              <p className="mt-2 text-sm text-foreground/70">{p.b}</p>
             </div>
           ))}
         </div>
@@ -607,7 +606,7 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-colors hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-all duration-200 ease-out hover:scale-[1.03] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
             >
               <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <h3 className="mt-5 font-display text-2xl text-foreground">{s.title}</h3>
@@ -617,8 +616,8 @@ function Services() {
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Ready to start?{" "}
-          <a href="#contact" className="font-medium text-foreground underline-offset-4 hover:underline">
-            Book a session →
+          <a href="#contact" className="inline-flex items-center gap-1.5 font-medium text-foreground underline-offset-4 hover:underline">
+            <MessageCircle className="h-4 w-4" /> Book a session →
           </a>{" "}
           and pick the service from the form.
         </p>
@@ -654,7 +653,7 @@ function Team() {
         {traits.map((t) => (
           <span
             key={t}
-            className="rounded-full border border-border/70 bg-background/80 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-md"
+            className="inline-block rounded-full border border-border/70 bg-background/80 px-4 py-1.5 text-sm text-muted-foreground shadow-sm backdrop-blur-md transition-all duration-200 ease-out hover:scale-[1.12] hover:-translate-y-0.5 hover:text-foreground"
           >
             {t}
           </span>
@@ -765,8 +764,8 @@ function Projects() {
                   layout
                   key={w.title}
                   onClick={() => setActiveMobile((cur) => (cur === i ? null : i))}
-                  className="shrink-0 snap-center"
-                  style={{ width: expanded ? "90%" : "78%" }}
+                  className="shrink-0 snap-center w-full"
+
                   transition={{ layout: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }}
                 >
                   <ProjectTile w={w} expanded={expanded} />
@@ -879,7 +878,7 @@ function FAQ() {
               type="button"
               onClick={() => setShowAll((v) => !v)}
               aria-expanded={showAll}
-              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-5 py-2 text-sm shadow-sm backdrop-blur-md transition-all hover:bg-secondary hover:shadow"
+              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-5 py-2 text-sm shadow-sm backdrop-blur-md transition-all duration-200 ease-out hover:scale-[1.08] hover:-translate-y-0.5 hover:bg-secondary hover:shadow"
             >
               {showAll ? "See less" : "See more"}
               <ChevronDown
@@ -960,21 +959,21 @@ function ContactBookCTA() {
       <button
         type="button"
         onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-opacity hover:opacity-90 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-background px-6 py-3 text-sm text-foreground transition-all duration-200 ease-out hover:scale-[1.06] hover:-translate-y-0.5 hover:opacity-90 sm:w-auto"
       >
-        <Send className="h-4 w-4" /> Open enquiry form
+        <MessageCircle className="h-4 w-4" /> Book a session
       </button>
       <a
         href={WHATSAPP_URL}
         target="_blank"
         rel="noreferrer noopener"
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-all duration-200 ease-out hover:scale-[1.06] hover:-translate-y-0.5 hover:bg-background/10 sm:w-auto"
       >
         <MessageCircle className="h-4 w-4" /> WhatsApp
       </a>
       <a
         href={`tel:${PHONE_TEL}`}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-colors hover:bg-background/10 sm:w-auto"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-background/30 px-5 py-3 text-sm text-primary-foreground transition-all duration-200 ease-out hover:scale-[1.06] hover:-translate-y-0.5 hover:bg-background/10 sm:w-auto"
       >
         <Phone className="h-4 w-4" /> Call
       </a>
@@ -1197,13 +1196,13 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-20 left-5 z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:left-auto lg:right-5"
+        className="fixed bottom-20 right-5 z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5"
       >
         {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-md flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:right-auto md:bottom-24 md:left-auto md:right-5">
+        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-md flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:left-auto md:bottom-24 md:right-5">
 
           <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
