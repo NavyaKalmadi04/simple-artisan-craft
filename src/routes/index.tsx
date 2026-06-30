@@ -198,12 +198,12 @@ function SubNav() {
   return (
     <div className="border-b border-border/60 bg-background">
       <div className="mx-auto max-w-6xl px-4 py-3 sm:px-5 md:px-6">
-        <nav className="flex items-center justify-center gap-1 rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
+        <nav className="mx-auto flex w-max max-w-full items-center gap-1 overflow-x-auto rounded-full border border-border bg-card/70 px-2 py-1.5 text-sm text-muted-foreground backdrop-blur">
           {NAV_LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-110 hover:-translate-y-0.5 hover:bg-secondary hover:text-foreground hover:shadow-md"
+              className="shrink-0 rounded-full px-3 py-1.5 origin-bottom transition-all duration-200 ease-out hover:scale-110 hover:-translate-y-0.5 hover:bg-secondary hover:text-foreground hover:shadow-md"
             >
               {l.label}
             </a>
