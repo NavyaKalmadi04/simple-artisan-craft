@@ -244,7 +244,7 @@ function Nav() {
   return (
     <div className="relative">
       {/* Header */}
-      <header className="bg-background">
+      <header className="border-b border-border/60 bg-background">
         <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3">
           <motion.a
             href="#"
