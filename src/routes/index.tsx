@@ -303,11 +303,12 @@ function Nav({ start }: { start: boolean }) {
   const play = start && !prefersReduced;
 
   return (
-    <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
           href="#"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
           className="flex shrink-0 items-center gap-2 justify-self-start"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
@@ -334,14 +335,14 @@ function Nav({ start }: { start: boolean }) {
           <img
             src={zetacraftLogo.url}
             alt="Zetacraft"
-            className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
+            className="h-[72px] w-auto object-contain drop-shadow-[0_4px_18px_rgba(30,40,90,0.18)] sm:h-[82px] md:h-[92px] lg:h-[100px]"
           />
         </motion.a>
 
         {/* Company name — centered */}
         <div className="flex justify-center">
           <h1
-            className="font-medium tracking-[0.18em] text-foreground text-[15px] sm:text-base md:text-lg lg:text-xl"
+            className="bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text font-semibold tracking-[0.22em] text-transparent text-[16px] sm:text-lg md:text-xl lg:text-2xl"
             style={{ fontFamily: "var(--font-wordmark)" }}
           >
             {letters.map((ch, i) => {
@@ -375,6 +376,7 @@ function Nav({ start }: { start: boolean }) {
 
       </div>
     </header>
+
   );
 }
 
