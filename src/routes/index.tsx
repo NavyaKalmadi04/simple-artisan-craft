@@ -122,12 +122,11 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    // last letter finishes at 0.7 + 9*0.12 + 0.12 = 1.9s, wait 1s = 2.9s
+    // tagline ends at ~5.0s; wait 1s after = ~6.0s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    // wordmark ends ~1.93s; tagline ends ~7.3s; wait 1s after = ~8.3s
-    }, prefersReduced ? 200 : 8300);
+    }, prefersReduced ? 200 : 6000);
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -171,6 +170,8 @@ function IntroLogo() {
   const letterDuration = 0.12; // 0.12s ease-out per letter
   // tagline reveal starts after wordmark finishes
   const taglineStart = 0.7 + (name.length - 1) * letterStagger + letterDuration + 0.15;
+  const taglineDuration = 0.8;
+  const taglineStagger = 0.05;
   return (
     <motion.div
       className="pointer-events-none fixed inset-0 z-[60] flex flex-col items-center justify-center bg-background px-6 text-center"
@@ -228,8 +229,8 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: taglineStart + i * 0.09,
-                duration: 1.4,
+                delay: taglineStart + i * taglineStagger,
+                duration: taglineDuration,
                 ease: [0.22, 1, 0.36, 1],
               }}
             >
@@ -303,7 +304,7 @@ function Nav({ start }: { start: boolean }) {
   const play = start && !prefersReduced;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 lg:relative lg:z-30">
       <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
@@ -383,7 +384,7 @@ function Nav({ start }: { start: boolean }) {
 function NavPills() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 100);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -392,31 +393,50 @@ function NavPills() {
   return (
     <div className="sticky top-0 z-40 hidden lg:flex justify-center pointer-events-none">
       <motion.nav
-        className="pointer-events-auto mt-3"
+        className="pointer-events-auto w-full max-w-6xl px-4 sm:px-5 md:px-6"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
       >
         <div
-          className={`inline-flex items-end gap-1 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 backdrop-blur-md transition-shadow duration-300 ${
-            scrolled ? "shadow-lg shadow-foreground/10" : "shadow-sm"
+          className={`flex items-center rounded-full border border-border/70 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 px-2.5 py-1.5 transition-all duration-300 ${
+            scrolled ? "shadow-lg shadow-foreground/10 justify-between" : "shadow-sm justify-center"
           }`}
         >
-          {NAV_LINKS.map((l) => (
+          {scrolled && (
             <a
-              key={l.href}
-              href={l.href}
+              href="#top"
               onClick={(e) => {
-                if (l.href === "#top") {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+              className="flex shrink-0 items-center gap-2 pl-1"
             >
-              {l.label}
+              <img
+                src={zetacraftLogo.url}
+                alt="Zetacraft"
+                className="h-8 w-auto object-contain"
+              />
             </a>
-          ))}
+          )}
+          <div className="inline-flex items-end gap-1">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => {
+                  if (l.href === "#top") {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+                className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+          {scrolled && <div className="w-20" aria-hidden />}
         </div>
       </motion.nav>
     </div>
@@ -585,18 +605,31 @@ function About() {
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {pillars.map((p) => (
-            <div
-              key={p.t}
-              className="group relative overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/70 via-primary/[0.04] to-primary/[0.10] p-6 shadow-[0_8px_30px_-12px_rgba(30,40,90,0.18)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_18px_40px_-12px_rgba(30,40,90,0.28)] hover:border-primary/30"
-            >
-              <span className="pointer-events-none absolute -top-12 -right-10 h-32 w-32 rounded-full bg-gradient-to-br from-accent/40 to-primary/20 blur-2xl opacity-60 transition-opacity duration-300 group-hover:opacity-90" />
-              <p.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
-              <h3 className="relative mt-5 font-display text-lg">{p.t}</h3>
-              <p className="relative mt-2 text-sm text-foreground/70">{p.b}</p>
-            </div>
-
-          ))}
+          {pillars.map((p, idx) => {
+            const tints = [
+              "from-blush/30 via-white/80 to-sage/20",
+              "from-sage/30 via-white/80 to-cream/30",
+              "from-accent/30 via-white/80 to-blush/20",
+              "from-cream/40 via-white/80 to-sage/20",
+            ];
+            const blobs = [
+              "from-blush/60 to-primary/20",
+              "from-sage/60 to-primary/20",
+              "from-accent/60 to-primary/20",
+              "from-cream/80 to-sage/40",
+            ];
+            return (
+              <div
+                key={p.t}
+                className={`group relative overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br ${tints[idx]} p-6 shadow-[0_8px_30px_-12px_rgba(30,40,90,0.18)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_18px_40px_-12px_rgba(30,40,90,0.28)] hover:border-primary/30`}
+              >
+                <span className={`pointer-events-none absolute -top-12 -right-10 h-32 w-32 rounded-full bg-gradient-to-br ${blobs[idx]} blur-2xl opacity-60 transition-opacity duration-300 group-hover:opacity-90`} />
+                <p.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
+                <h3 className="relative mt-5 font-display text-lg">{p.t}</h3>
+                <p className="relative mt-2 text-sm text-foreground/70">{p.b}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -671,19 +704,34 @@ function Services() {
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-2">
-          {services.map((s) => (
-            <article
-              key={s.title}
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-white/75 via-primary/[0.04] to-primary/[0.12] p-7 shadow-[0_10px_30px_-14px_rgba(30,40,90,0.22)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_22px_44px_-16px_rgba(30,40,90,0.32)] hover:border-primary/30"
-            >
-              <span className="pointer-events-none absolute -top-16 -right-12 h-40 w-40 rounded-full bg-gradient-to-br from-accent/50 to-primary/25 blur-3xl opacity-60 transition-opacity duration-300 group-hover:opacity-95" />
-              <span className="pointer-events-none absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-gradient-to-tr from-sage/30 to-blush/30 blur-3xl opacity-50" />
-              <s.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
-              <h3 className="relative mt-5 font-display text-2xl text-foreground">{s.title}</h3>
-              <p className="relative mt-3 flex-1 text-foreground/75">{s.body}</p>
-            </article>
-          ))}
-
+          {services.map((s, idx) => {
+            const tints = [
+              "from-blush/35 via-white/80 to-cream/25",
+              "from-sage/35 via-white/80 to-blush/25",
+              "from-accent/35 via-white/80 to-sage/25",
+              "from-cream/45 via-white/80 to-accent/25",
+              "from-blush/30 via-white/80 to-sage/20",
+            ];
+            const blobs = [
+              "from-blush/70 to-primary/25",
+              "from-sage/70 to-primary/25",
+              "from-accent/70 to-primary/25",
+              "from-cream/90 to-primary/30",
+              "from-blush/60 to-sage/40",
+            ];
+            return (
+              <article
+                key={s.title}
+                className={`group relative flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br ${tints[idx]} p-7 shadow-[0_10px_30px_-14px_rgba(30,40,90,0.22)] backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_22px_44px_-16px_rgba(30,40,90,0.32)] hover:border-primary/30`}
+              >
+                <span className={`pointer-events-none absolute -top-16 -right-12 h-40 w-40 rounded-full bg-gradient-to-br ${blobs[idx]} blur-3xl opacity-60 transition-opacity duration-300 group-hover:opacity-95`} />
+                <span className="pointer-events-none absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-gradient-to-tr from-sage/30 to-blush/30 blur-3xl opacity-50" />
+                <s.icon className="relative h-5 w-5 text-primary" strokeWidth={1.5} />
+                <h3 className="relative mt-5 font-display text-2xl text-foreground">{s.title}</h3>
+                <p className="relative mt-3 flex-1 text-foreground/75">{s.body}</p>
+              </article>
+            );
+          })}
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Ready to start?{" "}
