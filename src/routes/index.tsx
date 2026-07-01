@@ -593,13 +593,19 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-6 transition-all duration-200 ease-out hover:scale-[1.04] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-6 shadow-[0_8px_30px_-12px_rgba(30,42,74,0.18),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_16px_40px_-12px_rgba(30,42,74,0.28),inset_0_1px_0_rgba(255,255,255,0.8)]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, rgba(234,240,250,0.75), rgba(220,231,247,0.45) 60%, rgba(201,217,240,0.6))",
+              }}
             >
+              <span className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-white/40 blur-3xl" />
               <p.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <h3 className="mt-5 font-display text-lg">{p.t}</h3>
               <p className="mt-2 text-sm text-foreground/70">{p.b}</p>
             </div>
           ))}
+
         </div>
       </div>
     </section>
