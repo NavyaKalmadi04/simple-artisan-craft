@@ -34,6 +34,7 @@ const COMPANY_NAME = "Zetaacraft";
 const COMPANY_SHORT = "Zetaacraft";
 
 const NAV_LINKS = [
+  { href: "#top", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#team", label: "Team" },
@@ -41,6 +42,7 @@ const NAV_LINKS = [
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
+
 
 const MOBILE_NAV = [
   { href: "#", label: "Home", icon: Home },
