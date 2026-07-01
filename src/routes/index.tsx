@@ -228,10 +228,11 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: taglineStart + i * 0.09,
-                duration: 1.4,
+                delay: taglineStart + i * 0.06,
+                duration: 0.6,
                 ease: [0.22, 1, 0.36, 1],
               }}
+
             >
               {ch === " " ? "\u00A0" : ch}
             </motion.span>
