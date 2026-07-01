@@ -398,15 +398,25 @@ function NavPills() {
         transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
       >
         <div
-          className={`inline-flex items-end gap-1 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 backdrop-blur-md transition-shadow duration-300 ${
-            scrolled ? "shadow-lg shadow-foreground/10" : "shadow-sm"
+          className={`relative inline-flex items-end gap-1 overflow-hidden rounded-full border border-white/50 bg-white/40 px-2.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-2xl backdrop-saturate-150 transition-shadow duration-300 ${
+            scrolled ? "shadow-xl shadow-primary/10" : "shadow-md shadow-primary/5"
           }`}
+          style={{
+            backgroundImage:
+              "linear-gradient(135deg, rgba(234,240,250,0.65), rgba(220,231,247,0.35) 60%, rgba(201,217,240,0.55))",
+          }}
         >
           {NAV_LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+              onClick={(e) => {
+                if (l.href === "#top") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-foreground/70 transition-all duration-200 ease-out hover:bg-white/60 hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
             >
               {l.label}
             </a>
@@ -416,6 +426,7 @@ function NavPills() {
     </div>
   );
 }
+
 
 
 
