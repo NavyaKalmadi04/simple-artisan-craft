@@ -305,10 +305,10 @@ function Nav({ start }: { start: boolean }) {
 
   return (
     <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
+      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-2 px-3 py-2 sm:gap-3 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
-          href="#"
+          href="#top"
           className="flex shrink-0 items-center gap-2 justify-self-start"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
@@ -335,14 +335,14 @@ function Nav({ start }: { start: boolean }) {
           <img
             src={zetacraftLogo.url}
             alt="Zetacraft"
-            className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
+            className="h-[68px] w-auto object-contain sm:h-[84px] md:h-[96px] lg:h-[108px]"
           />
         </motion.a>
 
-        {/* Company name — centered */}
-        <div className="flex justify-center">
+        {/* Company name — centered, always single line */}
+        <div className="flex min-w-0 justify-center overflow-hidden">
           <h1
-            className="font-medium tracking-[0.18em] text-foreground text-[15px] sm:text-base md:text-lg lg:text-xl"
+            className="whitespace-nowrap font-medium text-foreground text-[clamp(14px,4.2vw,34px)] tracking-[0.08em] sm:tracking-[0.14em] md:tracking-[0.18em]"
             style={{ fontFamily: "var(--font-wordmark)" }}
           >
             {letters.map((ch, i) => {
@@ -378,6 +378,7 @@ function Nav({ start }: { start: boolean }) {
     </header>
   );
 }
+
 
 function NavPills() {
   const [scrolled, setScrolled] = useState(false);
