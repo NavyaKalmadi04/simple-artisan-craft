@@ -34,6 +34,7 @@ const COMPANY_NAME = "Zetaacraft";
 const COMPANY_SHORT = "Zetaacraft";
 
 const NAV_LINKS = [
+  { href: "#top", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#team", label: "Team" },
@@ -41,6 +42,7 @@ const NAV_LINKS = [
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ];
+
 
 const MOBILE_NAV = [
   { href: "#", label: "Home", icon: Home },
@@ -120,12 +122,12 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    // last letter finishes at 0.7 + 9*0.12 + 0.12 = 1.9s, wait 1s = 2.9s
+    // wordmark ends ~1.93s; tagline (44 chars * 0.06 stagger + 0.6 dur) ends ~5.15s; wait 1s = 6.2s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    // wordmark ends ~1.93s; tagline ends ~7.3s; wait 1s after = ~8.3s
-    }, prefersReduced ? 200 : 8300);
+    }, prefersReduced ? 200 : 6200);
+
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
@@ -226,10 +228,11 @@ function IntroLogo() {
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
-                delay: taglineStart + i * 0.09,
-                duration: 1.4,
+                delay: taglineStart + i * 0.06,
+                duration: 0.6,
                 ease: [0.22, 1, 0.36, 1],
               }}
+
             >
               {ch === " " ? "\u00A0" : ch}
             </motion.span>
@@ -302,10 +305,10 @@ function Nav({ start }: { start: boolean }) {
 
   return (
     <header className="relative z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
-      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2 sm:px-5 md:px-6 md:py-2.5">
+      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-2 px-3 py-2 sm:gap-3 sm:px-5 md:px-6 md:py-2.5">
         {/* Logo — left */}
         <motion.a
-          href="#"
+          href="#top"
           className="flex shrink-0 items-center gap-2 justify-self-start"
           initial={prefersReduced ? false : { x: "55vw", opacity: 0 }}
           animate={
@@ -332,14 +335,14 @@ function Nav({ start }: { start: boolean }) {
           <img
             src={zetacraftLogo.url}
             alt="Zetacraft"
-            className="h-[60px] w-auto object-contain sm:h-[68px] md:h-[76px] lg:h-[84px]"
+            className="h-[68px] w-auto object-contain sm:h-[84px] md:h-[96px] lg:h-[108px]"
           />
         </motion.a>
 
-        {/* Company name — centered */}
-        <div className="flex justify-center">
+        {/* Company name — centered, always single line */}
+        <div className="flex min-w-0 justify-center overflow-hidden">
           <h1
-            className="font-medium tracking-[0.18em] text-foreground text-[15px] sm:text-base md:text-lg lg:text-xl"
+            className="whitespace-nowrap font-medium text-foreground text-[clamp(14px,4.2vw,34px)] tracking-[0.08em] sm:tracking-[0.14em] md:tracking-[0.18em]"
             style={{ fontFamily: "var(--font-wordmark)" }}
           >
             {letters.map((ch, i) => {
@@ -376,6 +379,7 @@ function Nav({ start }: { start: boolean }) {
   );
 }
 
+
 function NavPills() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -394,15 +398,25 @@ function NavPills() {
         transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
       >
         <div
-          className={`inline-flex items-end gap-1 rounded-full border border-border/70 bg-background/80 px-2.5 py-1 backdrop-blur-md transition-shadow duration-300 ${
-            scrolled ? "shadow-lg shadow-foreground/10" : "shadow-sm"
+          className={`relative inline-flex items-end gap-1 overflow-hidden rounded-full border border-white/50 bg-white/40 px-2.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-2xl backdrop-saturate-150 transition-shadow duration-300 ${
+            scrolled ? "shadow-xl shadow-primary/10" : "shadow-md shadow-primary/5"
           }`}
+          style={{
+            backgroundImage:
+              "linear-gradient(135deg, rgba(234,240,250,0.65), rgba(220,231,247,0.35) 60%, rgba(201,217,240,0.55))",
+          }}
         >
           {NAV_LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-all duration-200 ease-out hover:bg-secondary hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+              onClick={(e) => {
+                if (l.href === "#top") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-foreground/70 transition-all duration-200 ease-out hover:bg-white/60 hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
             >
               {l.label}
             </a>
@@ -412,6 +426,7 @@ function NavPills() {
     </div>
   );
 }
+
 
 
 
@@ -480,17 +495,18 @@ function Hero() {
 
       <RotatingBadge />
 
-      <h1 className="mt-6 max-w-4xl font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
+      <h1 className="mt-6 max-w-4xl font-display text-3xl leading-[1.1] tracking-tight sm:text-4xl md:text-5xl">
         Simple products,
         <br />
         <em className="font-display italic text-muted-foreground">built around real customers</em>
         — shipped at lighting speed.
       </h1>
 
-      <p className="mt-8 max-w-xl text-lg text-muted-foreground">
+      <p className="mt-6 max-w-xl text-base text-muted-foreground">
         We understand real customers, design the optimal solution and build products users actually
         like — for SaaS, websites and AI workflows across every kind of business.
       </p>
+
 
       <div className="mt-10">
         <BookCTA />
@@ -577,13 +593,19 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="rounded-3xl border border-primary/15 bg-primary/[0.06] p-6 transition-all duration-200 ease-out hover:scale-[1.04] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-6 shadow-[0_8px_30px_-12px_rgba(30,42,74,0.18),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_16px_40px_-12px_rgba(30,42,74,0.28),inset_0_1px_0_rgba(255,255,255,0.8)]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, rgba(234,240,250,0.75), rgba(220,231,247,0.45) 60%, rgba(201,217,240,0.6))",
+              }}
             >
+              <span className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-white/40 blur-3xl" />
               <p.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <h3 className="mt-5 font-display text-lg">{p.t}</h3>
               <p className="mt-2 text-sm text-foreground/70">{p.b}</p>
             </div>
           ))}
+
         </div>
       </div>
     </section>
@@ -661,13 +683,19 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group flex flex-col rounded-3xl border border-primary/15 bg-primary/[0.06] p-7 transition-all duration-200 ease-out hover:scale-[1.03] hover:-translate-y-0.5 hover:bg-primary/[0.1] hover:border-primary/25"
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-7 shadow-[0_8px_30px_-12px_rgba(30,42,74,0.18),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_18px_44px_-12px_rgba(30,42,74,0.3),inset_0_1px_0_rgba(255,255,255,0.8)]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, rgba(234,240,250,0.75), rgba(220,231,247,0.45) 60%, rgba(201,217,240,0.6))",
+              }}
             >
+              <span className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full bg-white/50 blur-3xl transition-opacity duration-300 group-hover:opacity-80" />
               <s.icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <h3 className="mt-5 font-display text-2xl text-foreground">{s.title}</h3>
               <p className="mt-3 flex-1 text-foreground/70">{s.body}</p>
             </article>
           ))}
+
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Ready to start?{" "}
@@ -1040,44 +1068,45 @@ function ContactBookCTA() {
 function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
+      <div className="mx-auto max-w-6xl px-6 py-4 text-sm text-muted-foreground md:py-5">
         {/* Mobile: logo left, contact icons right */}
         <div className="flex items-center justify-between gap-3 md:hidden">
-          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-20 w-auto object-contain" />
-          <div className="flex items-center gap-3">
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-12 w-auto object-contain" />
+          <div className="flex items-center gap-2">
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer noopener"
               aria-label="WhatsApp"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <MessageCircle className="h-4 w-4" />
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
               aria-label="Call"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <Phone className="h-4 w-4" />
             </a>
             <a
               href="mailto:Zetaacraft@gmail.com"
               aria-label="Email"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <Mail className="h-4 w-4" />
             </a>
           </div>
         </div>
-        <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
+        <p className="mt-2 text-[11px] md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
 
         {/* Desktop: logo left, contacts right */}
-        <div className="hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
-          <div className="flex items-center gap-4">
-            <img src={zetacraftLogo.url} alt="Zetacraft" className="h-24 w-auto object-contain" />
-            <p>© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
+        <div className="hidden flex-col items-start justify-between gap-2 md:flex md:flex-row md:items-center">
+          <div className="flex items-center gap-3">
+            <img src={zetacraftLogo.url} alt="Zetacraft" className="h-14 w-auto object-contain" />
+            <p className="text-xs">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
           </div>
+
           <div className="flex flex-wrap items-center gap-5">
             <a
               href={WHATSAPP_URL}
