@@ -122,12 +122,12 @@ function Index() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    // last letter finishes at 0.7 + 9*0.12 + 0.12 = 1.9s, wait 1s = 2.9s
+    // wordmark ends ~1.93s; tagline (44 chars * 0.06 stagger + 0.6 dur) ends ~5.15s; wait 1s = 6.2s
     const t = window.setTimeout(() => {
       document.body.style.overflow = prevOverflow;
       setIntroDone(true);
-    // wordmark ends ~1.93s; tagline ends ~7.3s; wait 1s after = ~8.3s
-    }, prefersReduced ? 200 : 8300);
+    }, prefersReduced ? 200 : 6200);
+
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prevOverflow;
