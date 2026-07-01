@@ -1068,44 +1068,45 @@ function ContactBookCTA() {
 function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
+      <div className="mx-auto max-w-6xl px-6 py-4 text-sm text-muted-foreground md:py-5">
         {/* Mobile: logo left, contact icons right */}
         <div className="flex items-center justify-between gap-3 md:hidden">
-          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-20 w-auto object-contain" />
-          <div className="flex items-center gap-3">
+          <img src={zetacraftLogo.url} alt="Zetacraft" className="h-12 w-auto object-contain" />
+          <div className="flex items-center gap-2">
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer noopener"
               aria-label="WhatsApp"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <MessageCircle className="h-4 w-4" />
             </a>
             <a
               href={`tel:${PHONE_TEL}`}
               aria-label="Call"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <Phone className="h-4 w-4" />
             </a>
             <a
               href="mailto:Zetaacraft@gmail.com"
               aria-label="Email"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/70 bg-background/80 shadow-sm backdrop-blur-md hover:text-foreground"
             >
               <Mail className="h-4 w-4" />
             </a>
           </div>
         </div>
-        <p className="mt-4 text-xs md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
+        <p className="mt-2 text-[11px] md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
 
         {/* Desktop: logo left, contacts right */}
-        <div className="hidden flex-col items-start justify-between gap-4 md:flex md:flex-row md:items-center">
-          <div className="flex items-center gap-4">
-            <img src={zetacraftLogo.url} alt="Zetacraft" className="h-24 w-auto object-contain" />
-            <p>© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
+        <div className="hidden flex-col items-start justify-between gap-2 md:flex md:flex-row md:items-center">
+          <div className="flex items-center gap-3">
+            <img src={zetacraftLogo.url} alt="Zetacraft" className="h-14 w-auto object-contain" />
+            <p className="text-xs">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
           </div>
+
           <div className="flex flex-wrap items-center gap-5">
             <a
               href={WHATSAPP_URL}
