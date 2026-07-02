@@ -685,10 +685,10 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-7 shadow-[0_8px_30px_-12px_rgba(30,42,74,0.18),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_18px_44px_-12px_rgba(30,42,74,0.3),inset_0_1px_0_rgba(255,255,255,0.8)]"
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/60 p-7 shadow-[0_10px_34px_-12px_rgba(30,42,74,0.22),inset_0_1px_0_rgba(255,255,255,0.85)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_20px_50px_-12px_rgba(30,42,74,0.34),inset_0_1px_0_rgba(255,255,255,0.95)]"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, rgba(234,240,250,0.75), rgba(220,231,247,0.45) 60%, rgba(201,217,240,0.6))",
+                  "linear-gradient(135deg, rgba(224,242,254,0.85), rgba(199,236,255,0.55) 55%, rgba(196,232,240,0.75))",
               }}
             >
               <span className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full bg-white/50 blur-3xl transition-opacity duration-300 group-hover:opacity-80" />
