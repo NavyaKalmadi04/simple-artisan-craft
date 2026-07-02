@@ -335,7 +335,7 @@ function Nav({ start }: { start: boolean }) {
           <img
             src={zetacraftLogo.url}
             alt="Zetacraft"
-            className="h-[68px] w-auto object-contain sm:h-[84px] md:h-[96px] lg:h-[108px]"
+            className="ml-1 h-[80px] w-auto object-contain sm:ml-3 sm:h-[100px] md:ml-5 md:h-[120px] lg:ml-8 lg:h-[132px]"
           />
         </motion.a>
 
@@ -390,39 +390,41 @@ function NavPills() {
   }, []);
 
   return (
-    <div className="sticky top-0 z-40 hidden lg:flex justify-center pointer-events-none">
-      <motion.nav
-        className="pointer-events-auto mt-3"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-      >
-        <div
-          className={`relative inline-flex items-end gap-1 overflow-hidden rounded-full border border-white/50 bg-white/40 px-2.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-2xl backdrop-saturate-150 transition-shadow duration-300 ${
-            scrolled ? "shadow-xl shadow-primary/10" : "shadow-md shadow-primary/5"
-          }`}
-          style={{
-            backgroundImage:
-              "linear-gradient(135deg, rgba(234,240,250,0.65), rgba(220,231,247,0.35) 60%, rgba(201,217,240,0.55))",
-          }}
+    <div className="sticky top-0 z-40 hidden lg:block pointer-events-none">
+      <div className="mx-auto max-w-6xl px-6 flex justify-end">
+        <motion.nav
+          className="pointer-events-auto -mt-6"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
         >
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={(e) => {
-                if (l.href === "#top") {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }
-              }}
-              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-foreground/70 transition-all duration-200 ease-out hover:bg-white/60 hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
-            >
-              {l.label}
-            </a>
-          ))}
-        </div>
-      </motion.nav>
+          <div
+            className={`relative inline-flex items-end gap-1 overflow-hidden rounded-full border border-white/50 bg-white/40 px-2.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-2xl backdrop-saturate-150 transition-shadow duration-300 ${
+              scrolled ? "shadow-xl shadow-primary/10" : "shadow-md shadow-primary/5"
+            }`}
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, rgba(224,242,254,0.75), rgba(186,230,253,0.5) 60%, rgba(165,243,252,0.65))",
+            }}
+          >
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => {
+                  if (l.href === "#top") {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+                className="shrink-0 origin-bottom whitespace-nowrap rounded-full px-3 py-1.5 text-sm text-foreground/70 transition-all duration-200 ease-out hover:bg-white/60 hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </motion.nav>
+      </div>
     </div>
   );
 }
@@ -593,10 +595,10 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-6 shadow-[0_8px_30px_-12px_rgba(30,42,74,0.18),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_16px_40px_-12px_rgba(30,42,74,0.28),inset_0_1px_0_rgba(255,255,255,0.8)]"
+              className="group relative overflow-hidden rounded-3xl border border-white/70 bg-white/60 p-6 shadow-[0_10px_34px_-12px_rgba(30,42,74,0.22),inset_0_1px_0_rgba(255,255,255,0.85)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_18px_46px_-12px_rgba(30,42,74,0.32),inset_0_1px_0_rgba(255,255,255,0.95)]"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, rgba(234,240,250,0.75), rgba(220,231,247,0.45) 60%, rgba(201,217,240,0.6))",
+                  "linear-gradient(135deg, rgba(186,230,253,0.85), rgba(207,250,254,0.6) 55%, rgba(187,247,208,0.75))",
               }}
             >
               <span className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-white/40 blur-3xl" />
@@ -683,10 +685,10 @@ function Services() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-7 shadow-[0_8px_30px_-12px_rgba(30,42,74,0.18),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_18px_44px_-12px_rgba(30,42,74,0.3),inset_0_1px_0_rgba(255,255,255,0.8)]"
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/60 p-7 shadow-[0_10px_34px_-12px_rgba(30,42,74,0.22),inset_0_1px_0_rgba(255,255,255,0.85)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_20px_50px_-12px_rgba(30,42,74,0.34),inset_0_1px_0_rgba(255,255,255,0.95)]"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, rgba(234,240,250,0.75), rgba(220,231,247,0.45) 60%, rgba(201,217,240,0.6))",
+                  "linear-gradient(135deg, rgba(224,242,254,0.85), rgba(199,236,255,0.55) 55%, rgba(196,232,240,0.75))",
               }}
             >
               <span className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full bg-white/50 blur-3xl transition-opacity duration-300 group-hover:opacity-80" />
@@ -806,12 +808,6 @@ function Projects() {
               A few things <em className="text-muted-foreground">we've shipped.</em>
             </h2>
           </div>
-          <a
-            href="#contact"
-            className="hidden text-sm text-muted-foreground hover:text-foreground md:inline"
-          >
-            Full case studies on request →
-          </a>
         </div>
 
         {/* Desktop / tablet grid with smooth layout animation */}
@@ -1098,13 +1094,13 @@ function Footer() {
             </a>
           </div>
         </div>
-        <p className="mt-2 text-[11px] md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
+        <p className="mt-2 whitespace-nowrap text-[10px] md:hidden">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
 
         {/* Desktop: logo left, contacts right */}
         <div className="hidden flex-col items-start justify-between gap-2 md:flex md:flex-row md:items-center">
           <div className="flex items-center gap-3">
             <img src={zetacraftLogo.url} alt="Zetacraft" className="h-14 w-auto object-contain" />
-            <p className="text-xs">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
+            <p className="whitespace-nowrap text-xs">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-5">
@@ -1249,6 +1245,7 @@ function botAnswer(input: string): ChatMsg {
 
 function ChatBot() {
   const [open, setOpen] = useState(false);
+  const [hideNearFooter, setHideNearFooter] = useState(false);
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       from: "bot",
@@ -1263,6 +1260,17 @@ function ChatBot() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, open]);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setHideNearFooter(entry.isIntersecting),
+      { rootMargin: "0px 0px 0px 0px", threshold: 0.01 },
+    );
+    io.observe(footer);
+    return () => io.disconnect();
+  }, []);
 
   const send = (text: string) => {
     const t = text.trim();
@@ -1280,13 +1288,15 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-20 right-[5.5rem] z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:right-5"
+        className={`fixed bottom-20 right-4 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all duration-300 hover:scale-105 lg:bottom-6 lg:right-6 lg:h-16 lg:w-16 ${
+          hideNearFooter ? "pointer-events-none translate-y-6 opacity-0" : "opacity-100"
+        }`}
       >
         {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
       </button>
 
-      {open && (
-        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-md flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:left-auto md:bottom-24 md:right-5">
+      {open && !hideNearFooter && (
+        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-md flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:left-auto md:bottom-24 md:right-6">
 
           <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
