@@ -808,12 +808,6 @@ function Projects() {
               A few things <em className="text-muted-foreground">we've shipped.</em>
             </h2>
           </div>
-          <a
-            href="#contact"
-            className="hidden text-sm text-muted-foreground hover:text-foreground md:inline"
-          >
-            Full case studies on request →
-          </a>
         </div>
 
         {/* Desktop / tablet grid with smooth layout animation */}
