@@ -1245,6 +1245,7 @@ function botAnswer(input: string): ChatMsg {
 
 function ChatBot() {
   const [open, setOpen] = useState(false);
+  const [hideNearFooter, setHideNearFooter] = useState(false);
   const [messages, setMessages] = useState<ChatMsg[]>([
     {
       from: "bot",
@@ -1259,6 +1260,17 @@ function ChatBot() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, open]);
+
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setHideNearFooter(entry.isIntersecting),
+      { rootMargin: "0px 0px 0px 0px", threshold: 0.01 },
+    );
+    io.observe(footer);
+    return () => io.disconnect();
+  }, []);
 
   const send = (text: string) => {
     const t = text.trim();
@@ -1276,13 +1288,15 @@ function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-20 right-[5.5rem] z-50 inline-flex h-16 w-16 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-105 lg:bottom-5 lg:right-5"
+        className={`fixed bottom-20 right-4 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all duration-300 hover:scale-105 lg:bottom-6 lg:right-6 lg:h-16 lg:w-16 ${
+          hideNearFooter ? "pointer-events-none translate-y-6 opacity-0" : "opacity-100"
+        }`}
       >
         {open ? <X className="h-6 w-6" /> : <Bot className="h-7 w-7" />}
       </button>
 
-      {open && (
-        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-md flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:left-auto md:bottom-24 md:right-5">
+      {open && !hideNearFooter && (
+        <div className="fixed bottom-36 left-4 right-4 z-50 flex max-w-md flex-col overflow-hidden rounded-3xl border border-border bg-background shadow-2xl sm:left-auto md:bottom-24 md:right-6">
 
           <div className="flex items-center gap-3 border-b border-border bg-card px-4 py-3">
             <span className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground">
