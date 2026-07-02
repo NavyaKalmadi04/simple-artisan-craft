@@ -33,9 +33,9 @@
   --color-cream: var(--cream);
   --color-blush: var(--blush);
   --color-sage: var(--sage);
-  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", "Georgia", serif;
   --font-wordmark: "Michroma", "Space Grotesk", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Poppins", "Inter", system-ui, sans-serif;
 }
 
 :root {
