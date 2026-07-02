@@ -390,39 +390,41 @@ function NavPills() {
   }, []);
 
   return (
-    <div className="sticky top-0 z-40 hidden lg:flex justify-center pointer-events-none">
-      <motion.nav
-        className="pointer-events-auto mt-3"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-      >
-        <div
-          className={`relative inline-flex items-end gap-1 overflow-hidden rounded-full border border-white/50 bg-white/40 px-2.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-2xl backdrop-saturate-150 transition-shadow duration-300 ${
-            scrolled ? "shadow-xl shadow-primary/10" : "shadow-md shadow-primary/5"
-          }`}
-          style={{
-            backgroundImage:
-              "linear-gradient(135deg, rgba(234,240,250,0.65), rgba(220,231,247,0.35) 60%, rgba(201,217,240,0.55))",
-          }}
+    <div className="sticky top-0 z-40 hidden lg:block pointer-events-none">
+      <div className="mx-auto max-w-6xl px-6 flex justify-end">
+        <motion.nav
+          className="pointer-events-auto -mt-6"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
         >
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={(e) => {
-                if (l.href === "#top") {
-                  e.preventDefault();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }
-              }}
-              className="shrink-0 origin-bottom rounded-full px-3 py-1.5 text-sm text-foreground/70 transition-all duration-200 ease-out hover:bg-white/60 hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
-            >
-              {l.label}
-            </a>
-          ))}
-        </div>
-      </motion.nav>
+          <div
+            className={`relative inline-flex items-end gap-1 overflow-hidden rounded-full border border-white/50 bg-white/40 px-2.5 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-2xl backdrop-saturate-150 transition-shadow duration-300 ${
+              scrolled ? "shadow-xl shadow-primary/10" : "shadow-md shadow-primary/5"
+            }`}
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, rgba(224,242,254,0.75), rgba(186,230,253,0.5) 60%, rgba(165,243,252,0.65))",
+            }}
+          >
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => {
+                  if (l.href === "#top") {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+                className="shrink-0 origin-bottom whitespace-nowrap rounded-full px-3 py-1.5 text-sm text-foreground/70 transition-all duration-200 ease-out hover:bg-white/60 hover:text-foreground hover:scale-[1.12] hover:-translate-y-0.5 hover:font-medium"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </motion.nav>
+      </div>
     </div>
   );
 }
