@@ -595,10 +595,10 @@ function About() {
           {pillars.map((p) => (
             <div
               key={p.t}
-              className="group relative overflow-hidden rounded-3xl border border-white/60 bg-white/50 p-6 shadow-[0_8px_30px_-12px_rgba(30,42,74,0.18),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_16px_40px_-12px_rgba(30,42,74,0.28),inset_0_1px_0_rgba(255,255,255,0.8)]"
+              className="group relative overflow-hidden rounded-3xl border border-white/70 bg-white/60 p-6 shadow-[0_10px_34px_-12px_rgba(30,42,74,0.22),inset_0_1px_0_rgba(255,255,255,0.85)] backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_18px_46px_-12px_rgba(30,42,74,0.32),inset_0_1px_0_rgba(255,255,255,0.95)]"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, rgba(234,240,250,0.75), rgba(220,231,247,0.45) 60%, rgba(201,217,240,0.6))",
+                  "linear-gradient(135deg, rgba(186,230,253,0.85), rgba(207,250,254,0.6) 55%, rgba(187,247,208,0.75))",
               }}
             >
               <span className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-white/40 blur-3xl" />
