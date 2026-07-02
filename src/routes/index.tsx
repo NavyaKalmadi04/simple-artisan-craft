@@ -1100,7 +1100,7 @@ function Footer() {
         <div className="hidden flex-col items-start justify-between gap-2 md:flex md:flex-row md:items-center">
           <div className="flex items-center gap-3">
             <img src={zetacraftLogo.url} alt="Zetacraft" className="h-14 w-auto object-contain" />
-            <p className="text-xs">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
+            <p className="whitespace-nowrap text-xs">© {new Date().getFullYear()} {COMPANY_NAME} Software Systems LLP.</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-5">
