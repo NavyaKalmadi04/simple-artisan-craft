@@ -335,7 +335,7 @@ function Nav({ start }: { start: boolean }) {
           <img
             src={zetacraftLogo.url}
             alt="Zetacraft"
-            className="h-[68px] w-auto object-contain sm:h-[84px] md:h-[96px] lg:h-[108px]"
+            className="ml-1 h-[80px] w-auto object-contain sm:ml-3 sm:h-[100px] md:ml-5 md:h-[120px] lg:ml-8 lg:h-[132px]"
           />
         </motion.a>
 
